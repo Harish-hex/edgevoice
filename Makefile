@@ -15,10 +15,16 @@ build:
 gate: build
 	$(RUN) bin/gate
 
-.PHONY: test image dev limits build gate clips synth run
+.PHONY: test image dev limits build gate clips synth run mics mictest
 clips: build
 	CPUS=4 MEM=3g docker/run.sh bin/buildclips
 synth: build
 	CPUS=4 MEM=3g docker/run.sh bin/synthdata
+MIC  ?= -1
+GAIN ?= 1
 run:
-	go run ./cmd/audiobridge -cpus $(CPUS) -mem $(MEM)
+	go run ./cmd/audiobridge -cpus $(CPUS) -mem $(MEM) -mic $(MIC) -gain $(GAIN)
+mics:
+	go run ./cmd/audiobridge -list
+mictest:
+	go run ./cmd/audiobridge -loopback -mic $(MIC) -gain $(GAIN)

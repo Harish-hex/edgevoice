@@ -65,7 +65,9 @@ func (c *Controller) Run(ctx context.Context) {
 		p95 := P95(c.e2es)
 		cur := c.cur
 		c.mu.Unlock()
-		want := Select(cores, mem, p95)
+		// Live demo: tier follows the enforced limits only (latency-triggered switching flapped: one slow
+		// chat turn → T1, then empty history → T0). p95 is still logged.
+		want := Select(cores, mem, 0)
 		if want == cur {
 			continue
 		}

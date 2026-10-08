@@ -48,7 +48,6 @@ func (o *frameOut) PCM(p []int16) {
 	o.w.Flush()
 }
 func (o *frameOut) Status(s string) {
-	log.Print(s)
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	audio.WriteFrame(o.w, audio.FrameStatus, []byte(s))
@@ -65,6 +64,7 @@ func main() {
 	transport := flag.String("transport", "stdio", "stdio | sock")
 	replay := flag.String("replay", "", "directory of .wav files to replay (harness mode)")
 	limit := flag.Int("n", 0, "replay at most n files")
+	dump := flag.Bool("dump", false, "save each turn's input audio to results/turns/")
 	flag.Parse()
 	log.SetOutput(os.Stderr)
 	log.SetFlags(log.Ltime | log.Lmicroseconds)
@@ -122,6 +122,9 @@ func main() {
 	out := &frameOut{w: bufio.NewWriter(w)}
 	p.Out = out
 	p.HalfDuplex = true
+	if *dump {
+		p.DumpDir = "results/turns"
+	}
 	out.Status("EdgeVoice ready — speak.")
 	in := make(chan []int16, 64)
 	go func() {

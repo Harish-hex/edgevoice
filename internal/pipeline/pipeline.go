@@ -7,6 +7,8 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"time"
@@ -52,6 +54,8 @@ type Pipeline struct {
 	File string
 	// HalfDuplex drops mic input while a reply is playing (live mode). Off for replay.
 	HalfDuplex bool
+	// DumpDir, if set, receives each turn's input audio as turn_<id>.wav (debugging: what did it hear?).
+	DumpDir string
 }
 
 func (p *Pipeline) SetLLMReady(v bool) { p.mu.Lock(); p.llmReady = v; p.mu.Unlock() }
@@ -136,9 +140,8 @@ func (p *Pipeline) Run(ctx context.Context, in <-chan []int16) {
 func (p *Pipeline) feed(f []float32, utter *[]int16) {
 	if p.ASR != nil {
 		p.ASR.Accept(f)
-	} else {
-		*utter = append(*utter, audio.ToInt16(f)...)
 	}
+	*utter = append(*utter, audio.ToInt16(f)...)
 }
 
 // handle runs one turn end to end and writes its metrics record.
@@ -157,6 +160,10 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		text = p.Whisper.Transcribe(audio.ToFloat(utter))
 	}
 	turn.Mark("t_asr_final")
+	if p.DumpDir != "" {
+		os.MkdirAll(p.DumpDir, 0o755)
+		audio.WriteWAV(filepath.Join(p.DumpDir, fmt.Sprintf("turn_%03d.wav", turn.ID)), utter)
+	}
 	turn.Set("transcript", text)
 	turn.Set("file", p.File)
 	if p.Tier != nil {
