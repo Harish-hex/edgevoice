@@ -168,8 +168,11 @@ func NewTTS(dir string, threads int) (*TTS, error) {
 }
 
 // Synth returns 16 kHz int16 PCM.
-func (t *TTS) Synth(text string) []int16 {
-	a := t.t.Generate(text, 0, 1.0)
+func (t *TTS) Synth(text string) []int16 { return t.SynthSpeed(text, 1.0) }
+
+// SynthSpeed synthesizes at a speed factor (>1 faster); used for synthetic test data.
+func (t *TTS) SynthSpeed(text string, speed float32) []int16 {
+	a := t.t.Generate(text, 0, speed)
 	if a == nil || len(a.Samples) == 0 {
 		return nil
 	}

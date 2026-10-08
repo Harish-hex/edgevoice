@@ -17,7 +17,9 @@ type VADEvent struct {
 	Kind int // SpeechStart | SpeechEnd
 	At   time.Duration
 }
-type VAD interface{ Process(frame PCM) (*VADEvent, error) }
+type VAD interface {
+	Process(frame PCM) (*VADEvent, error)
+}
 
 type Endpointer interface {
 	// Update returns true when the user's turn has ended.
@@ -53,14 +55,18 @@ type NormalizedText struct {
 	EnglishHits int
 	Tags        []Tag // parallel to Tokens
 }
-type Normalizer interface{ Normalize(t Transcript) NormalizedText }
+type Normalizer interface {
+	Normalize(t Transcript) NormalizedText
+}
 
 type Intent struct {
 	Name  string
 	Slots map[string]string
 	Score float32
 }
-type IntentParser interface{ Parse(n NormalizedText) *Intent } // nil => LLM path
+type IntentParser interface {
+	Parse(n NormalizedText) *Intent
+} // nil => LLM path
 
 type Message struct{ Role, Content string }
 type LLM interface {

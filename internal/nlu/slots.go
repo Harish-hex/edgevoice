@@ -89,7 +89,9 @@ func extractTime(tags []iface.Tag, now time.Time) (time.Time, bool) {
 		}
 	}
 	base := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
-	at := func(dayOff, hh int) time.Time { return base.AddDate(0, 0, dayOff).Add(time.Duration(hh)*time.Hour + time.Duration(minute)*time.Minute) }
+	at := func(dayOff, hh int) time.Time {
+		return base.AddDate(0, 0, dayOff).Add(time.Duration(hh)*time.Hour + time.Duration(minute)*time.Minute)
+	}
 
 	switch {
 	case day == "tomorrow":

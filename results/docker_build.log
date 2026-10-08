@@ -300,3 +300,131 @@
 #9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 37.75MB / 48.37MB 53.4s
 #9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 63.96MB / 64.48MB 84.2s
 #9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 64.48MB / 64.48MB 84.3s done
+#9 ...
+
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 75.68 [ 33%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-dsv4.cpp.o
+#10 76.10 [ 33%] Building CXX object src/CMakeFiles/llama.dir/llama-memory.cpp.o
+#10 76.58 [ 34%] Building CXX object src/CMakeFiles/llama.dir/llama-moe-cache.cpp.o
+#10 77.93 [ 34%] Building CXX object src/CMakeFiles/llama.dir/llama-memory-hybrid.cpp.o
+#10 79.14 [ 34%] Building CXX object src/CMakeFiles/llama.dir/llama-memory-hybrid-iswa.cpp.o
+#10 79.31 [ 35%] Building CXX object src/CMakeFiles/llama.dir/llama-memory-hybrid-idx.cpp.o
+#10 80.49 [ 35%] Building CXX object src/CMakeFiles/llama.dir/llama-memory-recurrent.cpp.o
+#10 81.20 [ 37%] Building CXX object src/CMakeFiles/llama.dir/llama-mmap.cpp.o
+#10 81.84 [ 37%] Building CXX object src/CMakeFiles/llama.dir/llama-model-loader.cpp.o
+#10 81.97 [ 37%] Building CXX object src/CMakeFiles/llama.dir/llama-model-saver.cpp.o
+#10 83.03 [ 38%] Building CXX object src/CMakeFiles/llama.dir/llama-model.cpp.o
+#10 ...
+
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 40.89MB / 48.37MB 57.3s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 42.99MB / 48.37MB 62.4s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 46.14MB / 48.37MB 66.2s
+#9 ...
+
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 88.21 [ 38%] Building CXX object src/CMakeFiles/llama.dir/llama-quant.cpp.o
+#10 91.40 [ 38%] Building CXX object src/CMakeFiles/llama.dir/llama-sampler.cpp.o
+#10 92.59 [ 39%] Building CXX object src/CMakeFiles/llama.dir/llama-vocab.cpp.o
+#10 96.14 [ 39%] Building CXX object src/CMakeFiles/llama.dir/unicode-data.cpp.o
+#10 96.68 [ 41%] Building CXX object src/CMakeFiles/llama.dir/unicode.cpp.o
+#10 ...
+
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 48.37MB / 48.37MB 69.3s done
+#9 extracting sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911
+#9 extracting sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 0.7s done
+#9 DONE 100.3s
+
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 ...
+
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 extracting sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254
+#9 extracting sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 0.3s done
+#9 DONE 100.6s
+
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 ...
+
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 extracting sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82
+#9 extracting sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 1.0s done
+#9 DONE 101.6s
+
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 ...
+
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 extracting sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c
+#9 extracting sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 1.4s done
+#9 extracting sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027
+#9 extracting sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 3.7s done
+#9 DONE 106.7s
+
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 103.0 [ 41%] Linking CXX static library libllama.a
+#10 103.1 [ 41%] Built target llama
+#10 103.1 [ 42%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/parsers.cpp.o
+#10 103.1 [ 42%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd.cpp.o
+#10 106.0 [ 42%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/cohere2moe.cpp.o
+#10 ...
+
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 extracting sha256:ad49288bca90fcc725b89f889465490f86b741b7c60bb71ba394db7e1df0d184 0.0s done
+#9 extracting sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 0.0s done
+#9 DONE 106.7s
+
+#11 [stage-1 2/4] RUN apt-get update && apt-get install -y --no-install-recommends procps && rm -rf /var/lib/apt/lists/*
+#11 1.221 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#11 2.420 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#11 2.943 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#11 3.072 Get:4 http://deb.debian.org/debian bookworm/main arm64 Packages [8689 kB]
+#11 ...
+
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 108.7 [ 42%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-audio.cpp.o
+#10 108.9 [ 43%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/deepseek.cpp.o
+#10 110.6 [ 44%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-image.cpp.o
+#10 111.5 [ 44%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/functionary-v3-2.cpp.o
+#10 113.3 [ 44%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-helper.cpp.o
+#10 113.8 [ 44%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/gemma4.cpp.o
+#10 116.3 [ 46%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/gigachat-v3.cpp.o
+#10 118.3 [ 46%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/gpt-oss.cpp.o
+#10 120.6 [ 47%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/k2-horizon.cpp.o
+#10 ...
+
+#11 [stage-1 2/4] RUN apt-get update && apt-get install -y --no-install-recommends procps && rm -rf /var/lib/apt/lists/*
+#11 16.57 Get:5 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6936 B]
+#11 16.61 Get:6 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [347 kB]
+#11 17.54 Fetched 9285 kB in 17s (538 kB/s)
+#11 17.54 Reading package lists...
+#11 18.09 Reading package lists...
+#11 18.67 Building dependency tree...
+#11 18.81 Reading state information...
+#11 19.06 procps is already the newest version (2:4.0.2-3).
+#11 19.06 0 upgraded, 0 newly installed, 0 to remove and 40 not upgraded.
+#11 DONE 19.2s
+
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 123.6 [ 47%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/kimi-k2.cpp.o
+#10 126.0 [ 47%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-helper-gen.cpp.o
+#10 126.2 [ 47%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/kimi-k3.cpp.o
+#10 128.4 [ 48%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/clip.cpp.o
+#10 128.9 [ 50%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/ling3.cpp.o
+#10 131.9 [ 50%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/lfm2.cpp.o
+#10 134.8 [ 50%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/llm-jp-harmony.cpp.o
+#10 137.2 [ 51%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/minicpm5.cpp.o
+#10 139.6 [ 51%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/minimax-m3.cpp.o
+#10 142.1 [ 51%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/ministral3.cpp.o
+#10 144.3 [ 52%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/muse-glimmer.cpp.o
+#10 146.2 [ 52%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/cogvlm.cpp.o
+#10 146.8 [ 52%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/qwen3-coder.cpp.o
+#10 146.9 [ 52%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/conformer.cpp.o
+#10 147.6 [ 53%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/deepseek4v.cpp.o
+#10 148.4 [ 53%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/dots3note.cpp.o
+#10 149.1 [ 53%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/dotsocr.cpp.o
+#10 149.2 [ 55%] Building CXX object common/CMakeFiles/llama-common.dir/parsers/translate-gemma.cpp.o
+#10 150.0 [ 56%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/exaone4_5.cpp.o
+#10 151.1 [ 56%] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/gemma4a.cpp.o
+#10 151.6 [ 56%] Building CXX object common/CMakeFiles/llama-common.dir/arg.cpp.o

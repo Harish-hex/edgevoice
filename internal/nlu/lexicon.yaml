@@ -20,7 +20,7 @@ entries:
   - {canon: time, role: TIME, en: [time]}
   - {canon: date, role: DATE, ta: [thethi, theydhi, thedhi], en: [date, day]}
   # --- intent keywords ---
-  - {canon: alarm, role: KW, value: alarm, ta: [alaaram, alarum, alaram], en: [alarm, alarms]}
+  - {canon: alarm, role: KW, value: alarm, ta: [alaaram, alarum, alaram], en: [alarm, alarms, wake]}
   - {canon: timer, role: KW, value: timer, ta: [taimer, taimar], en: [timer]}
   - {canon: remind, role: KW, value: remind, ta: [nyabagapadutthu, nyabagapaduthu, nyabagam, gnabagam], en: [remind, reminder]}
   - {canon: vanakkam, role: GREET, ta: [vanakkam, vanakam], en: [hi, hello, hey]}

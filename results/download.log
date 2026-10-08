@@ -8,3 +8,9 @@ ok piper.tar.bz2
 curl: (18) transfer closed with 392884031 bytes remaining to read
 curl: (18) transfer closed with 58650879 bytes remaining to read
 ok zipformer-en/encoder-epoch-99-avg-1-chunk-16-left-128.int8.onnx
+ok llm/Qwen3-0.6B-Q4_K_M.gguf
+P1_DONE
+ok whisper-base/base-tokens.txt
+ok whisper-base/base-encoder.int8.onnx
+ok whisper-base/base-decoder.int8.onnx
+P2_DONE

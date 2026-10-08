@@ -55,10 +55,11 @@ type Pipeline struct {
 }
 
 func (p *Pipeline) SetLLMReady(v bool) { p.mu.Lock(); p.llmReady = v; p.mu.Unlock() }
+
 // LLMReadyNow reports whether the chat path is usable.
 func (p *Pipeline) LLMReadyNow() bool { return p.llmOK() }
 
-func (p *Pipeline) llmOK() bool        { p.mu.Lock(); defer p.mu.Unlock(); return p.llmReady && p.LLM != nil }
+func (p *Pipeline) llmOK() bool { p.mu.Lock(); defer p.mu.Unlock(); return p.llmReady && p.LLM != nil }
 
 // Run consumes PCM chunks of any size until in closes. Turns are handled synchronously
 // (half-duplex: input during a reply is dropped so the speaker can't trigger the mic).

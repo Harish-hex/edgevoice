@@ -54,6 +54,7 @@ func TestParseSeed(t *testing.T) {
 		{"alaaram cancel pannunga", "alarm.cancel", nil},
 		{"aaru arai manikku alarm", "alarm.set", map[string]string{"time": "06:30"}},
 		{"vedhar eppadi", "offline.unsupported", nil},
+		{"wake me up at six tomorrow morning", "alarm.set", map[string]string{"day": "tomorrow", "time": "06:00"}},
 	}
 	for _, c := range cases {
 		got, slots := parse(c.in)
