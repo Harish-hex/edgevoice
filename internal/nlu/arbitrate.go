@@ -92,6 +92,20 @@ func (lx *Lexicon) chatOK(g Gate, c Candidate) (iface.NormalizedText, bool) {
 		if !cue && lx.contentWords(n) < 3 {
 			return n, false
 		}
+		// A real Tanglish question has a subject (a restored English word: "prime minister", "chennai")
+		// and no command words; "one plus vil" or "pannu medium" are failed commands, not questions.
+		subject := false
+		for _, t := range n.Tags {
+			switch t.Role {
+			case "EN":
+				subject = true
+			case "DO", "OPEN", "CLOSE", "KW", "APP", "OP", "UNIT", "NEG", "NUMMOD":
+				return n, false
+			}
+		}
+		if !subject {
+			return n, false
+		}
 		return n, cov >= g.ChatMinCov || (cue && cov >= 0.4)
 	}
 	if c.HasConf {

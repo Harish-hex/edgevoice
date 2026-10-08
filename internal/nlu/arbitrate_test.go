@@ -42,6 +42,8 @@ func TestChoose(t *testing.T) {
 		{"low-confidence EN false command rejected", cand("en", "they in violet", -1.6, 2.0), cand("ta", "தே இன் வயலட்", 0, 0), false, "", "", ""},
 		{"accented real command kept", cand("en", "open spottifay", -0.84, 3.5), cand("ta", "ஓபன் பா்டட்டிஃைவ", 0, 0), true, "en", "app.open", ""},
 		{"fragment is not a question", cand("en", "are now open", -0.76, 1.0), cand("ta", "நான் ஓபன்", 0, 0), false, "", "", ""},
+		{"failed calc is not a question", cand("en", "one place will", -1.2, 1.5), cand("ta", "ஒன் ப்ளஸ் வில்", 0, 0), false, "", "", ""},
+		{"no subject is not a question", cand("en", "and a thought", -1.3, 1.5), cand("ta", "என்ன ஆது", 0, 0), false, "", "", ""},
 	}
 	for _, c := range cases {
 		got, ok := lx.Choose([]Candidate{c.en, c.ta})

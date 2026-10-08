@@ -458,7 +458,10 @@ func (p *Pipeline) chat(ctx context.Context, turn *metrics.Turn, text, query, mo
 	var full []string
 	for cl := range llm.Clauses(marked, p.Cfg.LLM.ClauseTTS) {
 		// Echo guard: a tiny LLM that doesn't understand often repeats the question back. Never speak that.
-		if p.Cfg.NLU.Gate && llm.IsEcho(cl, text+" "+query) {
+		// compare with what the user actually said (Tanglish), not our English rewrite, whose words a
+		// correct answer naturally reuses ("who is prime minister?" → "The Prime Minister of India is …")
+		// judge only complete sentences: a 4-word first chunk ("The Prime Minister of") always overlaps
+		if p.Cfg.NLU.Gate && strings.ContainsAny(cl, ".?!") && llm.IsEcho(cl, text) {
 			turn.Set("echo_dropped", true)
 			continue
 		}
