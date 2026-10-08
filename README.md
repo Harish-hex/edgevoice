@@ -7,8 +7,12 @@ How it works: `docs/TECHNICAL_EXPLAINER.md`.
 ## Demo
 
 ```bash
-make run                 # starts the container (2 CPU / 2 GB / --network=none) + mic/speaker bridge
+./start.sh               # checks/fixes Docker, image, models, binaries, clips; then starts everything
 ```
+Options: `--list` (microphones), `--mic N`, `--gain 3` (quiet headset), `--cpus 1 --mem 1g`
+(smaller limits), `--feed a.wav,b.wav` (backup demo without a mic). `make run MIC=<n>` also works.
+Technical pitch + judge Q&A prep: `docs/PITCH.md`.
+
 Pick your mic with `make mics`, then `make run MIC=<n>` (add `GAIN=3` for quiet headsets).
 A live dashboard opens at http://localhost:8080 (transcripts from both recognizers, intent, reply,
 per-stage latency, live RAM/CPU from the container's cgroup, tier, turn history). Say

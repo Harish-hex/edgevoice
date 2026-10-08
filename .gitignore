@@ -10,3 +10,4 @@ third_party/
 tools/.venv/
 bin/
 results/turns/
+results/*.log
