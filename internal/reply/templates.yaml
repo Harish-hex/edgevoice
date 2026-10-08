@@ -41,6 +41,27 @@ smalltalk.identity:
 offline.unsupported:
   ENGLISH:  {display: "Sorry, I'm offline, so I can't check that.", speech: ["Sorry, I'm offline, so I can't check that."]}
   TANGLISH: {display: "Mannikkavum, naan offline la irukken, adhu paakka mudiyadhu.", speech: ["மன்னிக்கவும், நான் ஆஃப்லைன்ல இருக்கேன், அது பாக்க முடியாது"]}
+timer.cancel:
+  ENGLISH:  {display: "Timer cancelled.", speech: ["Timer cancelled."]}
+  TANGLISH: {display: "Seri, timer cancel pannitten.", speech: ["சரி, டைமர் கேன்சல் பண்ணிட்டேன்"]}
+timer.cancel.none:
+  ENGLISH:  {display: "You don't have any timers.", speech: ["You don't have any timers."]}
+  TANGLISH: {display: "Timer edhuvum illa.", speech: ["டைமர் எதுவும் இல்ல"]}
+app.open:
+  ENGLISH:  {display: "Opening {app_name}.", speech: ["Opening", "{app_en}"]}
+  TANGLISH: {display: "Seri, {app_name} open panren.", speech: ["சரி,", "{app_ta}", "ஓபன் பண்றேன்"]}
+app.close:
+  ENGLISH:  {display: "Closing {app_name}.", speech: ["Closing", "{app_en}"]}
+  TANGLISH: {display: "Seri, {app_name} close panren.", speech: ["சரி,", "{app_ta}", "க்ளோஸ் பண்றேன்"]}
+alarm.ring:
+  ENGLISH:  {display: "⏰ Alarm! It's {hour}:{mm} {period_en}.", speech: ["Wake up! It's", "{hour_en}", "{min_en}", "{period_en}"]}
+  TANGLISH: {display: "⏰ Alarm! Mani {hour}:{mm} aachu.", speech: ["எழுந்திருங்க! மணி", "{hour_ta}", "{min_ta}", "ஆச்சு"]}
+timer.done:
+  ENGLISH:  {display: "⏲ Your {amount} {unit_en} timer is done.", speech: ["Your", "{amount_en}", "{unit_en}", "timer is done."]}
+  TANGLISH: {display: "⏲ {amount} {unit_rom} timer mudinjiduchu.", speech: ["{amount_ta}", "{unit_ta}", "டைமர் முடிஞ்சிடுச்சு"]}
+reminder.ring:
+  ENGLISH:  {display: "🔔 Reminder: {text}", speech: ["Reminder!", "{text}"]}
+  TANGLISH: {display: "🔔 Reminder: {text}", speech: ["ஞாபகப்படுத்தறேன்!", "{text}"]}
 wake:
   ENGLISH:  {display: "Yes?", speech: ["Yes?"]}
   TANGLISH: {display: "Sollunga?", speech: ["சொல்லுங்க?"]}

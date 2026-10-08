@@ -64,6 +64,19 @@ func LoadLexicon(data []byte) (*Lexicon, error) {
 	return lx, nil
 }
 
+// RoleValues lists the distinct values for a role (e.g. APP → macOS app names, the app whitelist).
+func (lx *Lexicon) RoleValues(role string) []string {
+	seen := map[string]bool{}
+	var out []string
+	for _, v := range lx.variants {
+		if v.tag.Role == role && v.tag.Value != "" && !seen[v.tag.Value] {
+			seen[v.tag.Value] = true
+			out = append(out, v.tag.Value)
+		}
+	}
+	return out
+}
+
 // MustDefault returns the embedded lexicon or panics (embedded data is covered by tests).
 func MustDefault() *Lexicon {
 	lx, err := LoadLexicon(nil)

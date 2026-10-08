@@ -14,6 +14,7 @@ var tableSlot = map[string]string{
 	"day_en": "day", "day_ta": "day", "day_rom": "day", "dayis_en": "day", "dayc_rom": "day",
 	"amount_en": "amount", "amount_ta": "amount", "unit_en": "unit", "unit_ta": "unit", "unit_rom": "unit",
 	"weekday_en": "weekday", "weekday_ta": "weekday", "month_en": "month", "month_ta": "month", "dom_en": "dom", "dom_ta": "dom",
+	"app_en": "app", "app_ta": "app", "app_name": "app",
 	"op_en": "op", "a_num": "a", "b_num": "b", "result_num": "result",
 }
 
@@ -110,6 +111,19 @@ func init() {
 		set("a_num", k, k)
 		set("b_num", k, k)
 		set("result_num", k, k)
+	}
+	for k, v := range map[string][3]string{
+		"chrome": {"Chrome", "குரோம்", "Chrome"}, "safari": {"Safari", "சஃபாரி", "Safari"}, "spotify": {"Spotify", "ஸ்பாட்டிஃபை", "Spotify"},
+		"music": {"Music", "மியூசிக்", "Music"}, "calculator": {"the Calculator", "கால்குலேட்டர்", "Calculator"}, "notes": {"Notes", "நோட்ஸ்", "Notes"},
+		"calendar": {"the Calendar", "காலண்டர்", "Calendar"}, "terminal": {"the Terminal", "டெர்மினல்", "Terminal"}, "finder": {"Finder", "ஃபைண்டர்", "Finder"},
+		"photos": {"Photos", "ஃபோட்டோஸ்", "Photos"}, "maps": {"Maps", "மேப்ஸ்", "Maps"}, "mail": {"Mail", "மெயில்", "Mail"},
+		"messages": {"Messages", "மெசேஜஸ்", "Messages"}, "whatsapp": {"WhatsApp", "வாட்ஸ்அப்", "WhatsApp"}, "code": {"VS Code", "வி எஸ் கோட்", "VS Code"},
+		"settings": {"Settings", "செட்டிங்ஸ்", "Settings"}, "camera": {"the camera", "கேமரா", "Camera"}, "facetime": {"FaceTime", "ஃபேஸ்டைம்", "FaceTime"},
+		"slack": {"Slack", "ஸ்லாக்", "Slack"}, "zoom": {"Zoom", "ஜூம்", "Zoom"},
+	} {
+		set("app_en", k, v[0])
+		set("app_ta", k, v[1])
+		set("app_name", k, v[2])
 	}
 	for k, v := range map[string]string{"*": "times", "+": "plus", "-": "minus", "/": "divided by"} {
 		set("op_en", k, v)

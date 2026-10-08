@@ -1,15 +1,26 @@
 package nlu
 
-import "edgevoice/internal/iface"
+import (
+	"regexp"
+
+	"edgevoice/internal/iface"
+)
+
+// wakeLike catches mangled "computer" (e.g. "hacombewter", "kompyuter"): k-m-p/b-...-t-r skeleton.
+var wakeLike = regexp.MustCompile(`k[mn][pb][a-z]{0,3}t[a-z]{0,2}r?$`)
+
+func isWake(tok string, t iface.Tag) bool {
+	return t.Role == "WAKE" || (len(tok) >= 6 && wakeLike.MatchString(phoneticKey(tok)))
+}
 
 // StripWake looks for the wake word (role WAKE) within the first few tokens, optionally preceded by
 // hey/hi/ok/hello. It returns the utterance with everything up to and including the wake word removed.
 // found=false means no wake word; rest is then the input unchanged.
 func StripWake(n iface.NormalizedText) (rest iface.NormalizedText, found bool) {
 	for i := 0; i < min(len(n.Tags), 3); i++ {
-		if n.Tags[i].Role != "WAKE" {
+		if !isWake(n.Tokens[i], n.Tags[i]) {
 			// only greetings may precede the wake word ("hey/hi/ok computer"), not "my computer ..."
-			if n.Tags[i].Role != "GREET" && n.Tokens[i] != "ok" && n.Tokens[i] != "okay" && n.Tokens[i] != "he" && n.Tokens[i] != "hae" {
+			if n.Tags[i].Role != "GREET" && n.Tokens[i] != "ok" && n.Tokens[i] != "okay" && n.Tokens[i] != "he" && n.Tokens[i] != "hae" && n.Tokens[i] != "pay" && n.Tokens[i] != "a" {
 				break
 			}
 			continue

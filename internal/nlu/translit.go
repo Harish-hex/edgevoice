@@ -39,6 +39,9 @@ func Transliterate(s string) string {
 		}
 		c, ok := taCons[r]
 		if !ok {
+			if r == pulli || taSigns[r] != "" {
+				continue // orphan pulli / vowel sign (ASR artefact): drop it
+			}
 			if r == 'ஃ' {
 				b.WriteString("h")
 			} else {

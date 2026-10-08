@@ -64,6 +64,22 @@ func TestEndpointer(t *testing.T) {
 	if !e.Update(false, "alarm", 200*ms) {
 		t.Fatal("semantic early end at 200ms")
 	}
+	// wake grace: a bare wake phrase waits 3.5 s of silence instead of 400 ms
+	complete = false
+	e.ExtendFn = func(p string) time.Duration {
+		if p == "hey computer" {
+			return 3500 * ms
+		}
+		return 0
+	}
+	e.Reset()
+	e.Update(true, "hey computer", 0)
+	if e.Update(false, "hey computer", 3000*ms) {
+		t.Fatal("should still wait for the command")
+	}
+	if !e.Update(false, "hey computer", 3500*ms) {
+		t.Fatal("grace over")
+	}
 }
 
 func TestJoinCrossfade(t *testing.T) {

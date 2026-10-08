@@ -10,6 +10,9 @@ type Endpointer struct {
 	EarlySilence time.Duration // e.g. 200ms when CompleteFn(partial) is true
 	MaxUtterance time.Duration // 10s
 	CompleteFn   func(partial string) bool
+	// ExtendFn may require a longer silence for this partial (e.g. 3.5 s after a bare wake phrase,
+	// so "Hey Computer … <pause> … what time is it" stays one turn). 0 = default.
+	ExtendFn func(partial string) time.Duration
 
 	inSpeech            bool
 	started, lastVoiced time.Duration
@@ -17,7 +20,7 @@ type Endpointer struct {
 }
 
 func (e *Endpointer) Reset() {
-	*e = Endpointer{Silence: e.Silence, EarlySilence: e.EarlySilence, MaxUtterance: e.MaxUtterance, CompleteFn: e.CompleteFn}
+	*e = Endpointer{Silence: e.Silence, EarlySilence: e.EarlySilence, MaxUtterance: e.MaxUtterance, CompleteFn: e.CompleteFn, ExtendFn: e.ExtendFn}
 }
 
 // LastVoiced is the end of the user's actual speech (t_last_voiced_frame).
@@ -40,5 +43,9 @@ func (e *Endpointer) Update(speech bool, partial string, now time.Duration) bool
 	if e.EarlySilence > 0 && gap >= e.EarlySilence && e.CompleteFn != nil && e.CompleteFn(partial) {
 		return true
 	}
-	return gap >= e.Silence
+	need := e.Silence
+	if e.ExtendFn != nil {
+		need = max(need, e.ExtendFn(partial))
+	}
+	return gap >= need
 }

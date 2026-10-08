@@ -12,6 +12,8 @@ func TestStripWake(t *testing.T) {
 		{"ok commuter set a timer for five minutes", "pannu a timer for 5 nimisham", true},
 		{"ஹே கம்ப்யூட்டர் டைம் என்ன", "time enna", true},
 		{"hey computer", "", true},
+		{"hacombewter what time is it", "enna time is it", true},
+		{"pay computer", "", true},
 		{"what time is it", "enna time is it", false},
 		{"my computer is slow today", "my computer is slow today", false},
 	}

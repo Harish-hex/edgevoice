@@ -145,6 +145,7 @@ func main() {
 	}
 	if cfg.Wake.Enabled {
 		go liveSamples(ctx, p, srv, cfg)
+		go p.RunScheduler(ctx)
 		out.Status("EdgeVoice ready — say \"Hey Computer\", then your command (or both in one go).")
 	} else {
 		out.Status("EdgeVoice ready — speak.")
@@ -194,6 +195,12 @@ func liveSamples(ctx context.Context, p *pipeline.Pipeline, srv *llm.Server, cfg
 		if p.Tier != nil {
 			ev["tier"] = p.Tier()
 		}
+		var sched []map[string]any
+		for _, it := range p.State.Scheduled() {
+			sched = append(sched, map[string]any{"kind": it.Kind, "label": it.Label, "at_ms": it.At.UnixMilli()})
+		}
+		ev["scheduled"] = sched
+		ev["now_ms"] = time.Now().UnixMilli()
 		p.Out.Event("sample", ev)
 	}
 }

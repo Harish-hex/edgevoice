@@ -211,6 +211,7 @@ func main() {
 			var ev map[string]any
 			if json.Unmarshal(payload, &ev) == nil {
 				hub.publish(ev)
+				hostAction(ev, hub)
 			}
 		case audio.FrameFlush:
 			mu.Lock()

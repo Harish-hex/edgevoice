@@ -22,6 +22,29 @@ entries:
   - {canon: date, role: DATE, ta: [thethi, theydhi, thedhi, theedhi, teet, teed, deet, deed], en: [date, day]}
   # --- wake phrase ("Hey Computer"); near-misses and Tamil-script spellings of the loanword ---
   - {canon: computer, role: WAKE, en: [computer, computers, commuter, compute, computa, kompyuter], ta: [kampyuurar, kampyuurer, kampyuuttar, kampyuutar, kampyuttar, kompyuuttar, kampuuttar, kambyuuttar, kampyuudar]}
+  # --- apps (host opens them via `open -a`; whitelist = this list) ---
+  - {canon: chrome, role: APP, value: "Google Chrome", en: [chrome, browser], ta: [kuroom, kurom, kroom, pirausar]}
+  - {canon: safari, role: APP, value: "Safari", en: [safari], ta: [saphaari, sapaari, saphari]}
+  - {canon: spotify, role: APP, value: "Spotify", en: [spotify], ta: [spaattiphai, spaatiphai, spottiphai, spaatipai, saadipai, saatipai, spaadipai, saadiphai, sbaadipai]}
+  - {canon: music, role: APP, value: "Music", en: [music, songs, song], ta: [miyuusik, myuusik, paattu, paatu]}
+  - {canon: calculator, role: APP, value: "Calculator", en: [calculator], ta: [kaalkuleettar, kalkuleettar, kaalkuleetar, kalkuleetar]}
+  - {canon: notes, role: APP, value: "Notes", en: [notes, notepad], ta: [noots, noottu]}
+  - {canon: calendar, role: APP, value: "Calendar", en: [calendar], ta: [kaalandar, kaalendar, kalandar]}
+  - {canon: terminal, role: APP, value: "Terminal", en: [terminal], ta: [termminal, dermminal, terminal]}
+  - {canon: finder, role: APP, value: "Finder", en: [finder, files], ta: [phainndar, phaindar, painndar]}
+  - {canon: photos, role: APP, value: "Photos", en: [photos, gallery], ta: [phottoos, photoos, pottoos, kaalari]}
+  - {canon: maps, role: APP, value: "Maps", en: [maps, map], ta: [meeps, maeps, meep]}
+  - {canon: mail, role: APP, value: "Mail", en: [mail, email], ta: [meyil, meeyil, iimeyil]}
+  - {canon: messages, role: APP, value: "Messages", en: [messages], ta: [meseejas, messeejas]}
+  - {canon: whatsapp, role: APP, value: "WhatsApp", en: [whatsapp, watsapp], ta: [vaatsap, vaatsaap, vaats, vaattsap]}
+  - {canon: code, role: APP, value: "Visual Studio Code", en: [vscode, code], ta: [kood, vieskood]}
+  - {canon: settings, role: APP, value: "System Settings", en: [settings], ta: [settings, seddings, settingks]}
+  - {canon: camera, role: APP, value: "Photo Booth", en: [camera], ta: [keemaraa, kemaraa, keemara]}
+  - {canon: facetime, role: APP, value: "FaceTime", en: [facetime], ta: [pheesdaim, pheestaim]}
+  - {canon: slack, role: APP, value: "Slack", en: [slack], ta: [slaak, silaak]}
+  - {canon: zoom, role: APP, value: "zoom.us", en: [zoom], ta: [juum, suum]}
+  - {canon: open, role: OPEN, en: [open, launch], ta: [thora, thoranga, thorakku, thirakku, thira, thorangga, oopan]}
+  - {canon: close, role: CLOSE, en: [close, quit, exit], ta: [moodu, moodunga, mooodu, kloos]}
   # --- intent keywords ---
   - {canon: alarm, role: KW, value: alarm, ta: [alaaram, alarum, alaram], en: [alarm, alarms, wake]}
   - {canon: timer, role: KW, value: timer, ta: [taimer, taimar, tinner], en: [timer]}

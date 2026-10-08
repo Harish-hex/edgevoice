@@ -45,6 +45,16 @@ func featsOf(n iface.NormalizedText, lx *Lexicon) feats {
 	return f
 }
 
+// appSlots returns the app key and its macOS application name (from the lexicon value).
+func appSlots(n iface.NormalizedText) map[string]string {
+	for _, t := range n.Tags {
+		if t.Role == "APP" {
+			return map[string]string{"app": t.Canon, "mac_app": t.Value}
+		}
+	}
+	return nil
+}
+
 // dayOf returns the first DAY value (today/tomorrow/yesterday), default "today".
 func dayOf(n iface.NormalizedText) string {
 	for _, t := range n.Tags {
@@ -105,6 +115,10 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 	}
 
 	switch {
+	case has("APP") && (has("CLOSE") || (has("NEG") && !f.kw["alarm"] && !f.kw["timer"])):
+		return mk("app.close", appSlots(n), false)
+	case has("APP") && (has("OPEN") || has("DO")):
+		return mk("app.open", appSlots(n), false)
 	case has("OP") && f.nums >= 2:
 		if e, ok := extractExpr(n.Tags); ok {
 			return mk("calc", map[string]string{"expression": e}, false)
@@ -116,6 +130,8 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 			return mk("alarm.set", s, false)
 		}
 		return nil
+	case f.kw["timer"] && has("NEG"):
+		return mk("timer.cancel", nil, false)
 	case f.kw["timer"]:
 		if d, ok := extractDuration(n.Tags); ok {
 			return mk("timer.set", map[string]string{"duration": fmtDuration(d)}, false)

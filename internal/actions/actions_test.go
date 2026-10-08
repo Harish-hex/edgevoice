@@ -27,7 +27,7 @@ func TestExecute(t *testing.T) {
 	}
 	for _, c := range cases {
 		in := c.in
-		r := st.Execute(&in, now)
+		r := st.Execute(&in, now, "ENGLISH")
 		if r.TemplateID != c.tpl {
 			t.Errorf("%s: template %s want %s", c.in.Name, r.TemplateID, c.tpl)
 		}

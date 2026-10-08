@@ -16,13 +16,82 @@ type Result struct {
 	Slots      map[string]string
 }
 
+// Item is a scheduled alarm, timer or reminder. Mode remembers the language it was set in, so it
+// rings in the same register.
+type Item struct {
+	Kind  string            `json:"kind"` // alarm | timer | reminder
+	At    time.Time         `json:"at"`
+	Mode  string            `json:"mode"`
+	Slots map[string]string `json:"slots"` // reply slots for the ring announcement
+	Label string            `json:"label"`
+}
+
 type State struct {
-	mu     sync.Mutex
-	Alarms []time.Time
-	Timers []time.Time
+	mu    sync.Mutex
+	Items []Item
+}
+
+// Due removes and returns every item whose time has come.
+func (st *State) Due(now time.Time) []Item {
+	st.mu.Lock()
+	defer st.mu.Unlock()
+	var due, keep []Item
+	for _, it := range st.Items {
+		if !it.At.After(now) {
+			due = append(due, it)
+		} else {
+			keep = append(keep, it)
+		}
+	}
+	st.Items = keep
+	return due
+}
+
+// Scheduled returns a copy of pending items (dashboard).
+func (st *State) Scheduled() []Item {
+	st.mu.Lock()
+	defer st.mu.Unlock()
+	return append([]Item(nil), st.Items...)
+}
+
+func (st *State) drop(kind string) int {
+	n := 0
+	var keep []Item
+	for _, it := range st.Items {
+		if it.Kind == kind {
+			n++
+			continue
+		}
+		keep = append(keep, it)
+	}
+	st.Items = keep
+	return n
+}
+
+// absTime turns the parser's "HH:MM" + day into an absolute future time.
+func absTime(hhmm, day string, now time.Time) (time.Time, bool) {
+	t, err := time.ParseInLocation("15:04", hhmm, now.Location())
+	if err != nil {
+		return time.Time{}, false
+	}
+	at := time.Date(now.Year(), now.Month(), now.Day(), t.Hour(), t.Minute(), 0, 0, now.Location())
+	if day == "tomorrow" {
+		at = at.AddDate(0, 0, 1)
+	}
+	if !at.After(now) {
+		at = at.AddDate(0, 0, 1)
+	}
+	return at, true
 }
 
 // period maps a 24h hour to the spoken period key used by reply tables.
+func dayWord(t, now time.Time) string {
+	if t.YearDay() == now.YearDay() && t.Year() == now.Year() {
+		return "today"
+	}
+	return "tomorrow"
+}
+
 func period(h int) string {
 	switch {
 	case h < 4:
@@ -46,28 +115,37 @@ func clockSlots(t time.Time) map[string]string {
 	return map[string]string{"hour": strconv.Itoa(h), "minute": strconv.Itoa(t.Minute()), "period": period(t.Hour())}
 }
 
-func (st *State) Execute(in *iface.Intent, now time.Time) Result {
+// Execute runs an intent. mode is the reply language, stored on scheduled items.
+func (st *State) Execute(in *iface.Intent, now time.Time, mode string) Result {
 	st.mu.Lock()
 	defer st.mu.Unlock()
 	switch in.Name {
 	case "alarm.set", "reminder.set":
-		t, err := time.ParseInLocation("15:04", in.Slots["time"], now.Location())
-		if err != nil {
+		at, ok := absTime(in.Slots["time"], in.Slots["day"], now)
+		if !ok {
 			return Result{TemplateID: "error"}
 		}
-		s := clockSlots(t)
-		s["day"] = in.Slots["day"]
+		s := clockSlots(at)
+		s["day"] = dayWord(at, now)
 		s["text"] = in.Slots["text"]
-		if in.Name == "alarm.set" {
-			st.Alarms = append(st.Alarms, t)
+		kind, label := "alarm", "Alarm "+at.Format("Mon 15:04")
+		if in.Name == "reminder.set" {
+			kind, label = "reminder", in.Slots["text"]+" · "+at.Format("Mon 15:04")
 		}
+		st.Items = append(st.Items, Item{Kind: kind, At: at, Mode: mode, Slots: s, Label: label})
 		return Result{in.Name, s}
 	case "alarm.cancel":
-		if len(st.Alarms) == 0 {
+		if st.drop("alarm") == 0 {
 			return Result{TemplateID: "alarm.cancel.none"}
 		}
-		st.Alarms = nil
 		return Result{TemplateID: "alarm.cancel"}
+	case "timer.cancel":
+		if st.drop("timer") == 0 {
+			return Result{TemplateID: "timer.cancel.none"}
+		}
+		return Result{TemplateID: "timer.cancel"}
+	case "app.open", "app.close":
+		return Result{in.Name, map[string]string{"app": in.Slots["app"], "mac_app": in.Slots["mac_app"]}}
 	case "timer.set":
 		d := in.Slots["duration"]
 		unit := "minute"
@@ -75,10 +153,11 @@ func (st *State) Execute(in *iface.Intent, now time.Time) Result {
 			unit = "hour"
 		}
 		n := strings.TrimRight(d, "mh")
+		s := map[string]string{"amount": n, "unit": unit}
 		if dur, err := time.ParseDuration(d); err == nil {
-			st.Timers = append(st.Timers, now.Add(dur))
+			st.Items = append(st.Items, Item{Kind: "timer", At: now.Add(dur), Mode: mode, Slots: s, Label: n + " " + unit + " timer"})
 		}
-		return Result{"timer.set", map[string]string{"amount": n, "unit": unit}}
+		return Result{"timer.set", s}
 	case "clock.time":
 		return Result{"clock.time", clockSlots(now)}
 	case "clock.date":

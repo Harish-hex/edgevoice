@@ -116,6 +116,15 @@ tr.ignored td { color: var(--faint); }
 .tag.cmd { color: var(--green); } .tag.llm { color: var(--blue); } .tag.other { color: var(--faint); }
 .e2e-good { color: var(--green); } .e2e-bad { color: var(--amber); }
 .empty { color: var(--faint); font-size: 14px; }
+.sched { display: grid; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.sched .row { display: grid; grid-template-columns: 26px 1fr auto; gap: 10px; align-items: center; font-size: 14px; }
+.sched .cd { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--amber); font-size: 15px; }
+.toasts { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); display: grid; gap: 8px; z-index: 10; }
+.toast { background: #1d2430; border: 1px solid #34507a; color: var(--text); padding: 12px 18px; border-radius: 12px;
+  font-size: 16px; font-weight: 600; box-shadow: 0 10px 30px #0008; animation: pop .25s ease-out; }
+.toast.ring { background: #33270f; border-color: var(--amber); font-size: 20px; }
+.toast.bad { border-color: var(--red); }
+@keyframes pop { from { transform: translateY(-8px); opacity: 0; } }
 .conn { position: fixed; bottom: 12px; right: 16px; font-size: 12px; color: var(--faint); }
 .conn.off { color: var(--red); }
 
@@ -197,13 +206,14 @@ tr.ignored td { color: var(--faint); }
 
     <!-- session -->
     <section class="card">
-      <h2>This session <span id="sess-sub">0 turns</span></h2>
+      <h2>This session · alarms &amp; timers <span id="sess-sub">0 turns</span></h2>
       <div class="stats">
         <div class="stat"><div class="lbl">Commands, median</div><div class="val" id="s-cmd">– <small>ms</small></div></div>
         <div class="stat"><div class="lbl">Commands, p95</div><div class="val" id="s-cmd95">– <small>ms</small></div></div>
         <div class="stat"><div class="lbl">Chat (LLM), median</div><div class="val" id="s-llm">– <small>ms</small></div></div>
         <div class="stat"><div class="lbl">CPU per turn</div><div class="val" id="s-cpu">– <small>s</small></div></div>
       </div>
+      <div class="sched" id="sched"><div class="empty">No alarms or timers. Try “anju nimisham timer vei”.</div></div>
       <div class="def" style="margin-top:14px">Commands skip the LLM: rule-based Tanglish/English parser, reply stitched from pre-synthesized clips.
         Targets: commands &lt; 500 ms, chat &lt; 1000 ms.</div>
     </section>
@@ -218,6 +228,7 @@ tr.ignored td { color: var(--faint); }
     </section>
   </div>
 </div>
+<div class="toasts" id="toasts"></div>
 <div class="conn" id="conn">connecting…</div>
 
 <script>
@@ -390,6 +401,28 @@ function onTurn(t) {
   renderHistory();
 }
 
+/* ---------- alarms / timers / notifications ---------- */
+let sched = [], clockSkew = 0;
+function renderSched() {
+  const el = $("sched");
+  if (!sched.length) { el.innerHTML = `<div class="empty">No alarms or timers. Try “anju nimisham timer vei”.</div>`; return; }
+  const now = Date.now() + clockSkew;
+  el.innerHTML = [...sched].sort((a, b) => a.at_ms - b.at_ms).map(s => {
+    const left = Math.max(0, Math.round((s.at_ms - now) / 1000));
+    const h = Math.floor(left / 3600), m = Math.floor(left % 3600 / 60), sec = left % 60;
+    const cd = h ? `${h}h ${String(m).padStart(2, "0")}m` : `${m}:${String(sec).padStart(2, "0")}`;
+    const icon = { alarm: "⏰", timer: "⏲", reminder: "🔔" }[s.kind] || "•";
+    return `<div class="row"><span>${icon}</span><span>${esc(s.label)}</span><span class="cd">${cd}</span></div>`;
+  }).join("");
+}
+setInterval(renderSched, 250);
+function toast(text, cls = "", ms = 6000) {
+  const t = document.createElement("div");
+  t.className = "toast " + cls; t.textContent = text;
+  $("toasts").appendChild(t);
+  setTimeout(() => t.remove(), ms);
+}
+
 /* ---------- event stream ---------- */
 function connect() {
   const es = new EventSource("/events");
@@ -398,7 +431,13 @@ function connect() {
   es.onmessage = m => {
     let e; try { e = JSON.parse(m.data); } catch { return; }
     switch (e.kind) {
-      case "sample": onSample(e); break;
+      case "sample":
+        onSample(e);
+        sched = e.scheduled || [];
+        if (e.now_ms) clockSkew = e.now_ms - Date.now();
+        break;
+      case "fired": toast(e.text, "ring", 9000); break;
+      case "app_result": toast((e.ok ? "✓ " : "✗ ") + e.text, e.ok ? "" : "bad"); break;
       case "state": setState(e.state); break;
       case "turn": onTurn(e); break;
       case "mic":

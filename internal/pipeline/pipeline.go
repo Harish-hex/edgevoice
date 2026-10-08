@@ -106,9 +106,31 @@ func (p *Pipeline) Run(ctx context.Context, in <-chan []int16) {
 		EarlySilence: time.Duration(p.Cfg.Endpoint.EarlySilenceMs) * time.Millisecond,
 		MaxUtterance: time.Duration(p.Cfg.Endpoint.MaxUtteranceMs) * time.Millisecond,
 	}
+	// bareWake: partial is only the wake phrase (wait for the command); command: rest parses.
+	split := func(partial string) (rest iface.NormalizedText, bareWake bool) {
+		n := p.Norm.Normalize(iface.Transcript{Text: partial})
+		if p.Cfg.Wake.Enabled {
+			if r, ok := nlu.StripWake(n); ok {
+				return r, len(r.Tokens) == 0
+			}
+		}
+		return n, false
+	}
 	if ep.EarlySilence > 0 {
 		ep.CompleteFn = func(partial string) bool {
-			return partial != "" && p.Parser.Parse(p.Norm.Normalize(iface.Transcript{Text: partial})) != nil
+			if partial == "" {
+				return false
+			}
+			rest, bare := split(partial)
+			return !bare && p.Parser.Parse(rest) != nil
+		}
+	}
+	if p.Cfg.Wake.Enabled && p.Cfg.Wake.GraceMs > 0 {
+		ep.ExtendFn = func(partial string) time.Duration {
+			if _, bare := split(partial); bare {
+				return time.Duration(p.Cfg.Wake.GraceMs) * time.Millisecond
+			}
+			return 0
 		}
 	}
 	var buf, utter []int16
@@ -223,7 +245,8 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 	}
 	if p.Cfg.Wake.Enabled {
 		p.mu.Lock()
-		awake := metrics.Now() < p.awakeUntil
+		// awake is judged when the user STARTED speaking, so a long follow-up isn't cut off
+		awake := turn.Marks["t_speech_start"] < p.awakeUntil
 		p.mu.Unlock()
 		woke, wakeOnly := false, true
 		for i := range cands {
@@ -290,7 +313,11 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		turn.Set("intent", in.Name)
 		turn.Set("slots", in.Slots)
 		p.prev, p.prevAt = in, metrics.Now()
-		res := p.State.Execute(in, time.Now())
+		res := p.State.Execute(in, time.Now(), mode)
+		if in.Name == "app.open" || in.Name == "app.close" {
+			// the container can't touch the Mac: the host bridge runs `open -a` / quit (whitelisted apps)
+			p.Out.Event("app", map[string]any{"action": strings.TrimPrefix(in.Name, "app."), "app": res.Slots["mac_app"]})
+		}
 		disp := reply.Display(res.TemplateID, mode, res.Slots)
 		turn.Set("reply", disp)
 		p.Out.Status(fmt.Sprintf("you: %s\nedgevoice [%s/%s]: %s", text, mode, in.Name, disp))
@@ -348,6 +375,11 @@ func (p *Pipeline) play(turn *metrics.Turn, pcm []int16) {
 		return
 	}
 	turn.Mark("t_first_audio_out") // first reply PCM leaves the container (DESIGN #10)
+	p.output(pcm)
+}
+
+// output sends audio to the speaker and keeps the mic muted (half-duplex) while it plays.
+func (p *Pipeline) output(pcm []int16) {
 	defer func() { p.Out.Event("state", map[string]any{"state": "speaking"}) }()
 	p.Out.PCM(pcm)
 	d := time.Duration(len(pcm)) * time.Second / audio.SampleRate

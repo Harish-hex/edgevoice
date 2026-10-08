@@ -54,6 +54,7 @@ type Config struct {
 	Wake struct {
 		Enabled bool `yaml:"enabled"`  // require the wake phrase ("Hey Computer") when asleep
 		WindowS int  `yaml:"window_s"` // stay awake this long after each reply for follow-ups
+		GraceMs int  `yaml:"grace_ms"` // after a bare wake phrase, wait this long for the command
 	} `yaml:"wake"`
 	Degrade bool   `yaml:"degrade"`
 	Results string `yaml:"results_dir"`
