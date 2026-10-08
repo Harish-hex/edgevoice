@@ -122,7 +122,12 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 		return map[string]string{"time": t.Format("15:04"), "day": dayWord(t, now)}, true
 	}
 
+	// Commands without values (time, date, apps, stop, small talk) are easy to trigger by accident from a
+	// long misheard sentence ("…planets are dead…" ≈ date): they may contain at most one unknown word.
+	simple := f.unk <= 1
 	switch {
+	case !simple && (has("APP") || has("DATE") || has("TIME") || has("AT") || has("GREET") || has("WHO") || has("CAN") || (has("NEG") && len(f.kw) == 0)):
+		return nil
 	case has("APP") && (has("CLOSE") || (has("NEG") && !f.kw["alarm"] && !f.kw["timer"])):
 		return mk("app.close", appSlots(n), false)
 	case has("APP") && (has("OPEN") || has("DO")):
@@ -131,7 +136,7 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 		if e, ok := extractExpr(n.Tags); ok {
 			return mk("calc", map[string]string{"expression": e}, false)
 		}
-	case f.kw["alarm"] && has("NEG"):
+	case f.kw["alarm"] && has("NEG") && !has("UNIT") && f.nums == 0:
 		return mk("alarm.cancel", nil, false)
 	case f.kw["alarm"] && f.roles["UNIT"] > 0:
 		// "alarm for thirty seconds / five minutes" is a countdown → timer
@@ -144,7 +149,7 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 			return mk("alarm.set", s, false)
 		}
 		return nil
-	case f.kw["timer"] && has("NEG"):
+	case f.kw["timer"] && has("NEG") && !has("UNIT") && f.nums == 0:
 		return mk("timer.cancel", nil, false)
 	case f.kw["timer"]:
 		if d, ok := extractDuration(n.Tags); ok {
@@ -171,7 +176,7 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 		return mk("smalltalk.identity", nil, false)
 	case has("GREET") && len(n.Tokens) <= 3:
 		return mk("smalltalk.greet", nil, false)
-	case has("NEG") && len(f.kw) == 0:
+	case has("NEG") && len(f.kw) == 0 && f.nums == 0 && !has("UNIT"):
 		return mk("system.stop", nil, false)
 	}
 	return nil

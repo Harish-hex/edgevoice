@@ -167,7 +167,7 @@ func (st *State) Execute(in *iface.Intent, now time.Time, mode string) Result {
 		return Result{"clock.date", map[string]string{"day": day, "weekday": d.Weekday().String(), "month": d.Month().String(), "dom": strconv.Itoa(d.Day())}}
 	case "calc":
 		return calc(in.Slots["expression"])
-	case "system.stop", "smalltalk.greet", "smalltalk.identity", "offline.unsupported":
+	case "system.stop", "smalltalk.greet", "smalltalk.identity", "smalltalk.capabilities", "offline.unsupported":
 		return Result{TemplateID: in.Name}
 	}
 	return Result{TemplateID: "error"}

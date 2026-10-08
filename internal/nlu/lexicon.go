@@ -114,7 +114,7 @@ func (lx *Lexicon) lookup(tok string) (iface.Tag, int, bool) {
 	key := phoneticKey(tok)
 	best, bestD, bestPK := iface.Tag{}, limit+1, false
 	for _, v := range lx.variants {
-		if len([]rune(v.form)) < 3 || v.tag.Role == "ABOUT" {
+		if len([]rune(v.form)) < 3 || v.tag.Role == "ABOUT" || (v.tag.Role == "APP" && (len(tok) < 6 || d1(tok, v.form) > 1)) {
 			continue // never fuzzy-match onto tiny forms like "ku", or onto "pathi" (about)
 		}
 		d := levenshtein(tok, v.form)
@@ -147,6 +147,9 @@ func (lx *Lexicon) lookup(tok string) (iface.Tag, int, bool) {
 	}
 	return best, bestD, true
 }
+
+// d1 is edit distance (app names must be near-exact: "long" must not become "song" = Music).
+func d1(a, b string) int { return levenshtein(a, b) }
 
 func isDigits(s string) bool {
 	if s == "" {
