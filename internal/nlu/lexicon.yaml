@@ -26,7 +26,7 @@ entries:
   - {canon: alarm, role: KW, value: alarm, ta: [alaaram, alarum, alaram], en: [alarm, alarms, wake]}
   - {canon: timer, role: KW, value: timer, ta: [taimer, taimar, tinner], en: [timer]}
   - {canon: remind, role: KW, value: remind, ta: [nyabagapadutthu, nyabagapaduthu, nyabagam, gnabagam], en: [remind, reminder]}
-  - {canon: vanakkam, role: GREET, ta: [vanakkam, vanakam, hee, hae, hei, haai, helloo], en: [hi, hello, hey]}
+  - {canon: vanakkam, role: GREET, ta: [vanakkam, vanakam, hee, hae, hei, haai, helloo], en: [hi, hello, hey, hay, hei]}
   - {canon: yaaru, role: WHO, ta: [yaaru, yaar, yaru], en: [who]}
   - {canon: nee_yaaru, role: WHO, value: self, ta: [neeyaaru, niaru, neyaru, niyaru]}
   - {canon: nee, role: YOU, ta: [nee, neenga, ni, nii, niinga], en: [are, your]}

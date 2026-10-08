@@ -1,1 +1,415 @@
-<!doctype html><meta charset="utf-8"><title>EdgeVoice</title><body style="font-family:system-ui;background:#111;color:#eee;padding:24px">EdgeVoice dashboard — work in progress.</body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EdgeVoice Live</title>
+<style>
+/* Self-contained: no web fonts, no CDNs — the demo runs with Wi-Fi off. */
+:root {
+  --bg: #0b0d10; --panel: #13161b; --panel-2: #191d23; --line: #262b33;
+  --text: #e8eaed; --muted: #8b939e; --faint: #5b636e;
+  --green: #3ecf8e; --amber: #f5b544; --blue: #5aa8ff; --red: #ff6b6b; --violet: #b18cff;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text);
+  font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+.wrap { max-width: 1480px; margin: 0 auto; padding: 18px 22px 28px; }
+
+/* ---------- header ---------- */
+header { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 16px; }
+.brand { display: flex; align-items: baseline; gap: 12px; margin-right: auto; }
+.brand h1 { margin: 0; font-size: 26px; letter-spacing: -0.02em; font-weight: 700; }
+.brand .sub { color: var(--muted); font-size: 14px; }
+.badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge { border: 1px solid var(--line); background: var(--panel); border-radius: 999px;
+  padding: 5px 12px; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.badge b { color: var(--text); font-weight: 600; }
+.badge.ok b { color: var(--green); }
+
+.state { display: flex; align-items: center; gap: 10px; padding: 8px 16px; border-radius: 999px;
+  background: var(--panel); border: 1px solid var(--line); font-weight: 600; font-size: 15px; min-width: 150px; }
+.dot { width: 12px; height: 12px; border-radius: 50%; background: var(--faint); flex: none; }
+.state[data-s="listening"] .dot { background: var(--green); animation: pulse 1s infinite; }
+.state[data-s="thinking"]  .dot { background: var(--amber); animation: pulse .6s infinite; }
+.state[data-s="speaking"]  .dot { background: var(--blue); }
+.state[data-s="awake"]     .dot { background: var(--green); }
+@keyframes pulse { 50% { opacity: .35; transform: scale(.8); } }
+.mic { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
+.mic .bar { width: 120px; height: 8px; border-radius: 4px; background: var(--panel-2); overflow: hidden; }
+.mic .fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--green), var(--amber)); transition: width .12s; }
+
+/* ---------- grid ---------- */
+.grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 16px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; min-width: 0; }
+.card h2 { margin: 0 0 14px; font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .09em; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+.card h2 span { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--faint); }
+
+/* conversation */
+.said { font-size: 30px; font-weight: 600; letter-spacing: -0.01em; min-height: 44px; word-break: break-word; }
+.said.dim { color: var(--faint); }
+.asr { margin: 12px 0 16px; display: grid; gap: 6px; }
+.asr div { display: grid; grid-template-columns: 150px 1fr 26px; gap: 10px; align-items: baseline;
+  font-size: 14px; color: var(--muted); }
+.asr .txt { color: var(--text); font-family: var(--mono); font-size: 13.5px; word-break: break-word; }
+.asr .pick { color: var(--green); font-weight: 700; text-align: right; }
+.asr div.won .lbl { color: var(--text); }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.chip { border-radius: 8px; padding: 4px 10px; font-size: 13.5px; background: var(--panel-2); border: 1px solid var(--line); }
+.chip.intent { color: var(--violet); border-color: #3a2f55; font-family: var(--mono); }
+.chip.mode { color: var(--amber); border-color: #4a3a1a; }
+.chip.slot { font-family: var(--mono); color: var(--text); }
+.route { display: flex; gap: 10px; align-items: center; padding: 10px 14px; border-radius: 10px;
+  background: var(--panel-2); font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+.route b { color: var(--text); }
+.route.cmd { border-left: 3px solid var(--green); }
+.route.llm { border-left: 3px solid var(--blue); }
+.route.other { border-left: 3px solid var(--faint); }
+.reply { font-size: 20px; line-height: 1.4; }
+.reply .who { color: var(--muted); font-size: 13px; display: block; margin-bottom: 2px; }
+
+/* latency */
+.big { display: flex; align-items: baseline; gap: 10px; }
+.big .num { font-size: 64px; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 1; }
+.big .unit { font-size: 20px; color: var(--muted); }
+.big .verdict { margin-left: auto; font-weight: 600; font-size: 14px; padding: 4px 10px; border-radius: 8px; }
+.verdict.good { color: var(--green); background: #12301f; }
+.verdict.bad  { color: var(--amber); background: #33270f; }
+.def { color: var(--faint); font-size: 13px; margin: 6px 0 16px; }
+.stack { position: relative; height: 30px; display: flex; border-radius: 8px; overflow: hidden; background: var(--panel-2); }
+.stack div { height: 100%; transition: width .3s; min-width: 2px; }
+.target { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--text); opacity: .7; }
+.target::after { content: attr(data-l); position: absolute; top: -18px; left: 4px; font-size: 11px; color: var(--muted); white-space: nowrap; }
+.legend { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin-top: 14px; font-size: 13.5px; }
+.legend .k { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+.legend .k i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.legend .v { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* resources */
+.res { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.metric .lbl { color: var(--muted); font-size: 13px; }
+.metric .val { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.metric .val small { font-size: 15px; color: var(--muted); font-weight: 500; }
+.gauge { height: 10px; border-radius: 5px; background: var(--panel-2); overflow: hidden; margin: 8px 0 6px; position: relative; }
+.gauge .g1 { position: absolute; inset: 0 auto 0 0; background: var(--green); transition: width .4s; }
+.gauge .g2 { position: absolute; inset: 0 auto 0 0; background: #2a4a3a; transition: width .4s; }
+canvas { width: 100%; height: 56px; display: block; }
+.procs { margin-top: 14px; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; font-size: 13.5px; color: var(--muted); }
+.procs .v { font-family: var(--mono); color: var(--text); text-align: right; }
+
+/* stats + history */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.stat .lbl { color: var(--muted); font-size: 12.5px; }
+.stat .val { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.stat .val small { font-size: 13px; color: var(--muted); font-weight: 500; }
+.wide { grid-column: 1 / -1; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th { text-align: left; color: var(--faint); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+  padding: 0 10px 8px; border-bottom: 1px solid var(--line); }
+td { padding: 8px 10px; border-bottom: 1px solid #1c2026; vertical-align: top; }
+td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td.said-c { max-width: 420px; word-break: break-word; }
+tr.ignored td { color: var(--faint); }
+.tag { font-family: var(--mono); font-size: 12.5px; }
+.tag.cmd { color: var(--green); } .tag.llm { color: var(--blue); } .tag.other { color: var(--faint); }
+.e2e-good { color: var(--green); } .e2e-bad { color: var(--amber); }
+.empty { color: var(--faint); font-size: 14px; }
+.conn { position: fixed; bottom: 12px; right: 16px; font-size: 12px; color: var(--faint); }
+.conn.off { color: var(--red); }
+
+@media (max-width: 1000px) {
+  .grid { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .big .num { font-size: 48px; }
+  .said { font-size: 24px; }
+  .asr div { grid-template-columns: 110px 1fr 22px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>EdgeVoice</h1>
+      <span class="sub">offline voice assistant · English + Tanglish</span>
+    </div>
+    <div class="badges">
+      <span class="badge ok">Compute <b>CPU only</b></span>
+      <span class="badge">Limit <b id="b-limit">–</b></span>
+      <span class="badge ok">Network <b id="b-net">none</b></span>
+      <span class="badge">Tier <b id="b-tier">–</b></span>
+      <span class="badge">LLM <b id="b-llm">–</b></span>
+    </div>
+    <div class="mic" title="microphone input level"><span id="mic-name">mic</span><div class="bar"><div class="fill" id="mic-fill"></div></div></div>
+    <div class="state" id="state" data-s="asleep"><span class="dot"></span><span id="state-txt">Connecting…</span></div>
+  </header>
+
+  <div class="grid">
+    <!-- conversation -->
+    <section class="card">
+      <h2>Conversation <span id="hint"></span></h2>
+      <div class="said dim" id="said">Say “Hey Computer”…</div>
+      <div class="asr">
+        <div id="asr-en"><span class="lbl">English recognizer</span><span class="txt">–</span><span class="pick"></span></div>
+        <div id="asr-ta"><span class="lbl">Tamil recognizer</span><span class="txt">–</span><span class="pick"></span></div>
+      </div>
+      <div class="chips" id="chips"></div>
+      <div class="route other" id="route">Waiting for the first turn.</div>
+      <div class="reply" id="reply"></div>
+    </section>
+
+    <!-- latency -->
+    <section class="card">
+      <h2>Latency, last turn <span>end of speech → first audio out</span></h2>
+      <div class="big"><span class="num" id="e2e">–</span><span class="unit">ms</span><span class="verdict" id="verdict"></span></div>
+      <div class="def" id="e2e-def">Measured from the last voiced audio frame (VAD), so it includes the endpointing wait.</div>
+      <div class="stack" id="stack"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+
+    <!-- resources -->
+    <section class="card">
+      <h2>Resources, live <span>read from the container's cgroup</span></h2>
+      <div class="res">
+        <div class="metric">
+          <div class="lbl">Memory (working set)</div>
+          <div class="val" id="mem">– <small>MB</small></div>
+          <div class="gauge"><div class="g2" id="mem-g2"></div><div class="g1" id="mem-g1"></div></div>
+          <div class="lbl" id="mem-sub">of – MB limit</div>
+          <canvas id="mem-spark" width="600" height="112"></canvas>
+        </div>
+        <div class="metric">
+          <div class="lbl">CPU in use</div>
+          <div class="val" id="cpu">– <small>cores</small></div>
+          <div class="gauge"><div class="g1" id="cpu-g"></div></div>
+          <div class="lbl" id="cpu-sub">of – cores limit</div>
+          <canvas id="cpu-spark" width="600" height="112"></canvas>
+        </div>
+      </div>
+      <div class="procs">
+        <span>edgevoice runtime (Go: VAD, 2× ASR, NLU, TTS)</span><span class="v" id="p-ev">–</span>
+        <span>llama-server (LLM, CPU; RSS includes the memory-mapped model file)</span><span class="v" id="p-llm">–</span>
+        <span>container total incl. file cache · peak</span><span class="v" id="p-tot">–</span>
+      </div>
+    </section>
+
+    <!-- session -->
+    <section class="card">
+      <h2>This session <span id="sess-sub">0 turns</span></h2>
+      <div class="stats">
+        <div class="stat"><div class="lbl">Commands, median</div><div class="val" id="s-cmd">– <small>ms</small></div></div>
+        <div class="stat"><div class="lbl">Commands, p95</div><div class="val" id="s-cmd95">– <small>ms</small></div></div>
+        <div class="stat"><div class="lbl">Chat (LLM), median</div><div class="val" id="s-llm">– <small>ms</small></div></div>
+        <div class="stat"><div class="lbl">CPU per turn</div><div class="val" id="s-cpu">– <small>s</small></div></div>
+      </div>
+      <div class="def" style="margin-top:14px">Commands skip the LLM: rule-based Tanglish/English parser, reply stitched from pre-synthesized clips.
+        Targets: commands &lt; 500 ms, chat &lt; 1000 ms.</div>
+    </section>
+
+    <!-- history -->
+    <section class="card wide">
+      <h2>Turn history <span>newest first</span></h2>
+      <table>
+        <thead><tr><th>#</th><th>Time</th><th>You said</th><th>Understood as</th><th>Path</th><th style="text-align:right">Latency</th><th style="text-align:right">Memory</th><th>Tier</th></tr></thead>
+        <tbody id="hist"><tr><td colspan="8" class="empty">No turns yet.</td></tr></tbody>
+      </table>
+    </section>
+  </div>
+</div>
+<div class="conn" id="conn">connecting…</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = (n, d = 0) => (n == null || isNaN(n)) ? "–" : Number(n).toFixed(d);
+
+const STATES = { asleep: "Asleep", awake: "Listening for you", listening: "Hearing you…", thinking: "Thinking…", speaking: "Speaking" };
+const TARGET = { cmd: 500, wake: 500, llm: 1000 };
+const STAGE_COLORS = { endpoint: "#5b636e", asr: "#b18cff", nlu: "#f5b544", llm: "#5aa8ff", clause: "#7ec4ff", audio: "#3ecf8e" };
+
+let limits = { cores: 2, mem: 2048 };
+let wakeOn = true;
+const turns = [];
+const memHist = [], cpuHist = [];
+
+function setState(s) {
+  const el = $("state");
+  el.dataset.s = s;
+  $("state-txt").textContent = STATES[s] || s;
+  $("hint").textContent = s === "asleep" && wakeOn ? "say “Hey Computer” to wake it" :
+                          s === "awake" ? "follow-ups need no wake phrase" : "";
+}
+
+/* ---------- sparkline ---------- */
+function spark(canvas, data, max, color) {
+  const c = canvas.getContext("2d"), w = canvas.width, h = canvas.height;
+  c.clearRect(0, 0, w, h);
+  c.strokeStyle = "#262b33"; c.lineWidth = 2; c.setLineDash([6, 6]);
+  c.beginPath(); c.moveTo(0, 4); c.lineTo(w, 4); c.stroke(); c.setLineDash([]);
+  if (data.length < 2) return;
+  const n = 120, step = w / (n - 1), pts = data.slice(-n);
+  const y = v => h - 4 - (Math.min(v, max) / max) * (h - 10);
+  c.beginPath();
+  pts.forEach((v, i) => { const x = (n - pts.length + i) * step; i ? c.lineTo(x, y(v)) : c.moveTo(x, y(v)); });
+  c.strokeStyle = color; c.lineWidth = 3; c.stroke();
+  c.lineTo((n - 1) * step, h); c.lineTo((n - pts.length) * step, h); c.closePath();
+  c.fillStyle = color + "22"; c.fill();
+}
+
+/* ---------- live samples ---------- */
+function onSample(e) {
+  if (e.limit_cores) limits.cores = e.limit_cores;
+  if (e.limit_mem_mb) limits.mem = e.limit_mem_mb;
+  wakeOn = e.wake !== false;
+  $("b-limit").textContent = `${fmt(limits.cores, limits.cores % 1 ? 1 : 0)} CPU · ${fmt(limits.mem)} MB`;
+  $("b-net").textContent = e.net || "none";
+  $("b-tier").textContent = e.tier || "–";
+  $("b-llm").textContent = e.tier === "T3" ? "off (commands only)" :
+    (e.llm_ready ? (e.llm_model || "").replace(/\.gguf$/, "") : "loading…");
+  if (e.state) setState(e.state);
+
+  const anon = e.anon_mb, tot = e.mem_mb;
+  $("mem").innerHTML = `${fmt(anon)} <small>MB</small>`;
+  $("mem-g1").style.width = Math.min(100, anon / limits.mem * 100) + "%";
+  $("mem-g2").style.width = Math.min(100, tot / limits.mem * 100) + "%";
+  $("mem-sub").textContent = `of ${fmt(limits.mem)} MB limit · ${fmt(anon / limits.mem * 100)}% used`;
+  $("cpu").innerHTML = `${fmt(e.cpu_cores, 2)} <small>cores</small>`;
+  $("cpu-g").style.width = Math.min(100, e.cpu_cores / limits.cores * 100) + "%";
+  $("cpu-sub").textContent = `of ${fmt(limits.cores, limits.cores % 1 ? 1 : 0)} cores limit`;
+  $("p-ev").textContent = `${fmt(e.rss_edgevoice_mb)} MB`;
+  $("p-llm").textContent = e.rss_llm_mb ? `${fmt(e.rss_llm_mb)} MB` : "not running";
+  $("p-tot").textContent = `${fmt(tot)} MB · ${fmt(e.peak_mb)} MB`;
+  memHist.push(anon); cpuHist.push(e.cpu_cores);
+  if (memHist.length > 240) { memHist.shift(); cpuHist.shift(); }
+  spark($("mem-spark"), memHist, limits.mem, "#3ecf8e");
+  spark($("cpu-spark"), cpuHist, limits.cores, "#5aa8ff");
+}
+
+/* ---------- turns ---------- */
+function stages(t) {
+  const m = k => t[k + "_ms"], lv = m("t_last_voiced");
+  if (lv == null || m("t_first_audio_out") == null) return [];
+  const seq = t.route === "llm"
+    ? [["endpoint", "Endpoint wait (silence)", "t_endpoint"], ["asr", "Speech recognition (EN ∥ TA)", "t_asr_final"],
+       ["nlu", "Understand + route", "t_nlu_done"], ["llm", "LLM first token", "t_llm_first_token"],
+       ["clause", "First phrase generated", "t_first_clause"], ["audio", "Speech synthesis", "t_first_audio_out"]]
+    : [["endpoint", "Endpoint wait (silence)", "t_endpoint"], ["asr", "Speech recognition (EN ∥ TA)", "t_asr_final"],
+       ["nlu", "Understand + act", "t_nlu_done"], ["audio", t.clips ? "Stitch cached clips" : "Speech synthesis", "t_first_audio_out"]];
+  let prev = lv; const out = [];
+  for (const [key, label, mark] of seq) {
+    const v = m(mark); if (v == null) continue;
+    out.push({ key, label, ms: Math.max(0, v - prev) }); prev = v;
+  }
+  return out;
+}
+
+function showLatency(t) {
+  const st = stages(t), e2e = t.e2e_ms;
+  const target = TARGET[t.route] || 1000;
+  $("e2e").textContent = fmt(e2e);
+  const v = $("verdict");
+  if (e2e == null) { v.textContent = ""; v.className = "verdict"; }
+  else { const ok = e2e <= target; v.textContent = (ok ? "within " : "over ") + target + " ms target"; v.className = "verdict " + (ok ? "good" : "bad"); }
+  const scale = Math.max(e2e || 0, target) * 1.08;
+  $("stack").innerHTML = st.map(s => `<div style="width:${s.ms / scale * 100}%;background:${STAGE_COLORS[s.key]}" title="${esc(s.label)}: ${fmt(s.ms)} ms"></div>`).join("") +
+    `<span class="target" style="left:${target / scale * 100}%" data-l="target ${target} ms"></span>`;
+  $("legend").innerHTML = st.map(s => `<span class="k"><i style="background:${STAGE_COLORS[s.key]}"></i>${esc(s.label)}</span><span class="v">${fmt(s.ms)} ms</span>`).join("");
+}
+
+function routeInfo(t) {
+  switch (t.route) {
+    case "cmd": return ["cmd", `<b>Command fast path</b> · rules + cached audio clips · no LLM${t.followup ? " · follow-up" : ""}`];
+    case "llm": return ["llm", `<b>Chat</b> · local LLM on CPU, streamed sentence by sentence`];
+    case "wake": return ["other", `<b>Wake phrase</b> · now listening`];
+    case "asleep": return ["other", `<b>Ignored</b> · no wake phrase`];
+    case "empty": return ["other", `<b>Nothing recognized</b>`];
+  }
+  return ["other", esc(t.route || "")];
+}
+
+function showTurn(t) {
+  const said = t.transcript || "";
+  const sEl = $("said");
+  sEl.textContent = said || "(nothing recognized)";
+  sEl.className = "said" + (t.route === "asleep" || !said ? " dim" : "");
+  const pick = t.asr_pick;
+  for (const [id, key, src] of [["asr-en", "transcript_en", "en"], ["asr-ta", "transcript_ta", "ta"]]) {
+    const row = $(id), has = key in t;
+    row.style.display = has || id === "asr-en" ? "" : "none";
+    row.querySelector(".txt").textContent = (has ? t[key] : (src === "en" ? t.transcript : "")) || "–";
+    row.querySelector(".pick").textContent = pick === src ? "✓" : "";
+    row.classList.toggle("won", pick === src);
+  }
+  const chips = [];
+  if (t.mode) chips.push(`<span class="chip mode">${esc(t.mode)}</span>`);
+  if (t.intent && t.intent !== "llm") chips.push(`<span class="chip intent">${esc(t.intent)}</span>`);
+  if (t.slots) for (const [k, v] of Object.entries(t.slots)) if (v) chips.push(`<span class="chip slot">${esc(k)} = ${esc(v)}</span>`);
+  $("chips").innerHTML = chips.join("");
+  const [cls, html] = routeInfo(t);
+  const r = $("route"); r.className = "route " + cls; r.innerHTML = html;
+  $("reply").innerHTML = t.reply ? `<span class="who">EdgeVoice</span>${esc(t.reply)}` : "";
+  showLatency(t);
+}
+
+function pct(a, p) {
+  if (!a.length) return null;
+  const s = [...a].sort((x, y) => x - y);
+  return s[Math.ceil(p * s.length) - 1];
+}
+
+function renderHistory() {
+  const real = turns.filter(t => t.route === "cmd" || t.route === "llm");
+  const cmd = real.filter(t => t.route === "cmd" && t.e2e_ms != null).map(t => t.e2e_ms);
+  const llm = real.filter(t => t.route === "llm" && t.e2e_ms != null).map(t => t.e2e_ms);
+  const cpu = real.filter(t => t.cpu_s != null).map(t => t.cpu_s);
+  $("s-cmd").innerHTML = `${fmt(pct(cmd, .5))} <small>ms</small>`;
+  $("s-cmd95").innerHTML = `${fmt(pct(cmd, .95))} <small>ms</small>`;
+  $("s-llm").innerHTML = `${fmt(pct(llm, .5))} <small>ms</small>`;
+  $("s-cpu").innerHTML = `${fmt(cpu.length ? cpu.reduce((a, b) => a + b, 0) / cpu.length : null, 2)} <small>s</small>`;
+  $("sess-sub").textContent = `${real.length} turns · ${cmd.length} commands · ${llm.length} chat`;
+  if (!turns.length) return;
+  $("hist").innerHTML = [...turns].reverse().slice(0, 30).map(t => {
+    const ignored = t.route === "asleep" || t.route === "empty";
+    const target = TARGET[t.route] || 1000;
+    const e2e = t.e2e_ms == null ? "–" : `<span class="${t.e2e_ms <= target ? "e2e-good" : "e2e-bad"}">${fmt(t.e2e_ms)} ms</span>`;
+    const what = t.route === "cmd" ? `<span class="tag">${esc(t.intent)}</span>` : t.route === "llm" ? "chat" : t.route === "wake" ? "wake phrase" : "—";
+    const path = t.route === "cmd" ? `<span class="tag cmd">rules+clips</span>` : t.route === "llm" ? `<span class="tag llm">LLM</span>` : `<span class="tag other">${esc(t.route)}</span>`;
+    return `<tr class="${ignored ? "ignored" : ""}"><td class="num">${t.turn}</td><td class="num">${esc(t._time)}</td>
+      <td class="said-c">${esc(t.transcript || "")}</td><td>${what}</td><td>${path}</td>
+      <td class="num">${e2e}</td><td class="num">${fmt(t.peak_anon_mb)} MB</td><td>${esc(t.tier || "")}</td></tr>`;
+  }).join("");
+}
+
+function onTurn(t) {
+  t._time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  const i = turns.findIndex(x => x.turn === t.turn);
+  if (i >= 0) turns[i] = t; else turns.push(t);
+  showTurn(t);
+  renderHistory();
+}
+
+/* ---------- event stream ---------- */
+function connect() {
+  const es = new EventSource("/events");
+  es.onopen = () => { $("conn").textContent = "live"; $("conn").className = "conn"; };
+  es.onerror = () => { $("conn").textContent = "disconnected — retrying"; $("conn").className = "conn off"; };
+  es.onmessage = m => {
+    let e; try { e = JSON.parse(m.data); } catch { return; }
+    switch (e.kind) {
+      case "sample": onSample(e); break;
+      case "state": setState(e.state); break;
+      case "turn": onTurn(e); break;
+      case "mic":
+        $("mic-fill").style.width = Math.max(0, Math.min(100, (e.db + 60) / 50 * 100)) + "%";
+        $("mic-name").textContent = e.mic || "mic";
+        break;
+    }
+  };
+}
+setState("asleep");
+connect();
+</script>
+</body>
+</html>

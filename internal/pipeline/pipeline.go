@@ -31,8 +31,8 @@ type Output interface {
 	Event(kind string, data map[string]any) // dashboard events (state changes, live samples, turns)
 }
 
-// State reports the assistant's visible state for the dashboard.
-func (p *Pipeline) State() string {
+// UIState reports the assistant's visible state for the dashboard.
+func (p *Pipeline) UIState() string {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	now := metrics.Now()
@@ -53,7 +53,7 @@ func (p *Pipeline) setFlags(listening, thinking bool) {
 	p.mu.Lock()
 	p.listening, p.thinking = listening, thinking
 	p.mu.Unlock()
-	p.Out.Event("state", map[string]any{"state": p.State()})
+	p.Out.Event("state", map[string]any{"state": p.UIState()})
 }
 
 type Pipeline struct {
@@ -242,15 +242,18 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		turn.Set("woke", woke)
 		if !woke && !awake {
 			turn.Set("route", "asleep")
+			turn.Set("transcript", text)
 			p.Out.Status(fmt.Sprintf("(asleep — say \"Hey Computer\") heard: %s", text))
 			return
 		}
 		if woke && wakeOnly {
 			turn.Set("route", "wake")
+			turn.Set("transcript", "Hey Computer")
 			mode := nlu.ModeEnglish
 			if cands[len(cands)-1].Source == "ta" && nlu.LangMode(cands[len(cands)-1].Norm) == nlu.ModeTanglish {
 				mode = nlu.ModeTanglish
 			}
+			turn.Set("reply", reply.Display("wake", mode, nil))
 			p.Out.Status("edgevoice: " + reply.Display("wake", mode, nil) + "  (listening…)")
 			p.say(turn, reply.Fragments("wake", mode, nil), p.Cfg.Reply.Clips)
 			return
@@ -289,6 +292,7 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		p.prev, p.prevAt = in, metrics.Now()
 		res := p.State.Execute(in, time.Now())
 		disp := reply.Display(res.TemplateID, mode, res.Slots)
+		turn.Set("reply", disp)
 		p.Out.Status(fmt.Sprintf("you: %s\nedgevoice [%s/%s]: %s", text, mode, in.Name, disp))
 		p.say(turn, reply.Fragments(res.TemplateID, mode, res.Slots), p.Cfg.Reply.Clips)
 		return
@@ -296,6 +300,7 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 	turn.Set("route", "llm")
 	turn.Set("intent", "llm")
 	if !p.llmOK() {
+		turn.Set("reply", reply.Display("quick_only", mode, nil))
 		p.Out.Status(fmt.Sprintf("you: %s\nedgevoice: %s", text, reply.Display("quick_only", mode, nil)))
 		p.say(turn, reply.Fragments("quick_only", mode, nil), p.Cfg.Reply.Clips)
 		return

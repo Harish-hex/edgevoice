@@ -9,7 +9,10 @@ How it works: `docs/TECHNICAL_EXPLAINER.md`.
 ```bash
 make run                 # starts the container (2 CPU / 2 GB / --network=none) + mic/speaker bridge
 ```
-Wait for `EdgeVoice ready — speak.` then talk. The first time, macOS asks for microphone access
+Pick your mic with `make mics`, then `make run MIC=<n>` (add `GAIN=3` for quiet headsets).
+A live dashboard opens at http://localhost:8080 (transcripts from both recognizers, intent, reply,
+per-stage latency, live RAM/CPU from the container's cgroup, tier, turn history). Say
+**"Hey Computer"**, then your command — or both in one go; follow-ups within 8 s need no wake phrase. The first time, macOS asks for microphone access
 for your terminal: allow it. Smaller limits (degradation demo):
 ```bash
 make run CPUS=1 MEM=1g
@@ -21,6 +24,11 @@ Try: "what time is it" · "set an alarm for six a m tomorrow" · "set a timer fo
 "nee yaaru" · "vanakkam" · "tell me a fun fact about space".
 
 Show judges the enforced limits: `make limits`.
+
+Backup demo without a mic (plays WAV files into the assistant, dashboard still live):
+```bash
+go run ./cmd/audiobridge -feed data/recordings/waketest/2.wav,data/recordings/waketest/3.wav
+```
 
 ## Setup (once)
 ```bash

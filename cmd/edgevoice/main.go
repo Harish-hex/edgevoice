@@ -183,7 +183,7 @@ func liveSamples(ctx context.Context, p *pipeline.Pipeline, srv *llm.Server, cfg
 		ev := map[string]any{
 			"cpu_cores": cores, "limit_cores": limCores, "limit_mem_mb": limMem >> 20,
 			"mem_mb": memCur >> 20, "anon_mb": metrics.StatField(cg+"/memory.stat", "anon") >> 20, "peak_mb": peak >> 20,
-			"rss_edgevoice_mb": metrics.ProcRSS(os.Getpid()) >> 20, "state": p.State(),
+			"rss_edgevoice_mb": metrics.ProcRSS(os.Getpid()) >> 20, "state": p.UIState(),
 			"llm_ready": p.LLMReadyNow(), "llm_model": filepath.Base(cfg.Models.LLM), "net": "none",
 			"wake": cfg.Wake.Enabled,
 		}

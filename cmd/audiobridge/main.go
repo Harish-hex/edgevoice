@@ -35,6 +35,8 @@ func main() {
 	loopback := flag.Bool("loopback", false, "mic->speaker test without container")
 	uiAddr := flag.String("ui", "127.0.0.1:8080", "dashboard address (\"\" to disable)")
 	openUI := flag.Bool("open", true, "open the dashboard in the browser")
+	feed := flag.String("feed", "", "comma-separated WAV files to play INTO the assistant instead of the mic (testing / backup demo)")
+	feedGap := flag.Duration("feedgap", 4*time.Second, "silence between -feed files")
 	flag.Parse()
 
 	ctx, err := malgo.InitContext(nil, malgo.ContextConfig{}, nil)
@@ -143,10 +145,16 @@ func main() {
 		log.Fatal(err)
 	}
 	defer mic.Uninit()
-	if err := mic.Start(); err != nil {
-		log.Fatal(err)
+	ready := make(chan struct{})
+	if *feed == "" {
+		if err := mic.Start(); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("microphone: %s  (change with -list / -mic N)\n", micName)
+	} else {
+		micName = "WAV feed"
+		go feedWAVs(strings.Split(*feed, ","), *feedGap, ready, frames, &level, &lmu)
 	}
-	fmt.Printf("microphone: %s  (change with -list / -mic N)\n", micName)
 
 	bw := bufio.NewWriter(w)
 	go func() {
@@ -192,6 +200,11 @@ func main() {
 			play = append(play, audio.BytesToPCM(payload)...)
 			mu.Unlock()
 		case audio.FrameStatus:
+			select {
+			case <-ready:
+			default:
+				close(ready)
+			}
 			fmt.Printf("\r%-60s\r[%s] %s\n", "", time.Now().Format("15:04:05"), strings.TrimSpace(string(payload)))
 			hub.publish(map[string]any{"kind": "status", "text": strings.TrimSpace(string(payload))})
 		case audio.FrameEvent:
@@ -204,5 +217,47 @@ func main() {
 			play = nil
 			mu.Unlock()
 		}
+	}
+}
+
+// feedWAVs streams WAV files (real-time, 32 ms frames) in place of the microphone, with silence in
+// between so the VAD/endpointer behave as with live speech. Starts once the container reports ready.
+func feedWAVs(files []string, gap time.Duration, ready <-chan struct{}, frames chan<- []int16, level *float64, lmu *sync.Mutex) {
+	const n = 512
+	tick := time.NewTicker(32 * time.Millisecond)
+	defer tick.Stop()
+	send := func(p []int16) {
+		<-tick.C
+		var sum float64
+		for _, v := range p {
+			sum += float64(v) * float64(v)
+		}
+		lmu.Lock()
+		*level = math.Sqrt(sum / float64(len(p)))
+		lmu.Unlock()
+		frames <- p
+	}
+	silence := func(d time.Duration) {
+		for i := 0; i < int(d/(32*time.Millisecond)); i++ {
+			send(make([]int16, n))
+		}
+	}
+	<-ready
+	time.Sleep(2 * time.Second) // let the dashboard connect
+	for _, f := range files {
+		pcm, err := audio.ReadWAV(strings.TrimSpace(f))
+		if err != nil {
+			log.Printf("feed: %v", err)
+			continue
+		}
+		fmt.Printf("\nfeed: %s\n", f)
+		for off := 0; off < len(pcm); off += n {
+			send(append([]int16(nil), pcm[off:min(off+n, len(pcm))]...))
+		}
+		silence(gap)
+	}
+	fmt.Println("\nfeed: done (Ctrl-C to quit)")
+	for {
+		silence(time.Second)
 	}
 }
