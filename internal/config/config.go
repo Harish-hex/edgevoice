@@ -36,6 +36,7 @@ type Config struct {
 		FastPath bool `yaml:"fast_path"` // O7: false => everything goes to the LLM
 		Fuzzy    bool `yaml:"fuzzy"`
 		Merge    bool `yaml:"merge"`
+		Gate     bool `yaml:"gate"` // confidence gate: say "didn't understand" instead of acting on noise
 	} `yaml:"nlu"`
 	Reply struct {
 		Clips    bool   `yaml:"clips"` // O8

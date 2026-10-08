@@ -141,7 +141,7 @@ func main() {
 	p.Out = out
 	p.HalfDuplex = true
 	if *dump {
-		p.DumpDir = "results/turns"
+		p.DumpDir = "results/turns/" + time.Now().Format("2006-01-02_150405") // one folder per session
 	}
 	if cfg.Wake.Enabled {
 		go liveSamples(ctx, p, srv, cfg)
@@ -212,6 +212,12 @@ func build(cfg *config.Config) (*pipeline.Pipeline, *llm.Server) {
 		}
 	}
 	lx := nlu.MustDefault()
+	if f, err := os.Open(cfg.P("english-words.txt")); err == nil { // loanword back-transliteration
+		lx.LoadEnglish(f)
+		f.Close()
+	} else {
+		log.Printf("no English word list (%v); Tamil-script loanwords stay romanized", err)
+	}
 	norm := nlu.NewNormalizer(lx)
 	norm.Fuzzy, norm.Merge = cfg.NLU.Fuzzy, cfg.NLU.Merge
 	p := &pipeline.Pipeline{Cfg: cfg, Norm: norm, Parser: nlu.NewParser(lx), Out: nullOut{}}

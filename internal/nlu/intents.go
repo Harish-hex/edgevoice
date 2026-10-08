@@ -125,6 +125,12 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 		}
 	case f.kw["alarm"] && has("NEG"):
 		return mk("alarm.cancel", nil, false)
+	case f.kw["alarm"] && f.roles["UNIT"] > 0:
+		// "alarm for thirty seconds / five minutes" is a countdown → timer
+		if d, ok := extractDuration(n.Tags); ok {
+			return mk("timer.set", map[string]string{"duration": fmtDuration(d)}, false)
+		}
+		return nil
 	case f.kw["alarm"]:
 		if s, ok := timeSlots(); ok {
 			return mk("alarm.set", s, false)

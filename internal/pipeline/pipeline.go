@@ -238,6 +238,12 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		turn.Set("tier", p.Tier())
 	}
 	cands := []nlu.Candidate{p.candidate("en", text)}
+	if p.ASR != nil {
+		lp, tpw := nlu.ConfFromTokens(text, p.ASR.LastLogProbs)
+		cands[0].HasConf, cands[0].AvgLogProb, cands[0].TokensPerWord = len(p.ASR.LastLogProbs) > 0, lp, tpw
+		turn.Set("en_logprob", lp)
+		turn.Set("en_tok_per_word", tpw)
+	}
 	if p.Tamil != nil {
 		cands = append(cands, p.candidate("ta", taText))
 		turn.Set("transcript_en", text)
@@ -282,24 +288,49 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 			return
 		}
 	}
-	best := p.Norm.Lex.Choose(cands)
+	gate := nlu.DefaultGate
+	if !p.Cfg.NLU.Gate {
+		gate = nlu.Gate{EnChatMinLP: -1e9, EnCmdMinLP: -1e9, EnMaxTPW: 1e9, ChatMinCov: 0, ChatMinWords: 1}
+	}
+	best, clear := p.Norm.Lex.ChooseWith(gate, cands)
 	if best.Intent == nil && p.prev != nil && metrics.Now()-p.prevAt < 30*time.Second {
 		for i := len(cands) - 1; i >= 0; i-- { // Tamil first: follow-ups are usually Tanglish
 			if f := nlu.FollowUp(p.prev, cands[i].Norm); f != nil {
 				best = cands[i]
 				best.Intent = f
+				clear = true
 				turn.Set("followup", true)
 				break
 			}
 		}
 	}
-	text, norm, in := best.Text, best.Norm, best.Intent
-	turn.Set("transcript", text)
-	turn.Set("asr_pick", best.Source)
-	if strings.TrimSpace(text) == "" {
+	allEmpty := true
+	for _, c := range cands {
+		if strings.TrimSpace(c.Text) != "" {
+			allEmpty = false
+		}
+	}
+	if allEmpty {
 		turn.Set("route", "empty")
 		return
 	}
+	if !clear {
+		// Fail gracefully: nothing was recognised confidently enough to act on or to send to the LLM.
+		mode := nlu.UnclearMode(cands)
+		turn.Set("route", "unclear")
+		turn.Set("intent", "unclear")
+		turn.Set("mode", mode)
+		turn.Set("transcript", strings.TrimSpace(cands[len(cands)-1].Text+" / "+cands[0].Text))
+		turn.Mark("t_nlu_done")
+		disp := reply.Display("error", mode, nil)
+		turn.Set("reply", disp)
+		p.Out.Status(fmt.Sprintf("(not confident) heard: %s\nedgevoice: %s", turn.Fields["transcript"], disp))
+		p.say(turn, reply.Fragments("error", mode, nil), p.Cfg.Reply.Clips)
+		return
+	}
+	text, norm, in := best.Text, best.Norm, best.Intent
+	turn.Set("transcript", text)
+	turn.Set("asr_pick", best.Source)
 	if best.Source == "ta" {
 		text = norm.Canonical // romanized for display and the LLM (D13 default)
 	}
@@ -332,7 +363,15 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		p.say(turn, reply.Fragments("quick_only", mode, nil), p.Cfg.Reply.Clips)
 		return
 	}
-	p.chat(ctx, turn, text, mode)
+	// The small LLM only understands English: a Tanglish question is rewritten into plain English
+	// ("indhiyaavooda keepattal enna adhu" → "what is the capital of india?").
+	query := text
+	if best.Source == "ta" && p.Cfg.NLU.Gate {
+		lx := p.Norm.Lex
+		query = lx.ToEnglishQuery(nlu.QueryNormalizer(lx).Normalize(iface.Transcript{Text: best.Text}))
+	}
+	turn.Set("llm_query", query)
+	p.chat(ctx, turn, text, query, mode)
 }
 
 func (p *Pipeline) candidate(src, text string) nlu.Candidate {
@@ -394,14 +433,11 @@ func (p *Pipeline) output(pcm []int16) {
 
 // chat streams the LLM reply clause by clause into TTS (O6). LLM output is romanized, so the English
 // voice speaks it in both modes.
-func (p *Pipeline) chat(ctx context.Context, turn *metrics.Turn, text, mode string) {
+func (p *Pipeline) chat(ctx context.Context, turn *metrics.Turn, text, query, mode string) {
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(p.Cfg.LLM.TimeoutMs)*time.Millisecond*4)
 	defer cancel()
 	c := *p.LLM
-	if mode == nlu.ModeTanglish {
-		c.System = llm.SystemTA
-	}
-	toks, err := c.Stream(ctx, []iface.Message{{Role: "user", Content: text}}, p.Cfg.LLM.MaxTokens)
+	toks, err := c.Stream(ctx, []iface.Message{{Role: "user", Content: query}}, p.Cfg.LLM.MaxTokens)
 	if err != nil {
 		log.Printf("llm: %v", err)
 		p.say(turn, reply.Fragments("quick_only", mode, nil), p.Cfg.Reply.Clips)
@@ -421,6 +457,14 @@ func (p *Pipeline) chat(ctx context.Context, turn *metrics.Turn, text, mode stri
 	}()
 	var full []string
 	for cl := range llm.Clauses(marked, p.Cfg.LLM.ClauseTTS) {
+		// Echo guard: a tiny LLM that doesn't understand often repeats the question back. Never speak that.
+		if p.Cfg.NLU.Gate && llm.IsEcho(cl, text+" "+query) {
+			turn.Set("echo_dropped", true)
+			continue
+		}
+		if p.Cfg.NLU.Gate && llm.IsHedge(cl) { // filler only; if nothing else comes, we say "not sure" ourselves
+			continue
+		}
 		if len(full) == 0 {
 			turn.Mark("t_first_clause")
 			p.Out.Status(fmt.Sprintf("you: %s\nedgevoice [%s/llm]: ...", text, mode))
@@ -429,6 +473,14 @@ func (p *Pipeline) chat(ctx context.Context, turn *metrics.Turn, text, mode stri
 		pcm := p.TTSEn.Synth(cl)
 		turn.Mark("t_tts_first_chunk")
 		p.play(turn, pcm)
+	}
+	if len(full) == 0 { // nothing usable came back: say so honestly
+		disp := reply.Display("dont_know", mode, nil)
+		turn.Set("reply", disp)
+		turn.Set("route", "unclear")
+		p.Out.Status(fmt.Sprintf("you: %s\nedgevoice: %s", text, disp))
+		p.say(turn, reply.Fragments("dont_know", mode, nil), p.Cfg.Reply.Clips)
+		return
 	}
 	turn.Set("reply", strings.Join(full, " "))
 	p.Out.Status(fmt.Sprintf("you: %s\nedgevoice [%s/llm]: %s", text, mode, strings.Join(full, " ")))

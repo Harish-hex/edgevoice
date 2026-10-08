@@ -31,7 +31,7 @@ func (c *Client) body(msgs []iface.Message, maxTokens int, stream bool) []byte {
 		ms = append(ms, m{x.Role, x.Content})
 	}
 	b, _ := json.Marshal(map[string]any{
-		"messages": ms, "max_tokens": maxTokens, "stream": stream, "temperature": 0.6,
+		"messages": ms, "max_tokens": maxTokens, "stream": stream, "temperature": 0.3, "repeat_penalty": 1.18, "frequency_penalty": 0.4, "presence_penalty": 0.2,
 		"cache_prompt":         c.PromptCache,
 		"chat_template_kwargs": map[string]any{"enable_thinking": false}, // Qwen3: no <think>
 	})

@@ -3,6 +3,8 @@ package nlu
 import (
 	_ "embed"
 	"fmt"
+	"sort"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 
@@ -30,6 +32,8 @@ type Lexicon struct {
 	exact     map[string]iface.Tag
 	variants  []variant
 	stopwords map[string]bool
+	phrases   [][2][]string // multi-word → single-token rewrites
+	english   *englishIndex // optional: common English words for loanword back-transliteration
 }
 
 // LoadLexicon parses YAML lexicon bytes; pass nil to use the embedded default.
@@ -38,8 +42,10 @@ func LoadLexicon(data []byte) (*Lexicon, error) {
 		data = lexiconYAML
 	}
 	var doc struct {
-		Stopwords []string   `yaml:"stopwords"`
-		Entries   []lexEntry `yaml:"entries"`
+		Stopwords []string          `yaml:"stopwords"`
+		Phrases   map[string]string `yaml:"phrases"`
+		Vocab     []string          `yaml:"vocab"`
+		Entries   []lexEntry        `yaml:"entries"`
 	}
 	if err := yaml.Unmarshal(data, &doc); err != nil {
 		return nil, fmt.Errorf("lexicon: %w", err)
@@ -60,6 +66,15 @@ func LoadLexicon(data []byte) (*Lexicon, error) {
 	for _, e := range doc.Entries {
 		add(e, e.TA, "ta")
 		add(e, e.EN, "en")
+	}
+	for from, to := range doc.Phrases {
+		lx.phrases = append(lx.phrases, [2][]string{strings.Fields(from), {to}})
+	}
+	sort.Slice(lx.phrases, func(i, j int) bool { return len(lx.phrases[i][0]) > len(lx.phrases[j][0]) }) // longest first
+	for _, w := range doc.Vocab {
+		if _, dup := lx.exact[w]; !dup {
+			lx.exact[w] = iface.Tag{Canon: w, Role: "VOCAB", Lang: "ta"}
+		}
 	}
 	return lx, nil
 }
@@ -99,8 +114,8 @@ func (lx *Lexicon) lookup(tok string) (iface.Tag, int, bool) {
 	key := phoneticKey(tok)
 	best, bestD, bestPK := iface.Tag{}, limit+1, false
 	for _, v := range lx.variants {
-		if len([]rune(v.form)) < 3 {
-			continue // never fuzzy-match onto tiny forms like "ku"
+		if len([]rune(v.form)) < 3 || v.tag.Role == "ABOUT" {
+			continue // never fuzzy-match onto tiny forms like "ku", or onto "pathi" (about)
 		}
 		d := levenshtein(tok, v.form)
 		if d > limit {
@@ -109,6 +124,14 @@ func (lx *Lexicon) lookup(tok string) (iface.Tag, int, bool) {
 		pk := phoneticKey(v.form) == key
 		if d < bestD || (d == bestD && pk && !bestPK) {
 			best, bestD, bestPK = v.tag, d, pk
+		}
+	}
+	if bestD > limit && len([]rune(tok)) >= 7 {
+		// Prefix fallback for glued app/keyword tokens ("spaattipaiva" = spotify + junk).
+		for _, v := range lx.variants {
+			if (v.tag.Role == "APP" || v.tag.Role == "KW") && len(v.form) >= 6 && strings.HasPrefix(tok, v.form[:len(v.form)-1]) {
+				return v.tag, limit, true
+			}
 		}
 	}
 	if bestD > limit {

@@ -14,6 +14,7 @@ func TestStripWake(t *testing.T) {
 		{"hey computer", "", true},
 		{"hacombewter what time is it", "enna time is it", true},
 		{"pay computer", "", true},
+		{"hey computer hey computer", "", true},
 		{"what time is it", "enna time is it", false},
 		{"my computer is slow today", "my computer is slow today", false},
 	}

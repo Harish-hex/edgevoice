@@ -1,0 +1,48 @@
+{"file": "turn_001.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_002.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "wake", "slots_gold": {}}
+{"file": "turn_003.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open", "slots_gold": {"app": "spotify"}}
+{"file": "turn_004.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "timer.set", "slots_gold": {"duration": "30s"}}
+{"file": "turn_005.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_006.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_007.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open", "slots_gold": {"app": "calculator"}}
+{"file": "turn_008.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open", "slots_gold": {"app": "calculator"}}
+{"file": "turn_009.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_010.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open", "slots_gold": {"app": "spotify"}}
+{"file": "turn_011.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open|unclear", "slots_gold": {}}
+{"file": "turn_012.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open", "slots_gold": {"app": "spotify"}}
+{"file": "turn_013.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "clock.date", "slots_gold": {"day": "today"}}
+{"file": "turn_014.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "clock.date", "slots_gold": {"day": "tomorrow"}}
+{"file": "turn_015.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "clock.date", "slots_gold": {"day": "day_after_tomorrow"}}
+{"file": "turn_016.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "clock.date", "slots_gold": {"day": "day_after_tomorrow"}}
+{"file": "turn_017.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "clock.date", "slots_gold": {"day": "yesterday"}}
+{"file": "turn_018.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_019.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_020.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "wake", "slots_gold": {}}
+{"file": "turn_021.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "llm", "slots_gold": {}}
+{"file": "turn_022.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "llm", "slots_gold": {}}
+{"file": "turn_023.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "llm", "slots_gold": {}}
+{"file": "turn_024.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_025.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "llm", "slots_gold": {}}
+{"file": "turn_026.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "llm", "slots_gold": {}}
+{"file": "turn_027.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "llm", "slots_gold": {}}
+{"file": "turn_028.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "llm", "slots_gold": {}}
+{"file": "turn_029.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "llm", "slots_gold": {}}
+{"file": "turn_030.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_031.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open", "slots_gold": {"app": "spotify"}}
+{"file": "turn_032.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.close", "slots_gold": {"app": "spotify"}}
+{"file": "turn_033.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open", "slots_gold": {"app": "calculator"}}
+{"file": "turn_034.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "calc", "slots_gold": {"expression": "1+1"}}
+{"file": "turn_035.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "calc|unclear", "slots_gold": {}}
+{"file": "turn_036.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_037.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_038.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open", "slots_gold": {"app": "spotify"}}
+{"file": "turn_039.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open", "slots_gold": {"app": "spotify"}}
+{"file": "turn_040.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_041.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open", "slots_gold": {"app": "spotify"}}
+{"file": "turn_042.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "wake", "slots_gold": {}}
+{"file": "turn_043.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "app.open", "slots_gold": {"app": "spotify"}}
+{"file": "turn_044.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "llm|unclear", "slots_gold": {}}
+{"file": "turn_045.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_046.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "llm|unclear", "slots_gold": {}}
+{"file": "turn_047.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}
+{"file": "turn_048.wav", "speaker": "dev", "mode": "REAL", "intent_gold": "unclear", "slots_gold": {}}

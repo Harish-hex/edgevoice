@@ -1,0 +1,6 @@
+# Real-voice evaluation: everything as in the live demo (wake phrase on), but always awake so replayed
+# turns are judged on understanding, not on wake timing.
+extends: default.yaml
+name: eval_live
+degrade: false
+wake: {enabled: true, window_s: 99999, grace_ms: 3500}

@@ -336,6 +336,7 @@ function routeInfo(t) {
     case "wake": return ["other", `<b>Wake phrase</b> · now listening`];
     case "asleep": return ["other", `<b>Ignored</b> · no wake phrase`];
     case "empty": return ["other", `<b>Nothing recognized</b>`];
+    case "unclear": return ["other", `<b>Not confident</b> · said it didn't understand instead of guessing`];
   }
   return ["other", esc(t.route || "")];
 }
@@ -360,7 +361,8 @@ function showTurn(t) {
   $("chips").innerHTML = chips.join("");
   const [cls, html] = routeInfo(t);
   const r = $("route"); r.className = "route " + cls; r.innerHTML = html;
-  $("reply").innerHTML = t.reply ? `<span class="who">EdgeVoice</span>${esc(t.reply)}` : "";
+  $("reply").innerHTML = (t.llm_query && t.llm_query !== t.transcript ? `<span class="who">Asked the LLM (rewritten to English)</span><div style="font-family:var(--mono);font-size:15px;margin-bottom:10px">${esc(t.llm_query)}</div>` : "") +
+    (t.reply ? `<span class="who">EdgeVoice</span>${esc(t.reply)}` : "");
   showLatency(t);
 }
 

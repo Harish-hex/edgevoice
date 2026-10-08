@@ -138,8 +138,11 @@ func extractDuration(tags []iface.Tag) (time.Duration, bool) {
 		if !found {
 			continue
 		}
-		if t.Value == "hour" {
+		switch t.Value {
+		case "hour":
 			return time.Duration(n) * time.Hour, true
+		case "second":
+			return time.Duration(n) * time.Second, true
 		}
 		return time.Duration(n) * time.Minute, true
 	}
@@ -147,6 +150,9 @@ func extractDuration(tags []iface.Tag) (time.Duration, bool) {
 }
 
 func fmtDuration(d time.Duration) string {
+	if d < time.Minute || d%time.Minute != 0 {
+		return fmt.Sprintf("%ds", int(d/time.Second))
+	}
 	if d%time.Hour == 0 {
 		return fmt.Sprintf("%dh", int(d/time.Hour))
 	}
@@ -167,7 +173,7 @@ func extractExpr(tags []iface.Tag) (string, bool) {
 func freeText(n iface.NormalizedText, lx *Lexicon) string {
 	var w []string
 	for i, t := range n.Tags {
-		if t.Role == "" && !lx.stopwords[n.Tokens[i]] {
+		if (t.Role == "" || t.Role == "VOCAB" || t.Role == "EN") && !lx.stopwords[n.Tokens[i]] {
 			w = append(w, n.Tokens[i])
 		}
 	}

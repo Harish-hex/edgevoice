@@ -25,6 +25,15 @@ func TestParseTamilScript(t *testing.T) {
 		{"அலாரம் கேன்சல் பண்ணு", "alarm.cancel", nil},
 		{"ஒரு ஜோக் சொல்லு", "LLM", nil},
 		{"6 மணிக்கு அலாரம் வை", "alarm.set", map[string]string{"time": "06:00"}},
+		// from the live session (Tamil recognizer output)
+		{"நாலு அனைக்கு", "LLM", nil},
+		{"நாலு நணிக்கு என்ன டேட்டு", "clock.date", map[string]string{"day": "day_after_tomorrow"}},
+		{"நாளன்னைக்கு என்ன தேதி", "clock.date", map[string]string{"day": "day_after_tomorrow"}},
+		{"ஒன் ப்ளஸ் ஒன் என்ன", "calc", map[string]string{"expression": "1+1"}},
+		{"ஸ்பாட்டிபைவ குளோஸ் பண்ணே", "app.close", nil},
+		{"சல்லாம் போர் தர்டி செகண்ட்ஸ்", "LLM", nil},
+		{"டைமர் தர்டி செகண்ட்ஸ்", "timer.set", map[string]string{"duration": "30s"}},
+		{"இன்னைக்கு என்ன கிழமை", "clock.date", map[string]string{"day": "today"}},
 	}
 	for _, c := range cases {
 		got, slots := parse(c.in)

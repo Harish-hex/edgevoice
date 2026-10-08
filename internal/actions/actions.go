@@ -148,11 +148,8 @@ func (st *State) Execute(in *iface.Intent, now time.Time, mode string) Result {
 		return Result{in.Name, map[string]string{"app": in.Slots["app"], "mac_app": in.Slots["mac_app"]}}
 	case "timer.set":
 		d := in.Slots["duration"]
-		unit := "minute"
-		if strings.HasSuffix(d, "h") {
-			unit = "hour"
-		}
-		n := strings.TrimRight(d, "mh")
+		unit := map[byte]string{'h': "hour", 'm': "minute", 's': "second"}[d[len(d)-1]]
+		n := strings.TrimRight(d, "mhs")
 		s := map[string]string{"amount": n, "unit": unit}
 		if dur, err := time.ParseDuration(d); err == nil {
 			st.Items = append(st.Items, Item{Kind: "timer", At: now.Add(dur), Mode: mode, Slots: s, Label: n + " " + unit + " timer"})
@@ -161,15 +158,12 @@ func (st *State) Execute(in *iface.Intent, now time.Time, mode string) Result {
 	case "clock.time":
 		return Result{"clock.time", clockSlots(now)}
 	case "clock.date":
-		d, day := now, in.Slots["day"]
-		switch day {
-		case "tomorrow":
-			d = now.AddDate(0, 0, 1)
-		case "yesterday":
-			d = now.AddDate(0, 0, -1)
-		default:
+		day := in.Slots["day"]
+		off, ok := map[string]int{"today": 0, "tomorrow": 1, "yesterday": -1, "day_after_tomorrow": 2, "day_before_yesterday": -2}[day]
+		if !ok {
 			day = "today"
 		}
+		d := now.AddDate(0, 0, off)
 		return Result{"clock.date", map[string]string{"day": day, "weekday": d.Weekday().String(), "month": d.Month().String(), "dom": strconv.Itoa(d.Day())}}
 	case "calc":
 		return calc(in.Slots["expression"])

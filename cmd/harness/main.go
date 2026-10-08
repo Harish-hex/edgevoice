@@ -60,6 +60,8 @@ func mean(xs []float64) float64 {
 
 func main() {
 	labelsPath := flag.String("labels", "data/recordings/synth/labels.jsonl", "labels.jsonl")
+	real := flag.Bool("real", false, "real-voice scoring: commands / questions / noise rejection / wrong actions")
+	verbose := flag.Bool("v", false, "print per-turn results (with -real)")
 	flag.Parse()
 	labels := map[string]label{}
 	readJSONL(*labelsPath, func(m map[string]any) {
@@ -72,6 +74,27 @@ func main() {
 		labels[l.File] = l
 	})
 
+	if *real {
+		fmt.Println("| run | n | commands correct | questions → LLM | noise rejected | wake | wrong actions | nonsense chats |")
+		fmt.Println("|---|---|---|---|---|---|---|---|")
+		var details []string
+		for _, path := range flag.Args() {
+			var recs []map[string]any
+			readJSONL(path, func(m map[string]any) { recs = append(recs, m) })
+			s := scoreReal(labels, recs)
+			name := filepath.Base(path)
+			fmt.Printf("| %s | %d | %s | %s | %s | %s | %d | %d |\n", name, s.n, pctS(s.cmdOK, s.cmdN), pctS(s.qOK, s.qN),
+				pctS(s.noiseOK, s.noiseN), pctS(s.wakeOK, s.wakeN), s.wrongAction, s.nonsense)
+			if *verbose {
+				details = append(details, "\n### "+name)
+				details = append(details, s.rows...)
+			}
+		}
+		for _, d := range details {
+			fmt.Println(d)
+		}
+		return
+	}
 	fmt.Println("| config | n | intent acc EN | intent acc TA | slot EM | e2e p50 cmd (ms) | e2e p95 cmd | e2e p50 llm | e2e p95 llm | CPU-s/turn | peak mem MB (anon) |")
 	fmt.Println("|---|---|---|---|---|---|---|---|---|---|---|")
 	for _, path := range flag.Args() {

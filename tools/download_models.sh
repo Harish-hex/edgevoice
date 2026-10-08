@@ -14,6 +14,9 @@ for f in encoder-epoch-99-avg-1-chunk-16-left-128.int8.onnx decoder-epoch-99-avg
 ( fetch $GH/tts-models/vits-piper-en_US-amy-low.tar.bz2 piper.tar.bz2 && { [ -d vits-piper-en_US-amy-low ] || tar xjf piper.tar.bz2; } ) &
 fetch $HF/unsloth/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q4_K_M.gguf llm/Qwen3-0.6B-Q4_K_M.gguf &
 wait; echo P1_DONE
+# English word list (frequency-ordered) for Tamil-script loanword back-transliteration, plus names
+fetch https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-usa-no-swears.txt english-10k.txt
+{ cat english-10k.txt; printf '%s\n' india tamil chennai madurai coimbatore delhi mumbai bangalore kerala modi trump donald biden obama gandhi kohli dhoni sachin messi ronaldo elon musk tesla rajinikanth vijay ajith kamal rahman ilaiyaraaja america china japan london paris dubai singapore cricket football bollywood kollywood netflix youtube instagram whatsapp spotify iphone android chatgpt ai; } > english-words.txt
 # P2: Tamil TTS, baseline Whisper
 M=$HF/willwade/mms-tts-multilingual-models-onnx/resolve/main/tam
 W=$HF/csukuangfj/sherpa-onnx-whisper-base/resolve/main; D=whisper-base

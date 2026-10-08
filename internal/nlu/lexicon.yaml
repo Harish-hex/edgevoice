@@ -1,9 +1,32 @@
 # Tanglish/English lexicon (PRD §7.4). Each entry: canonical form, role, optional value,
 # variants by language. Extend from recordings; keep variants lowercase, punctuation-free.
 stopwords: [a, an, the, for, me, my, to, is, it, of, please, can, you, i, in, on, and, um, uh, ok, okay, da, la, pa]
+# Multi-word phrases rewritten to one token before lookup (after transliteration/tokenizing).
+phrases:
+  day after tomorrow: dayaftertomorrow
+  day before yesterday: daybeforeyesterday
+  naalu anaikku: naalanniki
+  naalu annaikku: naalanniki
+  naalu nanikku: naalanniki
+  naal anaikku: naalanniki
+  naalai marunaal: naalanniki
+  naalaikku marunaal: naalanniki
+  mundha naal: munthaanethu
+  munthaa naal: munthaanethu
+# Common colloquial Tamil words: no command role, but they count as "understood" for the confidence gate
+# (so genuine Tanglish chat isn't rejected as noise).
+vocab: [naan, nee, neenga, avan, aval, avanga, enakku, unakku, ungalukku, namakku, enna, ennadhu, epdi, eppadi, eppo,
+  enga, yen, yaaru, edhu, sollu, sollunga, solla, solradhu, pannu, pannalaam, pannunga, venum, venam, irukku, irukkum,
+  illa, illai, aamaa, seri, romba, nalla, nallaa, konjam, oru, ithu, idhu, adhu, anga, inga, appo, ippo, ippa, theriyuma,
+  theriyum, theriyadhu, pesu, pesalaam, paadu, paattu, padam, saapadu, saapidalaam, saappaadu, nandri, pathi, kathai,
+  kadhai, joke, mudiyuma, mudiyum, bore, adikkudhu, poren, varen, vaanga, ponga, ennoda, unnoda, unga, enga, kelvi,
+  badhil, puriyala, purinjudhu, thamizh, tamil, ooru, veedu, velai, kaasu, panam, mazhai, veyil, kaathu, thanni, saami,
+  kovil, school, college, office, friend, nanba, machaan, akka, anna, amma, appa, thambi, thangachi, paati, thaatha]
 entries:
   # --- DAY ---
   - {canon: naalaikku, role: DAY, value: tomorrow, ta: [naalaikku, naalaiku, nowlay, nally, nalay, naliki, nalaiku, naalaiki, naalaikki, nalaikku, naalaiku], en: [tomorrow]}
+  - {canon: naalanniki, role: DAY, value: day_after_tomorrow, ta: [naalanniki, naalannikku, naalannaikku, naalaanaikku, naalanaikku, naalanaiku, naalaannikku], en: [dayaftertomorrow]}
+  - {canon: munthaanethu, role: DAY, value: day_before_yesterday, ta: [munthaanethu, mundhaanethu, munthanethu, mundhanethu, munthaanaal, mundhaanaal, munthanaal], en: [daybeforeyesterday]}
   - {canon: nethu, role: DAY, value: yesterday, ta: [nethu, nethiku, nethikku, neththu, nettu], en: [yesterday]}
   - {canon: innaikku, role: DAY, value: today, ta: [innaikku, innaiku, indru, inniki, innikku], en: [today]}
   # --- PERIOD ---
@@ -13,19 +36,20 @@ entries:
   - {canon: raathiri, role: PERIOD, value: night, ta: [raathiri, rathiri, raatri, rathri, ratheri, rathery, gratheri], en: [night, tonight]}
   # --- structure ---
   - {canon: manikku, role: AT, ta: [manikku, manikki, mani, ku, kku, ki, manicu, manico, manica, manicue, manicood, coup, coom, cou, kue, koo], en: [oclock, at]}
+  - {canon: vinaadi, role: UNIT, value: second, ta: [vinaadi, vinaadigal, vinadi, sekand, sekandu, sekands, sekkand, sekkands, sekandsu, sekandus], en: [second, seconds, sec, secs]}
   - {canon: nimisham, role: UNIT, value: minute, ta: [nimisham, nimishathula, nimisam, nimischem, nimishem, ninesham, nimish, neme, nimem, emasham], en: [minute, minutes, min, mins]}
   - {canon: mani_neram, role: UNIT, value: hour, ta: [neram], en: [hour, hours]}
   - {canon: pannu, role: DO, ta: [pannu, pannunga, panna, vei, vechidu, vachidu, vaiyi, podu, vey, vay, fay, veche, vechadu, vechedo, vecha, panu, ponnu, vai, sed, settu, staart], en: [set, put, start]}
   - {canon: cancel, role: NEG, ta: [niruthu, venam, vendam, podhum, nippatu, keensal, kensal, kaensal, sdaap, staap], en: [cancel, stop, delete, remove]}
   - {canon: enna, role: WH, ta: [enna, yenna, evlo, evvalavu, eppadi, epdi, avel, aval, avla, avlo, evalo, ann, anna], en: [what, whats, how]}
   - {canon: time, role: TIME, ta: [taim, daim, taaim], en: [time]}
-  - {canon: date, role: DATE, ta: [thethi, theydhi, thedhi, theedhi, teet, teed, deet, deed], en: [date, day]}
+  - {canon: date, role: DATE, ta: [thethi, theydhi, thedhi, theedhi, teet, teed, deet, deed, kizhamai, kilamai, kizhame, kizhama, teettu, deettu], en: [date, day, weekday]}
   # --- wake phrase ("Hey Computer"); near-misses and Tamil-script spellings of the loanword ---
   - {canon: computer, role: WAKE, en: [computer, computers, commuter, compute, computa, kompyuter], ta: [kampyuurar, kampyuurer, kampyuuttar, kampyuutar, kampyuttar, kompyuuttar, kampuuttar, kambyuuttar, kampyuudar]}
   # --- apps (host opens them via `open -a`; whitelist = this list) ---
   - {canon: chrome, role: APP, value: "Google Chrome", en: [chrome, browser], ta: [kuroom, kurom, kroom, pirausar]}
   - {canon: safari, role: APP, value: "Safari", en: [safari], ta: [saphaari, sapaari, saphari]}
-  - {canon: spotify, role: APP, value: "Spotify", en: [spotify], ta: [spaattiphai, spaatiphai, spottiphai, spaatipai, saadipai, saatipai, spaadipai, saadiphai, sbaadipai]}
+  - {canon: spotify, role: APP, value: "Spotify", en: [spotify], ta: [spaattiphai, spaatiphai, spottiphai, spaatipai, saadipai, saatipai, spaadipai, saadiphai, sbaadipai, spaattipai, spaattipaiva, spaattipaiv, spaadphai, spaatphai]}
   - {canon: music, role: APP, value: "Music", en: [music, songs, song], ta: [miyuusik, myuusik, paattu, paatu]}
   - {canon: calculator, role: APP, value: "Calculator", en: [calculator], ta: [kaalkuleettar, kalkuleettar, kaalkuleetar, kalkuleetar]}
   - {canon: notes, role: APP, value: "Notes", en: [notes, notepad], ta: [noots, noottu]}
@@ -44,19 +68,20 @@ entries:
   - {canon: slack, role: APP, value: "Slack", en: [slack], ta: [slaak, silaak]}
   - {canon: zoom, role: APP, value: "zoom.us", en: [zoom], ta: [juum, suum]}
   - {canon: open, role: OPEN, en: [open, launch], ta: [thora, thoranga, thorakku, thirakku, thira, thorangga, oopan]}
-  - {canon: close, role: CLOSE, en: [close, quit, exit], ta: [moodu, moodunga, mooodu, kloos]}
+  - {canon: close, role: CLOSE, en: [close, quit, exit], ta: [moodu, moodunga, mooodu, kloos, kuloos, klos, kulos, kulossu]}
+  - {canon: pathi, role: ABOUT, ta: [pathi, patti, paththi, patthi]}
   # --- intent keywords ---
   - {canon: alarm, role: KW, value: alarm, ta: [alaaram, alarum, alaram], en: [alarm, alarms, wake]}
   - {canon: timer, role: KW, value: timer, ta: [taimer, taimar, tinner], en: [timer]}
   - {canon: remind, role: KW, value: remind, ta: [nyabagapadutthu, nyabagapaduthu, nyabagam, gnabagam], en: [remind, reminder]}
-  - {canon: vanakkam, role: GREET, ta: [vanakkam, vanakam, hee, hae, hei, haai, helloo], en: [hi, hello, hey, hay, hei]}
+  - {canon: vanakkam, role: GREET, ta: [vanakkam, vanakam, helloo], en: [hi, hello, hey, hay, hei]}
   - {canon: yaaru, role: WHO, ta: [yaaru, yaar, yaru], en: [who]}
   - {canon: nee_yaaru, role: WHO, value: self, ta: [neeyaaru, niaru, neyaru, niyaru]}
   - {canon: nee, role: YOU, ta: [nee, neenga, ni, nii, niinga], en: [are, your]}
   - {canon: weather, role: OFFLINE, ta: [vedhar, vedar, vethar, mazhai], en: [weather, news, score, cricket, stock, stocks]}
   # --- calculator operators ---
   - {canon: "*", role: OP, en: [times, into, x, multiplied, multiply], ta: [perukku, indu, intu, taims]}
-  - {canon: "+", role: OP, en: [plus, add], ta: [kootu, koottu]}
+  - {canon: "+", role: OP, en: [plus, add], ta: [kootu, koottu, plas, pilas, plass, pilass, blas]}
   - {canon: "-", role: OP, en: [minus, subtract], ta: [kazhi]}
   - {canon: "/", role: OP, en: [divided, divide], ta: [vagu]}
   # --- number modifiers ---
@@ -76,8 +101,8 @@ entries:
   - {canon: "11", role: NUM, ta: [padhinonnu, pathinonnu, padhinonru, levan, ilevan], en: [eleven]}
   - {canon: "12", role: NUM, ta: [pannendu, panniranndu, tvelv, tuvelv], en: [twelve]}
   - {canon: "15", role: NUM, ta: [padhinanju], en: [fifteen]}
-  - {canon: "20", role: NUM, ta: [irupathu], en: [twenty]}
-  - {canon: "30", role: NUM, ta: [muppathu], en: [thirty]}
+  - {canon: "20", role: NUM, ta: [irupathu, tventi, dventi], en: [twenty]}
+  - {canon: "30", role: NUM, ta: [muppathu, thardi, tharti, dhardi], en: [thirty]}
   - {canon: "40", role: NUM, ta: [naarpathu], en: [forty]}
   - {canon: "45", role: NUM, ta: [naarpathanju], en: []}
   - {canon: "50", role: NUM, ta: [aimbathu], en: [fifty]}

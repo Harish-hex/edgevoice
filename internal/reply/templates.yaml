@@ -62,12 +62,15 @@ timer.done:
 reminder.ring:
   ENGLISH:  {display: "🔔 Reminder: {text}", speech: ["Reminder!", "{text}"]}
   TANGLISH: {display: "🔔 Reminder: {text}", speech: ["ஞாபகப்படுத்தறேன்!", "{text}"]}
+dont_know:
+  ENGLISH:  {display: "Sorry, I'm not sure about that.", speech: ["Sorry, I'm not sure about that."]}
+  TANGLISH: {display: "Mannikkavum, adhu enakku theriyala.", speech: ["மன்னிக்கவும், அது எனக்கு தெரியல"]}
 wake:
   ENGLISH:  {display: "Yes?", speech: ["Yes?"]}
   TANGLISH: {display: "Sollunga?", speech: ["சொல்லுங்க?"]}
 error:
-  ENGLISH:  {display: "Sorry, I didn't catch that.", speech: ["Sorry, I didn't catch that."]}
-  TANGLISH: {display: "Mannikkavum, puriyala.", speech: ["மன்னிக்கவும், புரியல"]}
+  ENGLISH:  {display: "Sorry, I didn't understand that. Could you say it again?", speech: ["Sorry, I didn't understand that. Could you say it again?"]}
+  TANGLISH: {display: "Mannikkavum, puriyala. Innoru thadava sollunga?", speech: ["மன்னிக்கவும், புரியல. இன்னொரு தடவ சொல்லுங்க?"]}
 quick_only:
   ENGLISH:  {display: "I can only do quick commands right now.", speech: ["I can only do quick commands right now."]}
   TANGLISH: {display: "Ippo quick commands mattum thaan panna mudiyum.", speech: ["இப்போ சின்ன கமாண்ட்ஸ் மட்டும் தான் பண்ண முடியும்"]}

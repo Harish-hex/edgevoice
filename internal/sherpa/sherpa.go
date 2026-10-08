@@ -5,6 +5,7 @@
 package sherpa
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -53,6 +54,8 @@ func (v *VAD) Reset() { v.v.Reset() }
 type StreamingASR struct {
 	r *so.OnlineRecognizer
 	s *so.OnlineStream
+	// Confidence of the last Finalize(): per-token log-probabilities (ys_probs from sherpa's result JSON).
+	LastLogProbs []float64
 }
 
 func firstMatch(dir, pattern string) string {
@@ -102,9 +105,29 @@ func (a *StreamingASR) Finalize() string {
 	for a.r.IsReady(a.s) {
 		a.r.Decode(a.s)
 	}
-	t := strings.ToLower(a.r.GetResult(a.s).Text)
+	res := a.r.GetResult(a.s)
+	t := strings.ToLower(res.Text)
+	var j struct {
+		YsProbs []float64 `json:"ys_probs"`
+	}
+	a.LastLogProbs = nil
+	if json.Unmarshal([]byte(res.Json), &j) == nil {
+		a.LastLogProbs = j.YsProbs
+	}
 	a.Reset()
 	return t
+}
+
+// FinalJSON finalizes and returns sherpa's raw JSON result (debugging confidence fields).
+func (a *StreamingASR) FinalJSON() string {
+	a.s.AcceptWaveform(16000, make([]float32, 16000*3/10))
+	a.s.InputFinished()
+	for a.r.IsReady(a.s) {
+		a.r.Decode(a.s)
+	}
+	j := a.r.GetResult(a.s).Json
+	a.Reset()
+	return j
 }
 
 func (a *StreamingASR) Reset() {
@@ -128,6 +151,18 @@ func NewWhisper(dir string, threads int) (*Whisper, error) {
 		return nil, fmt.Errorf("whisper: failed to create recognizer from %s", dir)
 	}
 	return &Whisper{r}, nil
+}
+
+// Result returns the full offline result (text, tokens, per-token log-probs).
+func (w *Whisper) Result(f []float32) *so.OfflineRecognizerResult {
+	if len(f) == 0 {
+		return &so.OfflineRecognizerResult{}
+	}
+	s := so.NewOfflineStream(w.r)
+	defer so.DeleteOfflineStream(s)
+	s.AcceptWaveform(16000, f)
+	w.r.Decode(s)
+	return s.GetResult()
 }
 
 func (w *Whisper) Transcribe(f []float32) string {

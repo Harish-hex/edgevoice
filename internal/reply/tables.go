@@ -82,16 +82,24 @@ func init() {
 		set("period_ta", k, v[1])
 		set("period_rom", k, v[2])
 	}
-	for k, v := range map[string]string{"today": "Today is", "tomorrow": "Tomorrow is", "yesterday": "Yesterday was"} {
+	for k, v := range map[string]string{"today": "Today is", "tomorrow": "Tomorrow is", "yesterday": "Yesterday was",
+		"day_after_tomorrow": "The day after tomorrow is", "day_before_yesterday": "The day before yesterday was"} {
 		set("dayis_en", k, v)
-		set("dayc_rom", k, map[string]string{"today": "Innaikku", "tomorrow": "Naalaikku", "yesterday": "Nethu"}[k])
+		set("dayc_rom", k, map[string]string{"today": "Innaikku", "tomorrow": "Naalaikku", "yesterday": "Nethu",
+			"day_after_tomorrow": "Naalanniki", "day_before_yesterday": "Munthaanethu"}[k])
 	}
+	set("day_ta", "day_after_tomorrow", "நாளன்னைக்கு")
+	set("day_ta", "day_before_yesterday", "முந்தாநேத்து")
+	set("day_en", "day_after_tomorrow", "the day after tomorrow")
+	set("day_en", "day_before_yesterday", "the day before yesterday")
+	set("day_rom", "day_after_tomorrow", "naalanniki")
+	set("day_rom", "day_before_yesterday", "munthaanethu")
 	for k, v := range map[string][3]string{"today": {"today", "இன்னைக்கு", "innaikku"}, "tomorrow": {"tomorrow", "நாளைக்கு", "naalaikku"}, "yesterday": {"yesterday", "நேத்து", "nethu"}, "": {"", "", ""}} {
 		set("day_en", k, v[0])
 		set("day_ta", k, v[1])
 		set("day_rom", k, v[2])
 	}
-	for k, v := range map[string][3]string{"minute": {"minutes", "நிமிஷம்", "nimisham"}, "hour": {"hours", "மணி நேரம்", "mani neram"}} {
+	for k, v := range map[string][3]string{"minute": {"minutes", "நிமிஷம்", "nimisham"}, "hour": {"hours", "மணி நேரம்", "mani neram"}, "second": {"seconds", "செகண்ட்ஸ்", "seconds"}} {
 		set("unit_en", k, v[0])
 		set("unit_ta", k, v[1])
 		set("unit_rom", k, v[2])

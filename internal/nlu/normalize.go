@@ -22,7 +22,7 @@ func (n *Normalizer) Normalize(t iface.Transcript) iface.NormalizedText {
 	if HasTamil(text) {
 		text = Transliterate(text)
 	}
-	raw := n.splitKeywordPrefixes(tokenize(text))
+	raw := n.applyPhrases(n.splitKeywordPrefixes(tokenize(text)))
 
 	var toks []string
 	var tags []iface.Tag
@@ -54,6 +54,12 @@ func (n *Normalizer) Normalize(t iface.Transcript) iface.NormalizedText {
 		toks, tags = append(toks, tok), append(tags, iface.Tag{Canon: tok})
 	}
 	toks, tags = combineTens(toks, tags)
+	// Tamil-script English numbers next to an operator: "on plas on" = 1 + 1 ("on" is otherwise a stopword)
+	for i := range toks {
+		if toks[i] == "on" && ((i > 0 && tags[i-1].Role == "OP") || (i+1 < len(tags) && tags[i+1].Role == "OP")) {
+			toks[i], tags[i] = "1", iface.Tag{Canon: "1", Role: "NUM", Lang: "ta"}
+		}
+	}
 
 	out := iface.NormalizedText{Tokens: toks, Tags: tags, Canonical: strings.Join(toks, " ")}
 	for _, tg := range tags {
@@ -62,6 +68,28 @@ func (n *Normalizer) Normalize(t iface.Transcript) iface.NormalizedText {
 			out.TamilHits++
 		case "en":
 			out.EnglishHits++
+		}
+	}
+	return out
+}
+
+// applyPhrases rewrites known multi-word phrases into single tokens (longest match first).
+func (n *Normalizer) applyPhrases(toks []string) []string {
+	var out []string
+	for i := 0; i < len(toks); {
+		matched := false
+		for _, ph := range n.Lex.phrases {
+			from := ph[0]
+			if i+len(from) <= len(toks) && strings.Join(toks[i:i+len(from)], " ") == strings.Join(from, " ") {
+				out = append(out, ph[1][0])
+				i += len(from)
+				matched = true
+				break
+			}
+		}
+		if !matched {
+			out = append(out, toks[i])
+			i++
 		}
 	}
 	return out

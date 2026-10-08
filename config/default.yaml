@@ -10,7 +10,7 @@ models:
   llm: llm/Qwen3-0.6B-Q4_K_M.gguf
 asr: {engine: zipformer, dual: true, hotwords: false, hotwords_score: 1.5}
 endpoint: {silence_ms: 400, early_silence_ms: 200, max_utterance_ms: 10000}
-nlu: {fast_path: true, fuzzy: true, merge: true}
+nlu: {fast_path: true, fuzzy: true, merge: true, gate: true}
 reply: {clips: true, clips_dir: clips}
 llm: {enabled: true, threads: 2, ctx: 1024, max_tokens: 80, prompt_cache: true, clause_tts: true, timeout_ms: 3000, port: 8081}
 wake: {enabled: true, window_s: 8, grace_ms: 3500}

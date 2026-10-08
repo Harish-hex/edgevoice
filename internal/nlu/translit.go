@@ -43,6 +43,21 @@ func Transliterate(s string) string {
 				continue // orphan pulli / vowel sign (ASR artefact): drop it
 			}
 			if r == 'ஃ' {
+				if i+1 < len(rs) && rs[i+1] == 'ப' { // ஃப = f (ஃபேக்ட் → fact)
+					b.WriteString("f")
+					i++
+					if i+1 < len(rs) {
+						if sign, ok := taSigns[rs[i+1]]; ok {
+							b.WriteString(sign)
+							i++
+						} else if rs[i+1] == pulli {
+							i++
+						} else {
+							b.WriteString("a")
+						}
+					}
+					continue
+				}
 				b.WriteString("h")
 			} else {
 				b.WriteRune(r)
