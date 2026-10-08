@@ -33,7 +33,7 @@ func NewVAD(model string) (*VAD, error) {
 		return nil, err
 	}
 	c := so.VadModelConfig{SampleRate: 16000, NumThreads: 1, Provider: provider}
-	c.SileroVad = so.SileroVadModelConfig{Model: model, Threshold: 0.5, MinSilenceDuration: float32(Hangover.Seconds()), MinSpeechDuration: 0.1, WindowSize: VADWindow, MaxSpeechDuration: 20}
+	c.SileroVad = so.SileroVadModelConfig{Model: model, Threshold: 0.35, MinSilenceDuration: float32(Hangover.Seconds()), MinSpeechDuration: 0.1, WindowSize: VADWindow, MaxSpeechDuration: 20}
 	return &VAD{so.NewVoiceActivityDetector(&c, 30)}, nil
 }
 
@@ -141,30 +141,74 @@ func (w *Whisper) Transcribe(f []float32) string {
 	return strings.ToLower(strings.TrimSpace(s.GetResult().Text))
 }
 
-// ---------- TTS (VITS: Piper English, MMS Tamil) ----------
+// ---------- Offline Tamil ASR (AI4Bharat IndicConformer, NeMo CTC int8) ----------
 
-type TTS struct {
-	t *so.OfflineTts
+// NewTamil loads IndicConformer-Tamil. It returns Tamil-script text (English loanwords also in Tamil
+// script); the NLU transliterates it. Reuses the Whisper wrapper type (same offline decode API).
+func NewTamil(dir string, threads int) (*Whisper, error) {
+	c := so.OfflineRecognizerConfig{}
+	c.FeatConfig = so.FeatureConfig{SampleRate: 16000, FeatureDim: 80}
+	c.ModelConfig.NemoCTC = so.OfflineNemoEncDecCtcModelConfig{Model: firstMatch(dir, "model*.onnx")}
+	c.ModelConfig.Tokens = filepath.Join(dir, "tokens.txt")
+	c.ModelConfig.NumThreads, c.ModelConfig.Provider = threads, provider
+	c.DecodingMethod = "greedy_search"
+	if c.ModelConfig.NemoCTC.Model == "" {
+		return nil, fmt.Errorf("tamil asr: no model in %s", dir)
+	}
+	r := so.NewOfflineRecognizer(&c)
+	if r == nil {
+		return nil, fmt.Errorf("tamil asr: failed to load %s", dir)
+	}
+	return &Whisper{r}, nil
 }
 
+// ---------- TTS (VITS/Piper, Kokoro, Kitten) ----------
+
+type TTS struct {
+	t       *so.OfflineTts
+	Speaker int // speaker id for multi-speaker models (Kokoro/Kitten)
+}
+
+// NewTTS loads a VITS/Piper, Kokoro or Kitten model directory (detected from its files/name).
+// A "#N" suffix on dir selects speaker N, e.g. "/models/kokoro-int8-en-v0_19#3".
 func NewTTS(dir string, threads int) (*TTS, error) {
+	sid := 0
+	if d, n, ok := strings.Cut(dir, "#"); ok {
+		dir = d
+		fmt.Sscan(n, &sid)
+	}
 	c := so.OfflineTtsConfig{MaxNumSentences: 1}
-	c.Model.Vits = so.OfflineTtsVitsModelConfig{Model: firstMatch(dir, "*.onnx"), Tokens: filepath.Join(dir, "tokens.txt"), NoiseScale: 0.667, NoiseScaleW: 0.8, LengthScale: 1.0}
-	if c.Model.Vits.Model == "" {
+	espeak := ""
+	if fi, err := os.Stat(filepath.Join(dir, "espeak-ng-data")); err == nil && fi.IsDir() {
+		espeak = filepath.Join(dir, "espeak-ng-data")
+	}
+	model := firstMatch(dir, "model*.onnx")
+	if model == "" {
+		model = firstMatch(dir, "*.onnx")
+	}
+	if model == "" {
 		return nil, fmt.Errorf("tts: no model in %s", dir)
 	}
-	if fi, err := os.Stat(filepath.Join(dir, "espeak-ng-data")); err == nil && fi.IsDir() {
-		c.Model.Vits.DataDir = filepath.Join(dir, "espeak-ng-data")
-	}
-	if _, err := os.Stat(filepath.Join(dir, "lexicon.txt")); err == nil {
-		c.Model.Vits.Lexicon = filepath.Join(dir, "lexicon.txt")
+	tokens := filepath.Join(dir, "tokens.txt")
+	voices := filepath.Join(dir, "voices.bin")
+	base := filepath.Base(dir)
+	switch {
+	case strings.Contains(base, "kokoro"):
+		c.Model.Kokoro = so.OfflineTtsKokoroModelConfig{Model: model, Voices: voices, Tokens: tokens, DataDir: espeak, LengthScale: 1.0}
+	case strings.Contains(base, "kitten"):
+		c.Model.Kitten = so.OfflineTtsKittenModelConfig{Model: model, Voices: voices, Tokens: tokens, DataDir: espeak, LengthScale: 1.0}
+	default:
+		c.Model.Vits = so.OfflineTtsVitsModelConfig{Model: model, Tokens: tokens, DataDir: espeak, NoiseScale: 0.667, NoiseScaleW: 0.8, LengthScale: 1.0}
+		if _, err := os.Stat(filepath.Join(dir, "lexicon.txt")); err == nil {
+			c.Model.Vits.Lexicon = filepath.Join(dir, "lexicon.txt")
+		}
 	}
 	c.Model.NumThreads, c.Model.Provider = threads, provider
 	t := so.NewOfflineTts(&c)
 	if t == nil {
 		return nil, fmt.Errorf("tts: failed to load %s", dir)
 	}
-	return &TTS{t}, nil
+	return &TTS{t: t, Speaker: sid}, nil
 }
 
 // Synth returns 16 kHz int16 PCM.
@@ -172,7 +216,7 @@ func (t *TTS) Synth(text string) []int16 { return t.SynthSpeed(text, 1.0) }
 
 // SynthSpeed synthesizes at a speed factor (>1 faster); used for synthetic test data.
 func (t *TTS) SynthSpeed(text string, speed float32) []int16 {
-	a := t.t.Generate(text, 0, speed)
+	a := t.t.Generate(text, t.Speaker, speed)
 	if a == nil || len(a.Samples) == 0 {
 		return nil
 	}

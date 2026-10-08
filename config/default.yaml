@@ -4,10 +4,11 @@ models:
   vad: silero_vad.onnx
   asr_dir: zipformer-en
   whisper_dir: whisper-base
+  tamil_dir: indicconformer-ta
   tts_en: vits-piper-en_US-amy-low
   tts_ta: piper-ta
   llm: llm/Qwen3-0.6B-Q4_K_M.gguf
-asr: {engine: zipformer, hotwords: false, hotwords_score: 1.5}
+asr: {engine: zipformer, dual: true, hotwords: false, hotwords_score: 1.5}
 endpoint: {silence_ms: 400, early_silence_ms: 200, max_utterance_ms: 10000}
 nlu: {fast_path: true, fuzzy: true, merge: true}
 reply: {clips: true, clips_dir: clips}

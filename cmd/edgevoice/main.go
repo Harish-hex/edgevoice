@@ -168,6 +168,12 @@ func build(cfg *config.Config) (*pipeline.Pipeline, *llm.Server) {
 		p.ASR, err = sherpa.NewStreamingASR(cfg.P(cfg.Models.ASRDir), 1, hw, cfg.ASR.Score)
 		must(err, "asr")
 	}
+	if cfg.ASR.Dual && cfg.Models.TamilDir != "" {
+		if p.Tamil, err = sherpa.NewTamil(cfg.P(cfg.Models.TamilDir), cfg.LLM.Threads); err != nil {
+			log.Printf("Tamil ASR unavailable (%v); English only", err)
+			p.Tamil = nil
+		}
+	}
 	p.TTSEn, err = sherpa.NewTTS(cfg.P(cfg.Models.TTSEn), 1)
 	must(err, "tts en")
 	if p.TTSTa, err = sherpa.NewTTS(cfg.P(cfg.Models.TTSTa), 1); err != nil {

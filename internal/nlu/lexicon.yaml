@@ -3,7 +3,7 @@
 stopwords: [a, an, the, for, me, my, to, is, it, of, please, can, you, i, in, on, and, um, uh, ok, okay, da, la, pa]
 entries:
   # --- DAY ---
-  - {canon: naalaikku, role: DAY, value: tomorrow, ta: [naalaikku, nowlay, nally, nalay, naliki, nalaiku, naalaiki, naalaikki, nalaikku, naalaiku], en: [tomorrow]}
+  - {canon: naalaikku, role: DAY, value: tomorrow, ta: [naalaikku, naalaiku, nowlay, nally, nalay, naliki, nalaiku, naalaiki, naalaikki, nalaikku, naalaiku], en: [tomorrow]}
   - {canon: innaikku, role: DAY, value: today, ta: [innaikku, innaiku, indru, inniki, innikku], en: [today]}
   # --- PERIOD ---
   - {canon: kaalai, role: PERIOD, value: am, ta: [kaalai, kaalaila, kalaila, kaalaiyil, caulay, coula, koly, khali], en: [morning, am]}
@@ -14,11 +14,11 @@ entries:
   - {canon: manikku, role: AT, ta: [manikku, manikki, mani, ku, kku, ki, manicu, manico, manica, manicue, manicood, coup, coom, cou, kue, koo], en: [oclock, at]}
   - {canon: nimisham, role: UNIT, value: minute, ta: [nimisham, nimishathula, nimisam, nimischem, nimishem, ninesham, nimish, neme, nimem, emasham], en: [minute, minutes, min, mins]}
   - {canon: mani_neram, role: UNIT, value: hour, ta: [neram], en: [hour, hours]}
-  - {canon: pannu, role: DO, ta: [pannu, pannunga, panna, vei, vechidu, vachidu, vaiyi, podu, vey, vay, fay, veche, vechadu, vechedo, vecha, panu, ponnu], en: [set, put, start]}
-  - {canon: cancel, role: NEG, ta: [niruthu, venam, vendam, podhum, nippatu], en: [cancel, stop, delete, remove]}
+  - {canon: pannu, role: DO, ta: [pannu, pannunga, panna, vei, vechidu, vachidu, vaiyi, podu, vey, vay, fay, veche, vechadu, vechedo, vecha, panu, ponnu, vai, sed, settu, staart], en: [set, put, start]}
+  - {canon: cancel, role: NEG, ta: [niruthu, venam, vendam, podhum, nippatu, keensal, kensal, kaensal, sdaap, staap], en: [cancel, stop, delete, remove]}
   - {canon: enna, role: WH, ta: [enna, yenna, evlo, evvalavu, eppadi, epdi, avel, aval, avla, avlo, evalo, ann, anna], en: [what, whats, how]}
-  - {canon: time, role: TIME, en: [time]}
-  - {canon: date, role: DATE, ta: [thethi, theydhi, thedhi], en: [date, day]}
+  - {canon: time, role: TIME, ta: [taim, daim, taaim], en: [time]}
+  - {canon: date, role: DATE, ta: [thethi, theydhi, thedhi, theedhi, teet, teed, deet, deed], en: [date, day]}
   # --- intent keywords ---
   - {canon: alarm, role: KW, value: alarm, ta: [alaaram, alarum, alaram], en: [alarm, alarms, wake]}
   - {canon: timer, role: KW, value: timer, ta: [taimer, taimar, tinner], en: [timer]}
@@ -26,10 +26,10 @@ entries:
   - {canon: vanakkam, role: GREET, ta: [vanakkam, vanakam], en: [hi, hello, hey]}
   - {canon: yaaru, role: WHO, ta: [yaaru, yaar, yaru], en: [who]}
   - {canon: nee_yaaru, role: WHO, value: self, ta: [neeyaaru, niaru, neyaru, niyaru]}
-  - {canon: nee, role: YOU, ta: [nee, neenga, ni], en: [are, your]}
+  - {canon: nee, role: YOU, ta: [nee, neenga, ni, nii, niinga], en: [are, your]}
   - {canon: weather, role: OFFLINE, ta: [vedhar, vedar, vethar, mazhai], en: [weather, news, score, cricket, stock, stocks]}
   # --- calculator operators ---
-  - {canon: "*", role: OP, en: [times, into, x, multiplied, multiply], ta: [perukku]}
+  - {canon: "*", role: OP, en: [times, into, x, multiplied, multiply], ta: [perukku, indu, intu, taims]}
   - {canon: "+", role: OP, en: [plus, add], ta: [kootu, koottu]}
   - {canon: "-", role: OP, en: [minus, subtract], ta: [kazhi]}
   - {canon: "/", role: OP, en: [divided, divide], ta: [vagu]}
@@ -37,18 +37,18 @@ entries:
   - {canon: "+30", role: NUMMOD, value: "30", ta: [arai], en: [half, thirty_past]}
   - {canon: "+15", role: NUMMOD, value: "15", ta: [kaal], en: [quarter]}
   # --- numbers (canon = digits) ---
-  - {canon: "1", role: NUM, ta: [onnu, oru, ondru, onu], en: [one]}
-  - {canon: "2", role: NUM, ta: [rendu, irandu, ranto, rendo], en: [two]}
-  - {canon: "3", role: NUM, ta: [moonu, moondru], en: [three]}
-  - {canon: "4", role: NUM, ta: [naalu, naangu], en: [four]}
-  - {canon: "5", role: NUM, ta: [anju, ainthu], en: [five]}
-  - {canon: "6", role: NUM, ta: [aaru], en: [six]}
-  - {canon: "7", role: NUM, ta: [ezhu, yezhu], en: [seven]}
-  - {canon: "8", role: NUM, ta: [ettu], en: [eight]}
-  - {canon: "9", role: NUM, ta: [onbadhu, ombodhu, onbathu], en: [nine]}
-  - {canon: "10", role: NUM, ta: [pathu, padhu], en: [ten]}
-  - {canon: "11", role: NUM, ta: [padhinonnu, pathinonnu], en: [eleven]}
-  - {canon: "12", role: NUM, ta: [pannendu], en: [twelve]}
+  - {canon: "1", role: NUM, ta: [onnu, oru, ondru, onu, van, vann], en: [one]}
+  - {canon: "2", role: NUM, ta: [rendu, irandu, ranto, rendo, tuu, renndu], en: [two]}
+  - {canon: "3", role: NUM, ta: [moonu, moondru, muunu, thrii, tirii], en: [three]}
+  - {canon: "4", role: NUM, ta: [naalu, naangu, foor, boor], en: [four]}
+  - {canon: "5", role: NUM, ta: [anju, ainthu, aindhu, faiv, paiv], en: [five]}
+  - {canon: "6", role: NUM, ta: [aaru, siks], en: [six]}
+  - {canon: "7", role: NUM, ta: [ezhu, yezhu, eezhu, sevan, seven], en: [seven]}
+  - {canon: "8", role: NUM, ta: [ettu, eyt, eyd, eit], en: [eight]}
+  - {canon: "9", role: NUM, ta: [onbadhu, ombodhu, onbathu, nain], en: [nine]}
+  - {canon: "10", role: NUM, ta: [pathu, padhu, pattu, ten, den], en: [ten]}
+  - {canon: "11", role: NUM, ta: [padhinonnu, pathinonnu, padhinonru, levan, ilevan], en: [eleven]}
+  - {canon: "12", role: NUM, ta: [pannendu, panniranndu, tvelv, tuvelv], en: [twelve]}
   - {canon: "15", role: NUM, ta: [padhinanju], en: [fifteen]}
   - {canon: "20", role: NUM, ta: [irupathu], en: [twenty]}
   - {canon: "30", role: NUM, ta: [muppathu], en: [thirty]}

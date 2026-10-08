@@ -11,7 +11,7 @@ dev:
 limits:
 	$(RUN) sh -c 'echo "cpu.max: $$(cat /sys/fs/cgroup/cpu.max)"; echo "memory.max: $$(cat /sys/fs/cgroup/memory.max)"; echo "net: $$(cat /sys/class/net/*/operstate | paste -sd, -) (only lo is up)"'
 build:
-	CPUS=4 MEM=3g docker/run.sh go build -o bin/ ./cmd/edgevoice ./cmd/gate ./cmd/buildclips ./cmd/synthdata
+	CPUS=4 MEM=3g docker/run.sh go build -o bin/ ./cmd/edgevoice ./cmd/gate ./cmd/buildclips ./cmd/synthdata ./cmd/voicesamples
 gate: build
 	$(RUN) bin/gate
 

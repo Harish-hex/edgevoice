@@ -72,13 +72,13 @@ func main() {
 		labels[l.File] = l
 	})
 
-	fmt.Println("| config | n | intent acc EN | intent acc TA | slot EM | e2e p50 cmd (ms) | e2e p95 cmd | e2e p50 llm | e2e p95 llm | CPU-s/turn | peak mem MB |")
+	fmt.Println("| config | n | intent acc EN | intent acc TA | slot EM | e2e p50 cmd (ms) | e2e p95 cmd | e2e p50 llm | e2e p95 llm | CPU-s/turn | peak mem MB (anon) |")
 	fmt.Println("|---|---|---|---|---|---|---|---|---|---|---|")
 	for _, path := range flag.Args() {
 		name := strings.SplitN(filepath.Base(path), "-", 2)[0]
 		var n, okEN, nEN, okTA, nTA, slotOK, slotN int
 		var cmdE2E, llmE2E, cpu []float64
-		peak := 0.0
+		peak, peakAnon := 0.0, 0.0
 		seen := map[string]bool{}
 		readJSONL(path, func(m map[string]any) {
 			file := fmt.Sprint(m["file"])
@@ -127,6 +127,9 @@ func main() {
 			if p, ok := m["peak_mem_mb"].(float64); ok && p > peak {
 				peak = p
 			}
+			if p, ok := m["peak_anon_mb"].(float64); ok && p > peakAnon {
+				peakAnon = p
+			}
 		})
 		fr := func(a, b int) string {
 			if b == 0 {
@@ -134,7 +137,7 @@ func main() {
 			}
 			return fmt.Sprintf("%.0f%% (%d/%d)", 100*float64(a)/float64(b), a, b)
 		}
-		fmt.Printf("| %s | %d | %s | %s | %s | %.0f | %.0f | %.0f | %.0f | %.2f | %.0f |\n", name, n, fr(okEN, nEN), fr(okTA, nTA), fr(slotOK, slotN),
-			pct(cmdE2E, .5), pct(cmdE2E, .95), pct(llmE2E, .5), pct(llmE2E, .95), mean(cpu), peak)
+		fmt.Printf("| %s | %d | %s | %s | %s | %.0f | %.0f | %.0f | %.0f | %.2f | %.0f (%.0f) |\n", name, n, fr(okEN, nEN), fr(okTA, nTA), fr(slotOK, slotN),
+			pct(cmdE2E, .5), pct(cmdE2E, .95), pct(llmE2E, .5), pct(llmE2E, .95), mean(cpu), peak, peakAnon)
 	}
 }

@@ -44,7 +44,7 @@ func TestLangMode(t *testing.T) {
 }
 
 func TestTransliterate(t *testing.T) {
-	cases := map[string]string{"வெதர்": "vedhar", "அலாரம்": "alaaram", "நாளைக்கு": "naalaikku"}
+	cases := map[string]string{"வெதர்": "vedhar", "அலாரம்": "alaaram", "நாளைக்கு": "naalaikku", "எட்டு": "ettu", "பத்து": "pattu", "டைமர்": "taimar", "அஞ்சு": "anju", "வெச்சிடு": "vecchidu", "தேதி": "theedhi", "நிமிஷம்": "nimisham"}
 	for in, want := range cases {
 		if got := Transliterate(in); got != want {
 			t.Errorf("Transliterate(%q)=%q want %q", in, got, want)

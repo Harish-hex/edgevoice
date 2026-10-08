@@ -1,7 +1,7 @@
 # Baseline (PRD §10.1): Whisper base (non-streaming) -> same LLM, no prompt cache -> full reply -> Piper.
 extends: default.yaml
 name: baseline
-asr: {engine: whisper}
+asr: {engine: whisper, dual: false}
 endpoint: {silence_ms: 800, early_silence_ms: 0}
 nlu: {fast_path: false}
 reply: {clips: false}

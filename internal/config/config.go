@@ -16,12 +16,14 @@ type Config struct {
 		VAD        string `yaml:"vad"`
 		ASRDir     string `yaml:"asr_dir"`
 		WhisperDir string `yaml:"whisper_dir"`
+		TamilDir   string `yaml:"tamil_dir"`
 		TTSEn      string `yaml:"tts_en"`
 		TTSTa      string `yaml:"tts_ta"`
 		LLM        string `yaml:"llm"`
 	} `yaml:"models"`
 	ASR struct {
 		Engine   string  `yaml:"engine"` // zipformer | whisper
+		Dual     bool    `yaml:"dual"`   // also run Tamil IndicConformer; parser arbitrates
 		Hotwords bool    `yaml:"hotwords"`
 		Score    float32 `yaml:"hotwords_score"`
 	} `yaml:"asr"`

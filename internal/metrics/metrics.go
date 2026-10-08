@@ -25,12 +25,13 @@ type Turn struct {
 
 // Bus collects turns and appends one JSON line per finished turn.
 type Bus struct {
-	mu     sync.Mutex
-	f      *os.File
-	cg     string
-	peak   int64
-	nextID int
-	OnTurn func(rec map[string]any) // optional hook (status line, degrade controller)
+	mu       sync.Mutex
+	f        *os.File
+	cg       string
+	peak     int64
+	peakAnon int64 // anonymous memory (heap/model weights) — excludes reclaimable file cache
+	nextID   int
+	OnTurn   func(rec map[string]any) // optional hook (status line, degrade controller)
 }
 
 func NewBus(resultsDir, runName string) (*Bus, error) {
@@ -47,11 +48,12 @@ func NewBus(resultsDir, runName string) (*Bus, error) {
 // sample tracks peak container memory every 50 ms.
 func (b *Bus) sample() {
 	for range time.Tick(50 * time.Millisecond) {
-		if v, err := ReadInt(b.cg + "/memory.current"); err == nil {
+		v, err := ReadInt(b.cg + "/memory.current")
+		a := statField(b.cg+"/memory.stat", "anon")
+		if err == nil {
 			b.mu.Lock()
-			if v > b.peak {
-				b.peak = v
-			}
+			b.peak = max(b.peak, v)
+			b.peakAnon = max(b.peakAnon, a)
 			b.mu.Unlock()
 		}
 	}
@@ -61,7 +63,7 @@ func (b *Bus) Start() *Turn {
 	b.mu.Lock()
 	b.nextID++
 	id := b.nextID
-	b.peak = 0
+	b.peak, b.peakAnon = 0, 0
 	b.mu.Unlock()
 	t := &Turn{ID: id, Marks: map[string]time.Duration{}, Fields: map[string]any{}}
 	t.cpu0, _ = CPUUsec(b.cg)
@@ -96,6 +98,7 @@ func (b *Bus) End(t *Turn) map[string]any {
 	}
 	b.mu.Lock()
 	rec["peak_mem_mb"] = float64(b.peak) / (1 << 20)
+	rec["peak_anon_mb"] = float64(b.peakAnon) / (1 << 20)
 	line, _ := json.Marshal(rec)
 	b.f.Write(append(line, '\n'))
 	b.mu.Unlock()
@@ -111,6 +114,21 @@ func ReadInt(path string) (int64, error) {
 		return 0, err
 	}
 	return strconv.ParseInt(strings.TrimSpace(string(s)), 10, 64)
+}
+
+// statField reads one "key value" line from a cgroup stat file (0 if absent).
+func statField(path, key string) int64 {
+	s, err := os.ReadFile(path)
+	if err != nil {
+		return 0
+	}
+	for _, l := range strings.Split(string(s), "\n") {
+		if v, ok := strings.CutPrefix(l, key+" "); ok {
+			n, _ := strconv.ParseInt(strings.TrimSpace(v), 10, 64)
+			return n
+		}
+	}
+	return 0
 }
 
 // CPUUsec reads usage_usec from cpu.stat under the cgroup root.

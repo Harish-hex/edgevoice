@@ -35,6 +35,7 @@ type Pipeline struct {
 	VAD     *sherpa.VAD
 	ASR     *sherpa.StreamingASR // nil when Cfg.ASR.Engine == "whisper"
 	Whisper *sherpa.Whisper
+	Tamil   *sherpa.Whisper // IndicConformer-Tamil (dual ASR); nil => English only
 	TTSEn   *sherpa.TTS
 	TTSTa   *sherpa.TTS // may be nil (falls back to English voice)
 	Clips   *ClipStore
@@ -101,7 +102,7 @@ func (p *Pipeline) Run(ctx context.Context, in <-chan []int16) {
 			speech := p.VAD.IsSpeech(f)
 			if turn == nil {
 				preroll = append(preroll, f)
-				if len(preroll) > 10 { // ~320 ms of audio before VAD fired
+				if len(preroll) > 20 { // ~640 ms of audio before VAD fired (quiet mics trigger late)
 					preroll = preroll[1:]
 				}
 				if !speech {
@@ -153,32 +154,50 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		}
 		p.Bus.End(turn)
 	}()
+	// Dual ASR: the Tamil model decodes the whole utterance while the English stream finalizes.
+	var taText string
+	var wg sync.WaitGroup
+	if p.Tamil != nil {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			taText = p.Tamil.Transcribe(audio.ToFloat(utter))
+		}()
+	}
 	var text string
 	if p.ASR != nil {
 		text = p.ASR.Finalize()
 	} else {
 		text = p.Whisper.Transcribe(audio.ToFloat(utter))
 	}
+	wg.Wait()
 	turn.Mark("t_asr_final")
 	if p.DumpDir != "" {
 		os.MkdirAll(p.DumpDir, 0o755)
 		audio.WriteWAV(filepath.Join(p.DumpDir, fmt.Sprintf("turn_%03d.wav", turn.ID)), utter)
 	}
-	turn.Set("transcript", text)
 	turn.Set("file", p.File)
 	if p.Tier != nil {
 		turn.Set("tier", p.Tier())
 	}
+	cands := []nlu.Candidate{p.candidate("en", text)}
+	if p.Tamil != nil {
+		cands = append(cands, p.candidate("ta", taText))
+		turn.Set("transcript_en", text)
+		turn.Set("transcript_ta", taText)
+	}
+	best := p.Norm.Lex.Choose(cands)
+	text, norm, in := best.Text, best.Norm, best.Intent
+	turn.Set("transcript", text)
+	turn.Set("asr_pick", best.Source)
 	if strings.TrimSpace(text) == "" {
 		turn.Set("route", "empty")
 		return
 	}
-	norm := p.Norm.Normalize(iface.Transcript{Text: text})
-	mode := nlu.LangMode(norm)
-	var in *iface.Intent
-	if p.Cfg.NLU.FastPath {
-		in = p.Parser.Parse(norm)
+	if best.Source == "ta" {
+		text = norm.Canonical // romanized for display and the LLM (D13 default)
 	}
+	mode := nlu.LangMode(norm)
 	turn.Mark("t_nlu_done")
 	turn.Set("normalized", norm.Canonical)
 	turn.Set("mode", mode)
@@ -201,6 +220,15 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		return
 	}
 	p.chat(ctx, turn, text, mode)
+}
+
+func (p *Pipeline) candidate(src, text string) nlu.Candidate {
+	n := p.Norm.Normalize(iface.Transcript{Text: text})
+	c := nlu.Candidate{Source: src, Text: text, Norm: n}
+	if p.Cfg.NLU.FastPath && strings.TrimSpace(text) != "" {
+		c.Intent = p.Parser.Parse(n)
+	}
+	return c
 }
 
 // say renders fragments from clips (or live TTS on any miss) and plays them.
