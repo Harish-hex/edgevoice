@@ -1,1 +1,10 @@
 ok silero_vad.onnx
+ok zipformer-en/tokens.txt
+ok zipformer-en/test_wavs/0.wav
+ok zipformer-en/decoder-epoch-99-avg-1-chunk-16-left-128.onnx
+ok zipformer-en/bpe.model
+ok zipformer-en/joiner-epoch-99-avg-1-chunk-16-left-128.int8.onnx
+ok piper.tar.bz2
+curl: (18) transfer closed with 392884031 bytes remaining to read
+curl: (18) transfer closed with 58650879 bytes remaining to read
+ok zipformer-en/encoder-epoch-99-avg-1-chunk-16-left-128.int8.onnx

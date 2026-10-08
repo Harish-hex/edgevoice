@@ -7,3 +7,4 @@ sock/
 third_party/
 /bin/
 .DS_Store
+tools/.venv/

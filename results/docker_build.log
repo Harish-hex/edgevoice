@@ -1,17 +1,17 @@
 #0 building with "desktop-linux" instance using docker driver
 
 #1 [internal] load build definition from Dockerfile
-#1 transferring dockerfile: 1.12kB done
+#1 transferring dockerfile: 1.17kB 0.0s done
 #1 DONE 0.0s
 
 #2 [internal] load metadata for docker.io/library/golang:1.24-bookworm
 #2 ...
 
 #3 [internal] load metadata for docker.io/library/debian:bookworm-slim
-#3 DONE 8.9s
+#3 DONE 1.6s
 
 #2 [internal] load metadata for docker.io/library/golang:1.24-bookworm
-#2 DONE 11.4s
+#2 DONE 1.8s
 
 #4 [internal] load .dockerignore
 #4 transferring context: 82B done
@@ -19,134 +19,284 @@
 
 #5 [llama 1/5] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
 #5 resolve docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587 0.0s done
-#5 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 0B / 28.14MB 0.2s
-#5 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 0B / 28.14MB 5.3s
-#5 ...
+#5 DONE 0.0s
 
-#6 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
-#6 resolve docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac 0.0s done
-#6 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 32B / 32B 2.3s done
-#6 sha256:ad49288bca90fcc725b89f889465490f86b741b7c60bb71ba394db7e1df0d184 126B / 126B 3.0s done
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 0B / 75.37MB 6.8s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 0B / 86.51MB 4.5s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 0B / 64.48MB 3.8s
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 1.05MB / 75.37MB 11.9s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 1.05MB / 86.51MB 9.6s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 1.05MB / 64.48MB 8.9s
-#6 ...
+#6 [llama 3/5] RUN git clone --depth 1 https://github.com/ggml-org/llama.cpp /llama
+#6 CACHED
 
-#5 [llama 1/5] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
-#5 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 2.10MB / 28.14MB 16.8s
-#5 ...
+#7 [llama 2/5] RUN apt-get update && apt-get install -y --no-install-recommends build-essential cmake git ca-certificates && rm -rf /var/lib/apt/lists/*
+#7 CACHED
 
-#6 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 1.05MB / 75.37MB 17.0s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 2.10MB / 86.51MB 14.7s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 2.10MB / 64.48MB 14.0s
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 2.10MB / 75.37MB 22.1s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 3.15MB / 86.51MB 19.8s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 3.15MB / 64.48MB 19.1s
-#6 ...
+#8 [llama 4/5] WORKDIR /llama
+#8 CACHED
 
-#5 [llama 1/5] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
-#5 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 4.19MB / 28.14MB 27.0s
-#5 ...
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 resolve docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac 0.0s done
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 1.05MB / 75.37MB 0.2s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 0B / 64.48MB 0.2s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 0B / 86.51MB 0.2s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 1.05MB / 23.60MB 0.2s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 5.24MB / 75.37MB 3.5s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 3.15MB / 23.60MB 3.3s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 4.19MB / 64.48MB 4.1s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 3.15MB / 86.51MB 5.3s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 5.24MB / 23.60MB 5.6s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 9.44MB / 75.37MB 7.1s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 8.39MB / 64.48MB 7.1s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 7.34MB / 23.60MB 7.8s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 9.44MB / 23.60MB 9.9s
+#9 ...
 
-#6 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 3.15MB / 75.37MB 27.2s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 3.15MB / 86.51MB 24.9s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 4.19MB / 64.48MB 24.2s
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 4.19MB / 75.37MB 32.3s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 4.19MB / 86.51MB 30.0s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 4.19MB / 64.48MB 29.3s
-#6 ...
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 0.428 -- The C compiler identification is GNU 12.2.0
+#10 0.502 -- The CXX compiler identification is GNU 12.2.0
+#10 0.513 -- Detecting C compiler ABI info
+#10 0.567 -- Detecting C compiler ABI info - done
+#10 0.575 -- Check for working C compiler: /usr/bin/cc - skipped
+#10 0.575 -- Detecting C compile features
+#10 0.576 -- Detecting C compile features - done
+#10 0.578 -- Detecting CXX compiler ABI info
+#10 0.632 -- Detecting CXX compiler ABI info - done
+#10 0.640 -- Check for working CXX compiler: /usr/bin/c++ - skipped
+#10 0.640 -- Detecting CXX compile features
+#10 0.640 -- Detecting CXX compile features - done
+#10 0.641 -- llama.cpp version: 0.6.0-dev
+#10 0.641 CMAKE_BUILD_TYPE=Release
+#10 0.655 -- Found Git: /usr/bin/git (found version "2.39.5") 
+#10 0.676 -- The ASM compiler identification is GNU
+#10 0.678 -- Found assembler: /usr/bin/cc
+#10 0.693 -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+#10 0.761 -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+#10 0.762 -- Found Threads: TRUE  
+#10 0.766 -- Warning: ccache not found - consider installing it for faster compilation or disable this warning with GGML_CCACHE=OFF
+#10 0.780 -- CMAKE_SYSTEM_PROCESSOR: aarch64
+#10 0.780 -- GGML_SYSTEM_ARCH: ARM
+#10 0.952 -- Found OpenMP_C: -fopenmp (found version "4.5") 
+#10 1.012 -- Found OpenMP_CXX: -fopenmp (found version "4.5") 
+#10 1.013 -- Found OpenMP: TRUE (found version "4.5")  
+#10 1.015 -- Including CPU backend
+#10 1.015 -- ARM detected
+#10 1.016 -- Performing Test GGML_COMPILER_SUPPORTS_FP16_FORMAT_I3E
+#10 1.039 -- Performing Test GGML_COMPILER_SUPPORTS_FP16_FORMAT_I3E - Failed
+#10 1.039 -- Checking for ARM features using flags:
+#10 1.039 --   -march=armv8.2-a+dotprod+fp16
+#10 1.039 -- Performing Test HAVE_DOTPROD
+#10 1.094 -- Performing Test HAVE_DOTPROD - Success
+#10 1.094 -- Performing Test HAVE_SVE
+#10 1.112 -- Performing Test HAVE_SVE - Failed
+#10 1.112 -- Performing Test HAVE_MATMUL_INT8
+#10 1.130 -- Performing Test HAVE_MATMUL_INT8 - Failed
+#10 1.130 -- Performing Test HAVE_FMA
+#10 1.185 -- Performing Test HAVE_FMA - Success
+#10 1.185 -- Performing Test HAVE_FP16_VECTOR_ARITHMETIC
+#10 1.267 -- Performing Test HAVE_FP16_VECTOR_ARITHMETIC - Success
+#10 1.267 -- Performing Test HAVE_SME
+#10 1.298 -- Performing Test HAVE_SME - Failed
+#10 1.298 -- Adding CPU backend variant ggml-cpu: -march=armv8.2-a+dotprod+fp16 
+#10 1.305 -- ggml version: 0.26.0
+#10 1.305 -- ggml commit:  08246a2
+#10 1.321 -- Could NOT find OpenSSL, try to set the path to OpenSSL root folder in the system variable OPENSSL_ROOT_DIR (missing: OPENSSL_CRYPTO_LIBRARY OPENSSL_INCLUDE_DIR) 
+#10 1.321 CMake Warning at vendor/cpp-httplib/CMakeLists.txt:154 (message):
+#10 1.321   OpenSSL not found, HTTPS support disabled
+#10 1.321 
+#10 1.321 
+#10 1.343 -- Generating embedded license file for target: llama-app
+#10 1.347 -- Configuring done
+#10 1.428 -- Generating done
+#10 1.432 -- Build files have been written to: /llama/build
+#10 1.480 [  1%] Building CXX object vendor/hash/CMakeFiles/vendor-hash.dir/hash.cpp.o
+#10 1.480 [  1%] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml.c.o
+#10 1.653 [  1%] Building C object vendor/hash/CMakeFiles/vendor-hash.dir/xxhash/xxhash.c.o
+#10 3.052 [  2%] Building CXX object vendor/hash/CMakeFiles/vendor-hash.dir/sha1/sha1.c.o
+#10 3.185 [  2%] Building C object vendor/hash/CMakeFiles/vendor-hash.dir/sha256/sha256.c.o
+#10 3.294 [  3%] Linking CXX static library libvendor-hash.a
+#10 3.318 [  3%] Built target vendor-hash
+#10 3.331 [  3%] Building CXX object vendor/cpp-httplib/CMakeFiles/cpp-httplib.dir/httplib.cpp.o
+#10 3.668 [  3%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml.cpp.o
+#10 4.055 [  3%] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml-alloc.c.o
+#10 4.498 [  5%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-backend.cpp.o
+#10 5.962 [  5%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-backend-meta.cpp.o
+#10 9.384 [  6%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-opt.cpp.o
+#10 ...
 
-#5 [llama 1/5] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
-#5 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 6.29MB / 28.14MB 37.2s
-#5 ...
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 12.58MB / 64.48MB 10.4s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 8.39MB / 86.51MB 10.4s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 13.63MB / 75.37MB 11.0s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 11.53MB / 23.60MB 12.0s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 17.83MB / 75.37MB 14.4s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 16.78MB / 64.48MB 14.4s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 13.63MB / 23.60MB 14.4s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 11.53MB / 86.51MB 15.5s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 22.02MB / 75.37MB 16.5s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 15.73MB / 23.60MB 18.3s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 26.21MB / 75.37MB 18.6s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 18.87MB / 64.48MB 19.5s
+#9 ...
 
-#6 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 5.24MB / 75.37MB 37.4s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 4.19MB / 86.51MB 35.1s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 5.24MB / 64.48MB 34.4s
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 5.24MB / 75.37MB 42.5s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 5.24MB / 86.51MB 40.2s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 6.29MB / 64.48MB 39.5s
-#6 ...
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 10.35 [  6%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-threading.cpp.o
+#10 10.58 [  6%] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml-quants.c.o
+#10 15.10 [  7%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/gguf.cpp.o
+#10 ...
 
-#5 [llama 1/5] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
-#5 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 7.34MB / 28.14MB 47.4s
-#5 ...
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 14.68MB / 86.51MB 20.6s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 30.41MB / 75.37MB 20.9s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 17.83MB / 23.60MB 21.6s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 34.60MB / 75.37MB 23.0s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 22.02MB / 64.48MB 24.6s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 19.92MB / 23.60MB 25.5s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 38.80MB / 75.37MB 25.8s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 17.83MB / 86.51MB 25.7s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 42.99MB / 75.37MB 27.9s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 22.02MB / 23.60MB 28.2s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 26.21MB / 64.48MB 29.6s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 47.19MB / 75.37MB 30.0s
+#9 sha256:404413e6e45accf116074dace885c7ccf2917479ae04f2f46c046b6ae1909254 23.60MB / 23.60MB 30.2s done
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 0B / 48.37MB 0.2s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 22.02MB / 86.51MB 30.7s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 51.38MB / 75.37MB 32.1s
+#9 ...
 
-#6 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 7.34MB / 75.37MB 47.6s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 6.29MB / 86.51MB 45.3s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 7.34MB / 64.48MB 44.6s
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 8.39MB / 75.37MB 52.7s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 7.34MB / 86.51MB 50.4s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 8.39MB / 64.48MB 49.7s
-#6 ...
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 22.34 [  7%] Linking CXX static library libggml-base.a
+#10 22.42 [  7%] Built target ggml-base
+#10 22.45 [  7%] Building CXX object common/CMakeFiles/llama-common-base.dir/build-info.cpp.o
+#10 22.75 [  8%] Linking CXX static library libllama-common-base.a
+#10 22.77 [  8%] Built target llama-common-base
+#10 22.79 [  8%] Provisioning UI assets
+#10 22.79 -- UI: downloading from b1: https://huggingface.co/buckets/ggml-org/llama-ui/resolve/b1/dist.tar.gz
+#10 23.57 [  8%] Linking CXX static library libcpp-httplib.a
+#10 23.59 [  8%] Built target cpp-httplib
+#10 23.60 [  8%] Building C object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu.c.o
+#10 24.33 [ 10%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ggml-cpu.cpp.o
+#10 24.63 -- UI: download dist.tar.gz.sha256 from b1 failed: "HTTP response code said error"
+#10 24.63 -- UI: downloading from latest: https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/dist.tar.gz
+#10 24.94 [ 10%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/repack.cpp.o
+#10 29.52 [ 11%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/hbm.cpp.o
+#10 29.54 [ 11%] Building C object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/quants.c.o
+#10 30.66 [ 11%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/traits.cpp.o
+#10 31.02 [ 12%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/amx/amx.cpp.o
+#10 31.44 [ 12%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/amx/mmq.cpp.o
+#10 31.85 [ 12%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/tiled/tiled.cpp.o
+#10 ...
 
-#5 [llama 1/5] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
-#5 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 9.44MB / 28.14MB 57.6s
-#5 ...
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 55.57MB / 75.37MB 34.2s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 3.15MB / 48.37MB 4.4s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 29.36MB / 64.48MB 34.7s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 27.26MB / 86.51MB 34.7s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 59.77MB / 75.37MB 36.2s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 32.51MB / 86.51MB 38.3s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 6.29MB / 48.37MB 8.6s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 63.96MB / 75.37MB 39.5s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 33.55MB / 64.48MB 39.6s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 37.75MB / 86.51MB 41.6s
+#9 ...
 
-#6 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 9.44MB / 75.37MB 57.8s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 7.34MB / 86.51MB 55.5s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 9.44MB / 64.48MB 54.8s
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 9.44MB / 75.37MB 62.9s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 8.39MB / 86.51MB 60.6s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 10.49MB / 64.48MB 59.9s
-#6 ...
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 32.54 [ 14%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/tiled/tiled-kernel.cpp.o
+#10 33.04 [ 14%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/binary-ops.cpp.o
+#10 34.15 -- UI: archive verified and extracted
+#10 34.15 -- UI: HF download succeeded, stamp updated (ggml-org/llama-ui|b1, resolved: latest)
+#10 34.31 [ 14%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/unary-ops.cpp.o
+#10 34.41 -- UI: gzip compression applied (/llama/build/tools/ui/ui-gzip/_gzip)
+#10 36.14 [ 15%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/vec.cpp.o
+#10 36.55 [ 15%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/ops.cpp.o
+#10 38.65 -- UI: embedded 70 assets
+#10 38.66 [ 15%] Built target llama-ui-assets
+#10 38.67 [ 16%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/llamafile/sgemm.cpp.o
+#10 40.75 [ 16%] Building C object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/arch/arm/quants.c.o
+#10 41.49 [ 16%] Building CXX object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/arch/arm/repack.cpp.o
+#10 42.02 [ 17%] Building CXX object tools/ui/CMakeFiles/llama-ui.dir/ui.cpp.o
+#10 ...
 
-#5 [llama 1/5] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
-#5 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 11.53MB / 28.14MB 67.8s
-#5 ...
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 68.16MB / 75.37MB 43.2s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 9.44MB / 48.37MB 13.2s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 35.65MB / 64.48MB 44.7s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 42.99MB / 86.51MB 46.1s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 72.35MB / 75.37MB 46.5s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 11.53MB / 48.37MB 18.3s
+#9 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 75.37MB / 75.37MB 49.7s done
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 38.80MB / 64.48MB 49.8s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 48.23MB / 86.51MB 50.6s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 14.68MB / 48.37MB 20.9s
+#9 ...
 
-#6 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 11.53MB / 75.37MB 68.0s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 9.44MB / 86.51MB 65.7s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 10.49MB / 64.48MB 65.0s
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 13.63MB / 75.37MB 73.1s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 10.49MB / 86.51MB 70.8s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 10.49MB / 64.48MB 70.1s
-#6 ...
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 42.91 [ 19%] Linking CXX static library libggml-cpu.a
+#10 42.94 [ 19%] Built target ggml-cpu
+#10 42.95 [ 20%] Building CXX object ggml/src/CMakeFiles/ggml.dir/ggml-backend-dl.cpp.o
+#10 43.23 [ 20%] Building CXX object ggml/src/CMakeFiles/ggml.dir/ggml-backend-reg.cpp.o
+#10 44.55 [ 20%] Linking CXX static library libggml.a
+#10 44.57 [ 20%] Built target ggml
+#10 44.59 [ 20%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_9_cxx.cxx.o
+#10 46.05 [ 20%] Linking CXX static library libllama-ui.a
+#10 46.09 [ 20%] Built target llama-ui
+#10 46.09 [ 20%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_8_cxx.cxx.o
+#10 46.62 [ 21%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_7_cxx.cxx.o
+#10 48.51 [ 21%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_6_cxx.cxx.o
+#10 49.81 [ 23%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_5_cxx.cxx.o
+#10 51.42 [ 23%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_4_cxx.cxx.o
+#10 52.58 [ 23%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_3_cxx.cxx.o
+#10 ...
 
-#5 [llama 1/5] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
-#5 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 13.63MB / 28.14MB 78.0s
-#5 ...
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 53.48MB / 86.51MB 53.6s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 17.83MB / 48.37MB 24.0s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 42.99MB / 64.48MB 54.8s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 58.72MB / 86.51MB 57.0s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 20.97MB / 48.37MB 27.3s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 46.14MB / 64.48MB 59.9s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 63.96MB / 86.51MB 60.6s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 24.12MB / 48.37MB 32.3s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 50.33MB / 64.48MB 64.7s
+#9 ...
 
-#6 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 13.63MB / 75.37MB 78.2s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 11.53MB / 86.51MB 75.9s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 10.49MB / 64.48MB 75.2s
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 13.63MB / 75.37MB 83.3s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 12.58MB / 86.51MB 81.0s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 10.49MB / 64.48MB 80.3s
-#6 ...
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 54.71 [ 24%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_2_cxx.cxx.o
+#10 56.39 [ 24%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_1_cxx.cxx.o
+#10 56.86 [ 24%] Building CXX object src/CMakeFiles/llama.dir/Unity/unity_0_cxx.cxx.o
+#10 59.39 [ 25%] Building CXX object src/CMakeFiles/llama.dir/llama.cpp.o
+#10 59.83 [ 25%] Building CXX object src/CMakeFiles/llama.dir/llama-adapter.cpp.o
+#10 60.65 [ 25%] Building CXX object src/CMakeFiles/llama.dir/llama-arch.cpp.o
+#10 61.72 [ 26%] Building CXX object src/CMakeFiles/llama.dir/llama-batch.cpp.o
+#10 63.24 [ 26%] Building CXX object src/CMakeFiles/llama.dir/llama-chat.cpp.o
+#10 63.59 [ 28%] Building CXX object src/CMakeFiles/llama.dir/llama-context.cpp.o
+#10 64.90 [ 28%] Building CXX object src/CMakeFiles/llama.dir/llama-cparams.cpp.o
+#10 ...
 
-#5 [llama 1/5] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
-#5 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 15.73MB / 28.14MB 88.2s
-#5 ...
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 69.21MB / 86.51MB 65.0s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 27.26MB / 48.37MB 36.0s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 30.41MB / 48.37MB 39.5s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 53.48MB / 64.48MB 69.8s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 74.45MB / 86.51MB 69.9s
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 33.55MB / 48.37MB 43.2s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 57.67MB / 64.48MB 74.0s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 79.69MB / 86.51MB 74.6s
+#9 ...
 
-#6 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 13.63MB / 75.37MB 88.4s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 13.63MB / 86.51MB 86.1s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 10.49MB / 64.48MB 85.4s
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 13.63MB / 75.37MB 93.5s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 15.73MB / 86.51MB 91.2s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 10.49MB / 64.48MB 90.5s
-#6 ...
+#10 [llama 5/5] RUN cmake -B build -DGGML_METAL=OFF -DGGML_BLAS=OFF -DGGML_CUDA=OFF -DGGML_VULKAN=OFF -DGGML_NATIVE=OFF -DGGML_CPU_ARM_ARCH=armv8.2-a+dotprod+fp16       -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON       -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release  && cmake --build build --target llama-server -j 2
+#10 64.97 [ 28%] Building CXX object src/CMakeFiles/llama.dir/llama-grammar.cpp.o
+#10 67.40 [ 29%] Building CXX object src/CMakeFiles/llama.dir/llama-graph.cpp.o
+#10 69.87 [ 29%] Building CXX object src/CMakeFiles/llama.dir/llama-hparams.cpp.o
+#10 70.20 [ 29%] Building CXX object src/CMakeFiles/llama.dir/llama-impl.cpp.o
+#10 70.73 [ 30%] Building CXX object src/CMakeFiles/llama.dir/llama-io.cpp.o
+#10 70.87 [ 30%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache.cpp.o
+#10 71.04 [ 32%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-iswa.cpp.o
+#10 72.20 [ 32%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-dsa.cpp.o
+#10 73.22 [ 32%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-dsa-iswa.cpp.o
+#10 74.56 [ 33%] Building CXX object src/CMakeFiles/llama.dir/llama-kv-cache-msa.cpp.o
+#10 ...
 
-#5 [llama 1/5] FROM docker.io/library/debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587
-#5 sha256:c75f989a229d12b2d2613a5997de9ff3546f664c22da9248720033a2410220f6 18.87MB / 28.14MB 98.4s
-#5 ...
-
-#6 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 13.63MB / 75.37MB 98.6s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 15.73MB / 86.51MB 96.3s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 11.53MB / 64.48MB 95.6s
-#6 sha256:f5657497bb4612f95697098fd984bb9e638887aa2070ae81081ed7887c453027 13.63MB / 75.37MB 103.7s
-#6 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 16.78MB / 86.51MB 101.4s
-#6 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 12.58MB / 64.48MB 100.7s
+#9 [stage-1 1/4] FROM docker.io/library/golang:1.24-bookworm@sha256:1a6d4452c65dea36aac2e2d606b01b4a029ec90cc1ae53890540ce6173ea77ac
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 35.65MB / 48.37MB 48.3s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 84.93MB / 86.51MB 78.9s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 60.82MB / 64.48MB 79.0s
+#9 sha256:a81f5bcee2f7f3f2daa44011ddc82cf6857041db26c5a638c71a9aee0007725c 86.51MB / 86.51MB 80.7s done
+#9 sha256:64e8f4c09e7ac936ecc3deb0e61613f653224c28b2e35fa9d8e6e11cbdb5f911 37.75MB / 48.37MB 53.4s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 63.96MB / 64.48MB 84.2s
+#9 sha256:e1e9aa4982c2a67e202ea283fc3760e94d8d8b16966c616e01ad0238abbaac82 64.48MB / 64.48MB 84.3s done
