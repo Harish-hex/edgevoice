@@ -19,14 +19,18 @@ type feats struct {
 	roles map[string]int
 	kw    map[string]bool
 	nums  int
-	unk   int // unknown content tokens
+	unk   int             // unknown content tokens
+	vals  map[string]bool // role:value pairs, e.g. WHO:self
 }
 
 func featsOf(n iface.NormalizedText, lx *Lexicon) feats {
-	f := feats{roles: map[string]int{}, kw: map[string]bool{}}
+	f := feats{roles: map[string]int{}, kw: map[string]bool{}, vals: map[string]bool{}}
 	for i, t := range n.Tags {
 		if t.Role != "" {
 			f.roles[t.Role]++
+		}
+		if t.Value != "" {
+			f.vals[t.Role+":"+t.Value] = true
 		}
 		if t.Role == "KW" {
 			f.kw[t.Value] = true
@@ -98,7 +102,7 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 		return mk("clock.date", nil, false)
 	case (has("TIME") || has("AT")) && has("WH") && f.nums == 0:
 		return mk("clock.time", nil, false)
-	case has("WHO") && has("YOU"):
+	case has("WHO") && (has("YOU") || f.vals["WHO:self"]):
 		return mk("smalltalk.identity", nil, false)
 	case has("GREET") && len(n.Tokens) <= 3:
 		return mk("smalltalk.greet", nil, false)

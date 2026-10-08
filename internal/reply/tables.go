@@ -14,7 +14,7 @@ var tableSlot = map[string]string{
 	"day_en": "day", "day_ta": "day", "day_rom": "day",
 	"amount_en": "amount", "amount_ta": "amount", "unit_en": "unit", "unit_ta": "unit", "unit_rom": "unit",
 	"weekday_en": "weekday", "weekday_ta": "weekday", "month_en": "month", "month_ta": "month", "dom_en": "dom", "dom_ta": "dom",
-	"op_en": "op",
+	"op_en": "op", "a_num": "a", "b_num": "b", "result_num": "result",
 }
 
 var (
@@ -100,6 +100,12 @@ func init() {
 	for i, m := range []string{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"} {
 		set("month_en", m, m)
 		set("month_ta", m, mo[i])
+	}
+	for n := 0; n <= 200; n++ { // calculator operands/results (larger or decimal results fall back to live TTS)
+		k := strconv.Itoa(n)
+		set("a_num", k, k)
+		set("b_num", k, k)
+		set("result_num", k, k)
 	}
 	for k, v := range map[string]string{"*": "times", "+": "plus", "-": "minus", "/": "divided by"} {
 		set("op_en", k, v)

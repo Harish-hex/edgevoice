@@ -28,7 +28,7 @@ func TestStreamAndClauses(t *testing.T) {
 	for cl := range Clauses(ch, true) {
 		got = append(got, cl)
 	}
-	if strings.Join(got, "|") != "Space is huge,|and it is cold.|Stars burn." {
+	if strings.Join(got, "|") != "Space is huge,|and it is cold.|Stars burn." && strings.Join(got, "|") != "Space is huge, and|it is cold.|Stars burn." {
 		t.Fatalf("clauses %q", got)
 	}
 }

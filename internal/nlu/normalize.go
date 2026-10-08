@@ -22,7 +22,7 @@ func (n *Normalizer) Normalize(t iface.Transcript) iface.NormalizedText {
 	if HasTamil(text) {
 		text = Transliterate(text)
 	}
-	raw := tokenize(text)
+	raw := n.splitKeywordPrefixes(tokenize(text))
 
 	var toks []string
 	var tags []iface.Tag
@@ -63,6 +63,28 @@ func (n *Normalizer) Normalize(t iface.Transcript) iface.NormalizedText {
 		case "en":
 			out.EnglishHits++
 		}
+	}
+	return out
+}
+
+// splitKeywordPrefixes splits ASR-glued tokens that start with an intent keyword ("timervey" → "timer vey").
+func (n *Normalizer) splitKeywordPrefixes(toks []string) []string {
+	var out []string
+	for _, t := range toks {
+		if _, ok := n.Lex.exact[t]; !ok && len(t) >= 7 {
+			split := false
+			for _, kw := range []string{"alarm", "timer"} {
+				if rest, ok := strings.CutPrefix(t, kw); ok && len(rest) >= 2 {
+					out = append(out, kw, rest)
+					split = true
+					break
+				}
+			}
+			if split {
+				continue
+			}
+		}
+		out = append(out, t)
 	}
 	return out
 }

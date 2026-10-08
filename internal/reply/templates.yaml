@@ -24,8 +24,8 @@ clock.date:
   ENGLISH:  {display: "Today is {weekday}, {month} {dom}.", speech: ["Today is", "{weekday_en}", "{month_en}", "{dom_en}"]}
   TANGLISH: {display: "Innaikku {weekday}, {month} {dom}.", speech: ["இன்னைக்கு", "{weekday_ta}", "{month_ta}", "{dom_ta}"]}
 calc:
-  ENGLISH:  {display: "{a} {op} {b} = {result}", speech: ["{a} {op_en} {b} is {result}"]}
-  TANGLISH: {display: "{a} {op} {b} = {result}", speech: ["{a} {op_en} {b} is {result}"], voice: en}
+  ENGLISH:  {display: "{a} {op} {b} = {result}", speech: ["{a_num}", "{op_en}", "{b_num}", "is", "{result_num}"]}
+  TANGLISH: {display: "{a} {op} {b} = {result}", speech: ["{a_num}", "{op_en}", "{b_num}", "is", "{result_num}"], voice: en}
 calc.error:
   ENGLISH:  {display: "I can't calculate that.", speech: ["I can't calculate that."]}
   TANGLISH: {display: "Adhu calculate panna mudiyala.", speech: ["அது கணக்கு பண்ண முடியல"]}

@@ -54,6 +54,14 @@ func TestParseSeed(t *testing.T) {
 		{"alaaram cancel pannunga", "alarm.cancel", nil},
 		{"aaru arai manikku alarm", "alarm.set", map[string]string{"time": "06:30"}},
 		{"vedhar eppadi", "offline.unsupported", nil},
+		// English-ASR renderings of romanized Tanglish (from synthetic dev set)
+		{"now lay coom mourning six coup alarm set panu", "alarm.set", map[string]string{"day": "tomorrow", "time": "06:00"}},
+		{"now lay cou call i pathoo manicu alarm vay", "alarm.set", map[string]string{"day": "tomorrow", "time": "10:00"}},
+		{"onu nimischem timer fa", "timer.set", map[string]string{"duration": "1m"}},
+		{"niaru", "smalltalk.identity", nil},
+		{"onu neme timervey", "timer.set", map[string]string{"duration": "1m"}},
+		{"mani enna aachu", "clock.time", nil},
+		{"six into ten avla", "calc", map[string]string{"expression": "6*10"}},
 		{"wake me up at six tomorrow morning", "alarm.set", map[string]string{"day": "tomorrow", "time": "06:00"}},
 	}
 	for _, c := range cases {

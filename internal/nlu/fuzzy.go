@@ -25,9 +25,14 @@ func levenshtein(a, b string) int {
 }
 
 // phoneticKey is the PRD §7.4 tie-break key: dh/th→t, zh→l, w→v, collapse doubles,
-// drop vowels after the first character.
+// drop vowels after the first character. Extended for English-ASR spellings of Tamil words:
+// c/q/kh/ck→k, sch→sh, ph→f, final y→i (manicu≈manikku, caulay≈kaalai, many≈mani).
 func phoneticKey(s string) string {
-	s = strings.NewReplacer("dh", "t", "th", "t", "zh", "l", "w", "v").Replace(strings.ToLower(s))
+	s = strings.ToLower(s)
+	if strings.HasSuffix(s, "y") {
+		s = s[:len(s)-1] + "i"
+	}
+	s = strings.NewReplacer("sch", "sh", "ck", "k", "kh", "k", "ph", "f", "dh", "t", "th", "t", "zh", "l", "c", "k", "q", "k", "w", "v").Replace(s)
 	var b strings.Builder
 	var last rune
 	for i, r := range s {

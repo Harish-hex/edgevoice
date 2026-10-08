@@ -79,7 +79,7 @@ func (lx *Lexicon) lookup(tok string) (iface.Tag, int, bool) {
 	if t, ok := lx.exact[tok]; ok {
 		return t, 0, true
 	}
-	if len([]rune(tok)) < 3 || isDigits(tok) {
+	if len([]rune(tok)) < 4 || isDigits(tok) { // 1–3 letter tokens: exact match only
 		return iface.Tag{}, 0, false
 	}
 	limit := maxDist(tok)
@@ -99,6 +99,14 @@ func (lx *Lexicon) lookup(tok string) (iface.Tag, int, bool) {
 		}
 	}
 	if bestD > limit {
+		// Phonetic fallback: same consonant skeleton (≥3 consonants) counts as a near match.
+		if len([]rune(tok)) >= 4 && len(key) >= 3 {
+			for _, v := range lx.variants {
+				if len([]rune(v.form)) >= 4 && phoneticKey(v.form) == key {
+					return v.tag, limit, true
+				}
+			}
+		}
 		return iface.Tag{}, 0, false
 	}
 	return best, bestD, true

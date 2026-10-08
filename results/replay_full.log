@@ -1,2 +1,616 @@
 onnxruntime cpuid_info warning: Unknown CPU vendor. cpuinfo_vendor value: 0
-08:13:20.884281 models loaded in 3.005s (clips=262)
+08:29:42.215933 models loaded in 3.268s (clips=262)
+08:29:45.805780 LLM ready (Qwen3-0.6B-Q4_K_M.gguf)
+08:29:47.656311 you: what time is it
+edgevoice [ENGLISH/clock.time]: It's 8:29 a.m..
+[1/149] 000_en_en.wav
+08:29:51.479694 you: who are you
+edgevoice [ENGLISH/smalltalk.identity]: I'm EdgeVoice, an offline voice assistant.
+[2/149] 001_en_en.wav
+08:29:56.612724 you: yet indeed william law
+edgevoice [ENGLISH/llm]: ...
+08:29:58.528910 you: yet indeed william law
+edgevoice [ENGLISH/llm]: William Law will be a significant figure in the future.
+[3/149] 002_ta_ta.wav
+08:30:05.743152 you: pennous neme timerve
+edgevoice [TANGLISH/llm]: ...
+08:30:06.405843 you: pennous neme timerve
+edgevoice [TANGLISH/llm]: Pennous neme timerve.
+[4/149] 003_ta_en.wav
+08:30:11.900816 you: by indolent ya real
+edgevoice [ENGLISH/llm]: ...
+08:30:12.484385 you: by indolent ya real
+edgevoice [ENGLISH/llm]: I am not indolent.
+[5/149] 004_ta_ta.wav
+08:30:19.192639 you: narling could college georgamanico allowed a
+edgevoice [TANGLISH/llm]: ...
+08:30:20.606652 you: narling could college georgamanico allowed a
+edgevoice [TANGLISH/llm]: Narling could allow college Georgamanico.
+[6/149] 005_ta_ta.wav
+08:30:25.089691 you: three into seven ev
+edgevoice [ENGLISH/calc]: 3 * 7 = 21
+[7/149] 006_ta_en.wav
+08:30:33.066863 you: nearly quickarde but anneica aladim ba
+edgevoice [TANGLISH/llm]: ...
+08:30:34.564345 you: nearly quickarde but anneica aladim ba
+edgevoice [TANGLISH/llm]: Nearly quick, but Anneika aladim ba.
+[8/149] 007_ta_ta.wav
+08:30:39.607788 you: wake me up at six to morrow morning
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 6:00 a.m. tomorrow.
+[9/149] 008_en_en.wav
+08:30:44.618657 you: set a timer for three minutes
+edgevoice [ENGLISH/timer.set]: Timer set for 3 minutes.
+[10/149] 009_en_en.wav
+08:30:49.633365 you: set a timer for five minutes
+edgevoice [ENGLISH/timer.set]: Timer set for 5 minutes.
+[11/149] 010_en_en.wav
+08:30:54.856673 you: wake me up at ten to morrow morning
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 10:00 a.m. tomorrow.
+[12/149] 011_en_en.wav
+08:30:58.527258 you: they in violet
+edgevoice [ENGLISH/smalltalk.greet]: Hi! How can I help?
+[13/149] 012_ta_ta.wav
+08:31:04.017305 you: but the nimit norah
+edgevoice [ENGLISH/llm]: ...
+08:31:06.330559 you: but the nimit norah
+edgevoice [ENGLISH/llm]: Nimit Naylor is a singer who has been active in the music industry.
+[14/149] 013_ta_ta.wav
+08:31:10.796057 you: what is six times ten
+edgevoice [ENGLISH/calc]: 6 * 10 = 60
+[15/149] 014_en_en.wav
+08:31:17.618649 you: ing the nichanta marve
+edgevoice [ENGLISH/llm]: ...
+08:31:19.795161 you: ing the nichanta marve
+edgevoice [ENGLISH/llm]: Nichanta Marve is a fictional character from the Marvel Comics universe.
+[16/149] 015_ta_ta.wav
+08:31:24.271884 you: what is four times eight
+edgevoice [ENGLISH/calc]: 4 * 8 = 32
+[17/149] 016_en_en.wav
+08:31:30.596488 you: alarm honor rue fou
+edgevoice [ENGLISH/llm]: ...
+08:31:32.021168 you: alarm honor rue fou
+edgevoice [ENGLISH/llm]: The alarm is ringing, and honor is respected.
+[18/149] 017_ta_en.wav
+08:31:38.305658 you: but art every one but america aladam bitcherday
+edgevoice [TANGLISH/llm]: ...
+08:31:40.459000 you: but art every one but america aladam bitcherday
+edgevoice [TANGLISH/llm]: But art every one, except America, alader, and bitcherday.
+[19/149] 018_ta_ta.wav
+08:31:47.512349 you: but ought that a yuctumarnica allurdam bitchelet
+edgevoice [ENGLISH/llm]: ...
+08:31:48.441658 you: but ought that a yuctumarnica allurdam bitchelet
+edgevoice [ENGLISH/llm]: A yuctumarnica allurdam bitchelet.
+[20/149] 019_ta_ta.wav
+08:31:53.506604 you: pad him on ni'amasham timervey
+edgevoice [TANGLISH/system.stop]: Seri.
+[21/149] 020_ta_en.wav
+08:31:59.395250 you: now lay coom mourning six coup alarm set panu
+edgevoice [TANGLISH/alarm.set]: Seri, naalaikku kaalai 6:00 ku alarm vechiten.
+[22/149] 021_ta_en.wav
+08:32:04.694450 you: wonder in a champagne barbay
+edgevoice [ENGLISH/llm]: ...
+08:32:06.102736 you: wonder in a champagne barbay
+edgevoice [ENGLISH/llm]: A champagne bar bay with a sparkling drink.
+[23/149] 022_ta_ta.wav
+08:32:10.124805 you: what's the weather to morrow
+edgevoice [ENGLISH/offline.unsupported]: Sorry, I'm offline, so I can't check that.
+[24/149] 023_en_en.wav
+08:32:14.656528 you: eight into twelve avel
+edgevoice [TANGLISH/calc]: 8 * 12 = 96
+[25/149] 024_ta_en.wav
+08:32:22.711034 you: but ought that it yoke of marnica aladdin bitcherde
+edgevoice [TANGLISH/llm]: ...
+08:32:24.517326 you: but ought that it yoke of marnica aladdin bitcherde
+edgevoice [TANGLISH/llm]: But that's a bit of a mix-up, but I'm not sure.
+[26/149] 025_ta_ta.wav
+08:32:29.596619 you: set in alarm for six a m to morrow
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 6:00 a.m. tomorrow.
+[27/149] 026_en_en.wav
+08:32:34.592542 you: set a timer for one minute
+edgevoice [ENGLISH/timer.set]: Timer set for 1 minutes.
+[28/149] 027_en_en.wav
+08:32:41.206478 you: set an alarm for dina m to morrow
+edgevoice [ENGLISH/llm]: ...
+08:32:42.325529 you: set an alarm for dina m to morrow
+edgevoice [ENGLISH/llm]: Set an alarm for Dina Morning.
+[29/149] 028_en_en.wav
+08:32:49.359123 you: nally coula are romanicu alarm vey
+edgevoice [TANGLISH/llm]: ...
+08:32:50.626350 you: nally coula are romanicu alarm vey
+edgevoice [TANGLISH/llm]: Nally coula are romanicu alarm vey.
+[30/149] 029_ta_en.wav
+08:32:55.757200 you: why is the sky blue
+edgevoice [ENGLISH/llm]: ...
+08:32:59.075698 you: why is the sky blue
+edgevoice [ENGLISH/llm]: The sky appears blue because it reflects sunlight, which causes the color to spread out across the heavens.
+[31/149] 030_en_en.wav
+08:33:05.108270 you: now lay coom mourning eleven coup alarm set panoo
+edgevoice [TANGLISH/alarm.set]: Seri, naalaikku kaalai 11:00 ku alarm vechiten.
+[32/149] 031_ta_en.wav
+08:33:12.518725 you: narnecu moni levin could all aradam setponnet
+edgevoice [TANGLISH/llm]: ...
+08:33:13.812970 you: narnecu moni levin could all aradam setponnet
+edgevoice [TANGLISH/llm]: Narunam ki levin, moni arada.
+[33/149] 032_ta_ta.wav
+08:33:19.355857 you: our own neme timerve
+edgevoice [TANGLISH/llm]: ...
+08:33:19.834528 you: our own neme timerve
+edgevoice [TANGLISH/llm]: my own timer.
+[34/149] 033_ta_en.wav
+08:33:26.021096 you: tell me a fun fact about space
+edgevoice [ENGLISH/llm]: ...
+08:33:30.289425 you: tell me a fun fact about space
+edgevoice [ENGLISH/llm]: One fun fact about space is that astronauts in space can experience weightlessness, which makes it hard to feel full or tired.
+[35/149] 034_en_en.wav
+08:33:36.999753 you: rather theory on that humanicu alarm veche dou
+edgevoice [TANGLISH/llm]: ...
+08:33:37.831080 you: rather theory on that humanicu alarm veche dou
+edgevoice [TANGLISH/llm]: Humanicu alarm veche dou.
+[36/149] 035_ta_en.wav
+08:33:42.120239 you: nine into one aval
+edgevoice [TANGLISH/calc]: 9 * 1 = 9
+[37/149] 036_ta_en.wav
+08:33:50.016321 you: not a commodern fate good aladdin sybod
+edgevoice [ENGLISH/llm]: ...
+08:33:51.234927 you: not a commodern fate good aladdin sybod
+edgevoice [ENGLISH/llm]: Not a commodern fate, good aladdin.
+[38/149] 037_ta_ta.wav
+08:33:55.865622 you: what is nine times one
+edgevoice [ENGLISH/calc]: 9 * 1 = 9
+[39/149] 038_en_en.wav
+08:34:02.320919 you: one but a dimmish empaign at way
+edgevoice [TANGLISH/llm]: ...
+08:34:03.462018 you: one but a dimmish empaign at way
+edgevoice [TANGLISH/llm]: One but a dimmish empaign at way.
+[40/149] 039_ta_ta.wav
+08:34:07.069213 you: stop
+edgevoice [ENGLISH/system.stop]: Okay.
+[41/149] 040_en_en.wav
+08:34:12.700485 you: now lay cou call i pathoo manicu alarm vay
+edgevoice [TANGLISH/alarm.set]: Seri, naalaikku kaalai 10:00 ku alarm vechiten.
+[42/149] 041_ta_en.wav
+08:34:19.442224 you: nearly cur coli antomanico aladam baili
+edgevoice [TANGLISH/llm]: ...
+08:34:21.108008 you: nearly cur coli antomanico aladam baili
+edgevoice [TANGLISH/llm]: Nearly cur, antomanico aladam, baili.
+[43/149] 042_ta_ta.wav
+08:34:26.095034 you: tell me a short joke
+edgevoice [ENGLISH/llm]: ...
+08:34:28.458130 you: tell me a short joke
+edgevoice [ENGLISH/llm]: What do you call a man who eats a lot of chocolate? A confectioner!
+[44/149] 043_en_en.wav
+08:34:33.304569 you: set a timer for six minutes
+edgevoice [ENGLISH/timer.set]: Timer set for 6 minutes.
+[45/149] 044_en_en.wav
+08:34:37.952564 you: alarm cancel penneu
+edgevoice [TANGLISH/alarm.cancel]: Seri, alarm cancel pannitten.
+[46/149] 045_ta_en.wav
+08:34:42.996288 you: what is seven times eleven
+edgevoice [ENGLISH/calc]: 7 * 11 = 77
+[47/149] 046_en_en.wav
+08:34:49.664437 you: wake me up at eleven tomorrow morning
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 11:00 a.m. tomorrow.
+[48/149] 047_en_en.wav
+08:34:54.458364 you: onu nimischem timer fa
+edgevoice [TANGLISH/timer.set]: Seri, 1 nimisham timer vechiten.
+[49/149] 048_ta_en.wav
+08:35:00.352857 you: as soon ninesham time urvey
+edgevoice [TANGLISH/llm]: ...
+08:35:02.041179 you: as soon ninesham time urvey
+edgevoice [TANGLISH/llm]: As soon as it's nine o'clock, I'll be with you.
+[50/149] 049_ta_en.wav
+08:35:08.736778 you: gratheri pathamenico alarm veche do
+edgevoice [TANGLISH/llm]: ...
+08:35:10.018409 you: gratheri pathamenico alarm veche do
+edgevoice [TANGLISH/llm]: Vechi pathamenico alarm, gratheri.
+[51/149] 050_ta_en.wav
+08:35:14.142973 you: midded the
+edgevoice [ENGLISH/llm]: ...
+08:35:16.865199 you: midded the
+edgevoice [ENGLISH/llm]: I'm sorry, I'm not sure what you're asking about. Could you clarify your request?
+[52/149] 051_ta_ta.wav
+08:35:21.641694 you: set a timer for ten minutes
+edgevoice [ENGLISH/timer.set]: Timer set for 10 minutes.
+[53/149] 052_en_en.wav
+08:35:27.067662 you: wake me up at eight to morrow morning
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 8:00 a.m. tomorrow.
+[54/149] 053_en_en.wav
+08:35:31.098990 you: niaru
+edgevoice [TANGLISH/smalltalk.identity]: Naan EdgeVoice, offline voice assistant.
+[55/149] 054_ta_en.wav
+08:35:36.604320 you: mormon nibbler should they marve
+edgevoice [ENGLISH/llm]: ...
+08:35:38.884283 you: mormon nibbler should they marve
+edgevoice [ENGLISH/llm]: Mormon nibblers should be honored and respected in all aspects of life.
+[56/149] 055_ta_ta.wav
+08:35:44.621426 you: now lay kue mourning nine coup alarm set panu
+edgevoice [TANGLISH/alarm.set]: Seri, naalaikku kaalai 9:00 ku alarm vechiten.
+[57/149] 056_ta_en.wav
+08:35:50.103499 you: seven in the eleven yeril
+edgevoice [ENGLISH/llm]: ...
+08:35:50.694755 you: seven in the eleven yeril
+edgevoice [ENGLISH/llm]: Seven in the eleven.
+[58/149] 057_ta_ta.wav
+08:35:54.537277 you: what's the time now
+edgevoice [ENGLISH/clock.time]: It's 8:35 a.m..
+[59/149] 058_en_en.wav
+08:36:01.374131 you: narling cocali one both of monica aladdam bite
+edgevoice [TANGLISH/llm]: ...
+08:36:02.719744 you: narling cocali one both of monica aladdam bite
+edgevoice [TANGLISH/llm]: Monica, alad, and the cocali bite.
+[60/149] 059_ta_ta.wav
+08:36:07.799172 you: thee in the seventh year vilt
+edgevoice [TANGLISH/llm]: ...
+08:36:08.888108 you: thee in the seventh year vilt
+edgevoice [TANGLISH/llm]: In the seventh year, you will be.
+[61/149] 060_ta_ta.wav
+08:36:14.754768 you: chene papae or fact solu
+edgevoice [ENGLISH/llm]: ...
+08:36:15.166611 you: chene papae or fact solu
+edgevoice [ENGLISH/llm]: Chene papae.
+[62/149] 061_ta_en.wav
+08:36:21.722203 you: h theory asham manicue alarm veche du
+edgevoice [TANGLISH/llm]: ...
+08:36:22.302239 you: h theory asham manicue alarm veche du
+edgevoice [TANGLISH/llm]: H theory asham!
+[63/149] 062_ta_en.wav
+08:36:29.524496 you: knowled cou khali ashermanicu alarm vey
+edgevoice [TANGLISH/llm]: ...
+08:36:30.135372 you: knowled cou khali ashermanicu alarm vey
+edgevoice [TANGLISH/llm]: I know the alarm.
+[64/149] 063_ta_en.wav
+08:36:34.277555 you: what's the date to day
+edgevoice [ENGLISH/clock.date]: Today is Thursday, October 8.
+[65/149] 064_en_en.wav
+08:36:40.334099 you: north of moderning seven could aladum sicurnault
+edgevoice [TANGLISH/alarm.cancel]: Seri, alarm cancel pannitten.
+[66/149] 065_ta_ta.wav
+08:36:47.490507 you: knowledge who caulay pat annu manikood alarm vey
+edgevoice [TANGLISH/llm]: ...
+08:36:49.264915 you: knowledge who caulay pat annu manikood alarm vey
+edgevoice [TANGLISH/llm]: I know the people who have the alarm and the manikood.
+[67/149] 066_ta_en.wav
+08:36:56.306394 you: ratheri adumamicu alarm vechadu
+edgevoice [TANGLISH/llm]: ...
+08:36:57.324343 you: ratheri adumamicu alarm vechadu
+edgevoice [TANGLISH/llm]: Ratheri adumamicu alarm vechadu.
+[68/149] 067_ta_en.wav
+08:37:02.552258 you: set an alarm for eight a m to morrow
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 8:00 a.m. tomorrow.
+[69/149] 068_en_en.wav
+08:37:08.762037 you: now lay coom mourning eight coup alarm set panting
+edgevoice [TANGLISH/alarm.set]: Seri, naalaikku kaalai 8:00 ku alarm vechiten.
+[70/149] 069_ta_en.wav
+08:37:13.785798 you: set a timer for twelve minutes
+edgevoice [ENGLISH/timer.set]: Timer set for 12 minutes.
+[71/149] 070_en_en.wav
+08:37:19.205394 you: due in the sixth year will
+edgevoice [TANGLISH/llm]: ...
+08:37:20.469606 you: due in the sixth year will
+edgevoice [TANGLISH/llm]: Due in the sixth year, it will be.
+[72/149] 071_ta_ta.wav
+08:37:25.056582 you: what is five times nine
+edgevoice [ENGLISH/calc]: 5 * 9 = 45
+[73/149] 072_en_en.wav
+08:37:32.037647 you: oddern emission benarvisit
+edgevoice [ENGLISH/llm]: ...
+08:37:32.765675 you: oddern emission benarvisit
+edgevoice [ENGLISH/llm]: Odeh emisyonu benar.
+[74/149] 073_ta_ta.wav
+08:37:38.918931 you: yennico port ali kutu yana paralam
+edgevoice [ENGLISH/llm]: ...
+08:37:40.094998 you: yennico port ali kutu yana paralam
+edgevoice [ENGLISH/llm]: Yennico Port Ali Yana Paralam.
+[75/149] 074_ta_ta.wav
+08:37:45.362371 you: adding neme timer fay
+edgevoice [TANGLISH/llm]: ...
+08:37:46.784477 you: adding neme timer fay
+edgevoice [TANGLISH/llm]: I need to add a timer. Let me know!
+[76/149] 075_ta_en.wav
+08:37:52.450968 you: nine cucalli aredeka aladdam bai
+edgevoice [TANGLISH/alarm.set]: Seri, innaikku kaalai 9:00 ku alarm vechiten.
+[77/149] 076_ta_ta.wav
+08:37:57.603991 you: money in the archit
+edgevoice [ENGLISH/llm]: ...
+08:38:01.004334 you: money in the archit
+edgevoice [ENGLISH/llm]: I don't have a specific amount of money in the archit. Let me know if you need help with something else.
+[78/149] 077_ta_ta.wav
+08:38:06.167894 you: four in that ye're will
+edgevoice [ENGLISH/llm]: ...
+08:38:07.111007 you: four in that ye're will
+edgevoice [ENGLISH/llm]: My will is to serve you.
+[79/149] 078_ta_ta.wav
+08:38:11.862486 you: set a tiner for eight minut
+edgevoice [TANGLISH/timer.set]: Seri, 8 nimisham timer vechiten.
+[80/149] 079_en_en.wav
+08:38:16.581653 you: what is eight times twelve
+edgevoice [ENGLISH/calc]: 8 * 12 = 96
+[81/149] 080_en_en.wav
+08:38:23.561232 you: now lay two morning seven coup alarms set panting
+edgevoice [TANGLISH/alarm.set]: Seri, naalaikku raathiri 2:00 ku alarm vechiten.
+[82/149] 081_ta_en.wav
+08:38:28.634111 you: set a timer for nine minutes
+edgevoice [ENGLISH/timer.set]: Timer set for 9 minutes.
+[83/149] 082_en_en.wav
+08:38:33.599426 you: many ann are two
+edgevoice [TANGLISH/llm]: ...
+08:38:34.231953 you: many ann are two
+edgevoice [TANGLISH/llm]: Many ann are two.
+[84/149] 083_ta_en.wav
+08:38:38.575958 you: the yada
+edgevoice [ENGLISH/llm]: ...
+08:38:41.642689 you: the yada
+edgevoice [ENGLISH/llm]: I am sorry, but I need more information. Could you please provide the details you'd like to know?
+[85/149] 084_ta_ta.wav
+08:38:47.148096 you: navy that yapparikum
+edgevoice [ENGLISH/llm]: ...
+08:38:49.144928 you: navy that yapparikum
+edgevoice [ENGLISH/llm]: The navy is a color. Yapparikum is a color too.
+[86/149] 085_ta_ta.wav
+08:38:54.109890 you: what is three times seven
+edgevoice [ENGLISH/calc]: 3 * 7 = 21
+[87/149] 086_en_en.wav
+08:39:02.423003 you: nanetucally yet to manica alar ambai
+edgevoice [TANGLISH/llm]: ...
+08:39:03.802159 you: nanetucally yet to manica alar ambai
+edgevoice [TANGLISH/llm]: Nanetucally, yet to manica alar ambai.
+[88/149] 087_ta_ta.wav
+08:39:09.263112 you: by the mischampagner valley
+edgevoice [TANGLISH/llm]: ...
+08:39:09.960088 you: by the mischampagner valley
+edgevoice [TANGLISH/llm]: By the Mischaagner valley.
+[89/149] 088_ta_ta.wav
+08:39:15.704009 you: now lay coup mourning five coup alarms set pan
+edgevoice [TANGLISH/alarm.set]: Seri, naalaikku kaalai 5:00 ku alarm vechiten.
+[90/149] 089_ta_en.wav
+08:39:21.706897 you: ran to nimischem tinner vay
+edgevoice [TANGLISH/llm]: ...
+08:39:22.413207 you: ran to nimischem tinner vay
+edgevoice [TANGLISH/llm]: I ran to Nimishmok.
+[91/149] 090_ta_en.wav
+08:39:27.719555 you: wake me up at five to morrow morning
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 5:00 a.m. tomorrow.
+[92/149] 091_en_en.wav
+08:39:32.391032 you: six into ten avla
+edgevoice [TANGLISH/calc]: 6 * 10 = 60
+[93/149] 092_ta_en.wav
+08:39:40.938723 you: knowledge cou koly and germanico alarm they
+edgevoice [TANGLISH/llm]: ...
+08:39:41.605917 you: knowledge cou koly and germanico alarm they
+edgevoice [TANGLISH/llm]: Koloy, koly koly.
+[94/149] 093_ta_en.wav
+08:39:46.875546 you: wake me up at seven to morrow morning
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 7:00 a.m. tomorrow.
+[95/149] 094_en_en.wav
+08:39:54.131856 you: nakurmo named k aladam seconnus
+edgevoice [TANGLISH/llm]: ...
+08:39:54.787111 you: nakurmo named k aladam seconnus
+edgevoice [TANGLISH/llm]: K aladam seconnus.
+[96/149] 095_ta_ta.wav
+08:39:59.955518 you: set an alarm for ten a m to morrow
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 10:00 a.m. tomorrow.
+[97/149] 096_en_en.wav
+08:40:05.079274 you: set a timer for four minutes
+edgevoice [ENGLISH/timer.set]: Timer set for 4 minutes.
+[98/149] 097_en_en.wav
+08:40:09.495857 you: four into eight avloe
+edgevoice [TANGLISH/calc]: 4 * 8 = 32
+[99/149] 098_ta_en.wav
+08:40:15.865781 you: wake me up at nine to morrow morning
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 9:00 a.m. tomorrow.
+[100/149] 099_en_en.wav
+08:40:20.937508 you: seven into eleven evlaux
+edgevoice [ENGLISH/calc]: 7 * 11 = 77
+[101/149] 100_ta_en.wav
+08:40:27.733080 you: or a joke sallu
+edgevoice [ENGLISH/llm]: ...
+08:40:30.101079 you: or a joke sallu
+edgevoice [ENGLISH/llm]: A joke is a fun way to say "Oh yeah!" 😄
+[102/149] 101_ta_en.wav
+08:40:34.467482 you: time benea
+edgevoice [ENGLISH/llm]: ...
+08:40:37.366274 you: time benea
+edgevoice [ENGLISH/llm]: Time is a precious gift. Let me know if there's anything you'd like to share with me.
+[103/149] 102_ta_en.wav
+08:40:44.566774 you: knowledge who kawai adum maniku alarm vey
+edgevoice [TANGLISH/llm]: ...
+08:40:46.016010 you: knowledge who kawai adum maniku alarm vey
+edgevoice [TANGLISH/llm]: Kāwā kāi adum maniku āmāl vey.
+[104/149] 103_ta_en.wav
+08:40:53.262153 you: knowlai kulli on bad humanico alarm they
+edgevoice [TANGLISH/llm]: ...
+08:40:55.166989 you: knowlai kulli on bad humanico alarm they
+edgevoice [TANGLISH/llm]: I know that in bad circumstances, humans can be alarm.
+[105/149] 104_ta_en.wav
+08:40:59.820547 you: or a joke to live
+edgevoice [ENGLISH/llm]: ...
+08:41:01.757232 you: or a joke to live
+edgevoice [ENGLISH/llm]: What's a joke to live? Well, maybe a bit of a story.
+[106/149] 105_ta_ta.wav
+08:41:07.646423 you: and drew ninesham timervais
+edgevoice [TANGLISH/llm]: ...
+08:41:08.512312 you: and drew ninesham timervais
+edgevoice [TANGLISH/llm]: And drew ninesham timervais.
+[107/149] 106_ta_en.wav
+08:41:13.491579 you: set a timer for eleven minutes
+edgevoice [ENGLISH/timer.set]: Timer set for 11 minutes.
+[108/149] 107_en_en.wav
+08:41:18.800445 you: yin they could get ye'nit
+edgevoice [TANGLISH/llm]: ...
+08:41:19.721158 you: yin they could get ye'nit
+edgevoice [TANGLISH/llm]: Yin they could get ye'nit.
+[109/149] 108_ta_ta.wav
+08:41:24.810447 you: he had been imitte de moray
+edgevoice [ENGLISH/llm]: ...
+08:41:26.886900 you: he had been imitte de moray
+edgevoice [ENGLISH/llm]: He had been offered a chance to move away from his current place.
+[110/149] 109_ta_ta.wav
+08:41:30.604611 you: narutha
+edgevoice [TANGLISH/system.stop]: Seri.
+[111/149] 110_ta_en.wav
+08:41:36.945887 you: hath in ninesham time urvey
+edgevoice [TANGLISH/llm]: ...
+08:41:38.006890 you: hath in ninesham time urvey
+edgevoice [TANGLISH/llm]: Hath in ninesham time urvey.
+[112/149] 111_ta_en.wav
+08:41:44.754822 you: but occuripany manico alluda bitcher day
+edgevoice [TANGLISH/llm]: ...
+08:41:45.780062 you: but occuripany manico alluda bitcher day
+edgevoice [TANGLISH/llm]: But manico alluda bitcher day.
+[113/149] 112_ta_ta.wav
+08:41:51.285077 you: bundling the name of a champaign maury
+edgevoice [ENGLISH/llm]: ...
+08:41:52.610869 you: bundling the name of a champaign maury
+edgevoice [ENGLISH/llm]: Bundling the name of a Champaign Maury.
+[114/149] 113_ta_ta.wav
+08:41:57.432913 you: what is two times six
+edgevoice [ENGLISH/calc]: 2 * 6 = 12
+[115/149] 114_en_en.wav
+08:42:03.588586 you: alara manrithe
+edgevoice [TANGLISH/llm]: ...
+08:42:04.146154 you: alara manrithe
+edgevoice [TANGLISH/llm]: Alara manrithe.
+[116/149] 115_ta_ta.wav
+08:42:10.890251 you: ratheri padan humanicu alarm vechadu
+edgevoice [TANGLISH/llm]: ...
+08:42:12.306319 you: ratheri padan humanicu alarm vechadu
+edgevoice [TANGLISH/llm]: Ratheri padan humanicu alarm vechadu.
+[117/149] 116_ta_en.wav
+08:42:17.538673 you: nin ynda went yo li
+edgevoice [ENGLISH/llm]: ...
+08:42:18.898226 you: nin ynda went yo li
+edgevoice [ENGLISH/llm]: I'm sorry, I can't help with that.
+[118/149] 117_ta_ta.wav
+08:42:23.318920 you: when i come
+edgevoice [ENGLISH/llm]: ...
+08:42:25.843738 you: when i come
+edgevoice [ENGLISH/llm]: I'm here to help you with anything you need. Let me know how I can assist you!
+[119/149] 118_ta_ta.wav
+08:42:31.162405 you: set an alarm for five a m to morrow
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 5:00 a.m. tomorrow.
+[120/149] 119_en_en.wav
+08:42:37.416802 you: gave me one tip to sleep at her
+edgevoice [ENGLISH/llm]: ...
+08:42:39.105853 you: gave me one tip to sleep at her
+edgevoice [ENGLISH/llm]: Set your phone to sleep mode and close all apps.
+[121/149] 120_en_en.wav
+08:42:42.442838 you: hullo
+edgevoice [ENGLISH/smalltalk.greet]: Hi! How can I help?
+[122/149] 121_en_en.wav
+08:42:48.305044 you: aladam gainslpana
+edgevoice [TANGLISH/llm]: ...
+08:42:49.245898 you: aladam gainslpana
+edgevoice [TANGLISH/llm]: Alamad gainspana.
+[123/149] 122_ta_ta.wav
+08:42:53.883301 you: set a timer for two minutes
+edgevoice [ENGLISH/timer.set]: Timer set for 2 minutes.
+[124/149] 123_en_en.wav
+08:42:59.720153 you: unbat who nine time urvey
+edgevoice [ENGLISH/llm]: ...
+08:43:02.072597 you: unbat who nine time urvey
+edgevoice [ENGLISH/llm]: I'm sorry, I can't help with that. Could you please rephrase your question?
+[125/149] 124_ta_en.wav
+08:43:07.471623 you: untin emitantae mervais
+edgevoice [ENGLISH/llm]: ...
+08:43:09.237379 you: untin emitantae mervais
+edgevoice [ENGLISH/llm]: Mervais is the name of the person who emitted the sound.
+[126/149] 125_ta_ta.wav
+08:43:14.870867 you: darlic of modern six could aladam siparnet
+edgevoice [TANGLISH/alarm.set]: Seri, naalaikku kaalai 6:00 ku alarm vechiten.
+[127/149] 126_ta_ta.wav
+08:43:20.516840 you: six independent yvrel
+edgevoice [ENGLISH/llm]: ...
+08:43:21.265426 you: six independent yvrel
+edgevoice [ENGLISH/llm]: Six independent yvrel.
+[128/149] 127_ta_ta.wav
+08:43:26.677796 you: no nimem time er fay
+edgevoice [TANGLISH/llm]: ...
+08:43:27.434737 you: no nimem time er fay
+edgevoice [TANGLISH/llm]: No time, fay.
+[129/149] 128_ta_en.wav
+08:43:31.808422 you: then a kem
+edgevoice [ENGLISH/llm]: ...
+08:43:33.484022 you: then a kem
+edgevoice [ENGLISH/llm]: I see you. Let me know if you need anything.
+[130/149] 129_ta_en.wav
+08:43:38.455831 you: in naked date and air
+edgevoice [ENGLISH/llm]: ...
+08:43:40.457126 you: in naked date and air
+edgevoice [ENGLISH/llm]: In a naked date, you should be open and honest with yourself.
+[131/149] 130_ta_en.wav
+08:43:45.523013 you: now lay cool weather a paddy oracum
+edgevoice [TANGLISH/offline.unsupported]: Mannikkavum, naan offline la irukken, adhu paakka mudiyadhu.
+[132/149] 131_ta_en.wav
+08:43:52.330975 you: but octary put the money could all aura and bitcherde
+edgevoice [TANGLISH/llm]: ...
+08:43:54.824827 you: but octary put the money could all aura and bitcherde
+edgevoice [TANGLISH/llm]: But octary put the money, so all the aura and the bitcherde could be gone.
+[133/149] 132_ta_ta.wav
+08:44:01.715366 you: not a codiment yoke aladamsic parnas
+edgevoice [TANGLISH/llm]: ...
+08:44:02.310531 you: not a codiment yoke aladamsic parnas
+edgevoice [TANGLISH/llm]: Aladamsic parnas.
+[134/149] 133_ta_ta.wav
+08:44:07.923004 you: now lay two mourning ten coup alarms set panu
+edgevoice [TANGLISH/alarm.set]: Seri, naalaikku raathiri 2:00 ku alarm vechiten.
+[135/149] 134_ta_en.wav
+08:44:13.194450 you: no lady champay merry
+edgevoice [TANGLISH/llm]: ...
+08:44:14.196965 you: no lady champay merry
+edgevoice [TANGLISH/llm]: No lady, champay merry.
+[136/149] 135_ta_ta.wav
+08:44:19.434073 you: set an alarm for seven a m to morrow
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 7:00 a.m. tomorrow.
+[137/149] 136_en_en.wav
+08:44:26.251680 you: an acue bore at a katu in a pean alam
+edgevoice [ENGLISH/llm]: ...
+08:44:30.031764 you: an acue bore at a katu in a pean alam
+edgevoice [ENGLISH/llm]: The user is asking about a "Bore at a Katu in a Panthera Alam." Could you clarify what you're referring to?
+[138/149] 137_ta_en.wav
+08:44:35.569409 you: set an alarm for eleven a m to morrow
+edgevoice [ENGLISH/alarm.set]: Done, alarm set for 11:00 a.m. tomorrow.
+[139/149] 138_en_en.wav
+08:44:42.757427 you: nanek marin thank aladdin si no
+edgevoice [ENGLISH/llm]: ...
+08:44:43.517719 you: nanek marin thank aladdin si no
+edgevoice [ENGLISH/llm]: Nanek Marin thanks Aladdin.
+[140/149] 139_ta_ta.wav
+08:44:49.142079 you: what is the capital of france
+edgevoice [ENGLISH/llm]: ...
+08:44:50.279343 you: what is the capital of france
+edgevoice [ENGLISH/llm]: The capital of France is Paris.
+[141/149] 140_en_en.wav
+08:44:55.800231 you: yer renemicent pang mavrai
+edgevoice [TANGLISH/llm]: ...
+08:44:56.361576 you: yer renemicent pang mavrai
+edgevoice [TANGLISH/llm]: I'm not a human.
+[142/149] 141_ta_ta.wav
+08:45:01.222432 you: canstle my alarm
+edgevoice [ENGLISH/llm]: ...
+08:45:03.485768 you: canstle my alarm
+edgevoice [ENGLISH/llm]: Sure! Let me know when you want to set up your alarm.
+[143/149] 142_en_en.wav
+08:45:09.106118 you: gently but the would affect to lay
+edgevoice [ENGLISH/llm]: ...
+08:45:10.495217 you: gently but the would affect to lay
+edgevoice [ENGLISH/llm]: It would affect the way the world is shaped.
+[144/149] 143_ta_ta.wav
+08:45:14.767640 you: two into six eville
+edgevoice [TANGLISH/calc]: 2 * 6 = 12
+[145/149] 144_ta_en.wav
+08:45:20.529730 you: five into nine evel
+edgevoice [TANGLISH/calc]: 5 * 9 = 45
+[146/149] 145_ta_en.wav
+08:45:28.669086 you: narling could call it patrimonical aladdin bake
+edgevoice [TANGLISH/llm]: ...
+08:45:30.287377 you: narling could call it patrimonical aladdin bake
+edgevoice [TANGLISH/llm]: Narling could call it patrimonal aladdin bake.
+[147/149] 146_ta_ta.wav
+08:45:35.670498 you: mooning emasham timervey
+edgevoice [ENGLISH/llm]: ...
+08:45:37.768806 you: mooning emasham timervey
+edgevoice [ENGLISH/llm]: The moon on the night of Emasham and the time of Tervay.
+[148/149] 147_ta_en.wav
+08:45:42.604588 you: set a timer for seven minutes
+edgevoice [ENGLISH/timer.set]: Timer set for 7 minutes.
+[149/149] 148_en_en.wav
