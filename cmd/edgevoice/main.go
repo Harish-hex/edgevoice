@@ -284,7 +284,11 @@ func runReplay(ctx context.Context, p *pipeline.Pipeline, dir string, limit int)
 			continue
 		}
 		p.File = filepath.Base(f)
-		pcm = append(pcm, make([]int16, audio.SampleRate*3/2)...)
+		tail := audio.SampleRate * 3 / 2
+		if p.Cfg.Wake.Enabled { // let the wake grace period expire inside this file, not in the next one
+			tail += audio.SampleRate * p.Cfg.Wake.GraceMs / 1000
+		}
+		pcm = append(pcm, make([]int16, tail)...)
 		tick := time.NewTicker(32 * time.Millisecond)
 		for off := 0; off < len(pcm); off += 512 {
 			<-tick.C

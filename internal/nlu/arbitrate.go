@@ -1,7 +1,6 @@
 package nlu
 
 import (
-	"math"
 	"strings"
 
 	"edgevoice/internal/iface"
@@ -29,7 +28,9 @@ type Gate struct {
 	ChatMinWords int     // too short to be a real question
 }
 
-var DefaultGate = Gate{EnChatMinLP: -0.55, EnCmdMinLP: -1.1, EnMaxTPW: 1.6, ChatMinCov: 0.6, ChatMinWords: 2}
+// Calibrated on 48 real-voice turns (results/runs/real_*.jsonl): real accented commands score −0.36…−1.02,
+// noise −1.09…−2.5; real speech splits names into many BPE pieces, so fragmentation only gates chat.
+var DefaultGate = Gate{EnChatMinLP: -0.6, EnCmdMinLP: -1.05, EnMaxTPW: 1.8, ChatMinCov: 0.6, ChatMinWords: 2}
 
 // Coverage is the fraction of content tokens (non-stopword) the lexicon recognised.
 func (lx *Lexicon) Coverage(n iface.NormalizedText) float64 {
@@ -60,7 +61,21 @@ func (lx *Lexicon) contentWords(n iface.NormalizedText) int {
 }
 
 func (g Gate) commandOK(c Candidate) bool {
-	return !c.HasConf || (c.AvgLogProb >= g.EnCmdMinLP && c.TokensPerWord <= g.EnMaxTPW+0.6)
+	return !c.HasConf || c.AvgLogProb >= g.EnCmdMinLP
+}
+
+// questionCue: a question word or a request verb ("yaaru", "enna", "sollu", "theriyuma", "pathi").
+func questionCue(n iface.NormalizedText) bool {
+	for i, t := range n.Tags {
+		if t.Role == "WH" || t.Role == "WHO" || t.Role == "ABOUT" {
+			return true
+		}
+		switch n.Tokens[i] {
+		case "sollu", "sollunga", "theriyuma", "solla", "ennadhu", "yen", "eppo", "enga":
+			return true
+		}
+	}
+	return false
 }
 
 // chatOK decides whether a transcript is clear enough to hand to the LLM. For Tamil it returns the
@@ -70,8 +85,14 @@ func (lx *Lexicon) chatOK(g Gate, c Candidate) (iface.NormalizedText, bool) {
 		return c.Norm, false
 	}
 	if c.Source == "ta" {
+		// A Tanglish question needs a question cue (or 3+ words) and enough understood words; a fragment
+		// like "naan open" is not a question.
 		n := lx.BackTransliterate(c.Norm)
-		return n, lx.Coverage(n) >= g.ChatMinCov
+		cue, cov := questionCue(n), lx.Coverage(n)
+		if !cue && lx.contentWords(n) < 3 {
+			return n, false
+		}
+		return n, cov >= g.ChatMinCov || (cue && cov >= 0.4)
 	}
 	if c.HasConf {
 		return c.Norm, c.AvgLogProb >= g.EnChatMinLP && c.TokensPerWord <= g.EnMaxTPW
@@ -138,7 +159,7 @@ func UnclearMode(cs []Candidate) string {
 // ConfFromTokens computes the English confidence features from sherpa's per-token log-probs.
 func ConfFromTokens(text string, logProbs []float64) (avg, tpw float64) {
 	if len(logProbs) == 0 {
-		return math.Inf(-1), 99
+		return -99, 99 // finite: JSON cannot encode -Inf (it silently dropped turn records)
 	}
 	s := 0.0
 	for _, v := range logProbs {
