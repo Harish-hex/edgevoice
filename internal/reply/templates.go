@@ -61,7 +61,7 @@ func Display(id, mode string, slots map[string]string) string {
 		}
 		return s[k]
 	})
-	return strings.Join(strings.Fields(out), " ")
+	return strings.ReplaceAll(strings.Join(strings.Fields(out), " "), "..", ".")
 }
 
 func withMM(slots map[string]string) map[string]string {

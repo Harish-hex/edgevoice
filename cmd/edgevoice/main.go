@@ -20,6 +20,7 @@ import (
 	"sort"
 	"sync"
 	"time"
+	_ "time/tzdata" // container may lack zoneinfo; TZ comes from the host via docker/run.sh
 
 	"edgevoice/internal/audio"
 	"edgevoice/internal/config"
