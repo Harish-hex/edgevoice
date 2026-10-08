@@ -1,0 +1,3 @@
+extends: 04_prompt_cache.yaml
+name: 05_clause_tts
+llm: {clause_tts: true}

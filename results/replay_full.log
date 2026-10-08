@@ -1,0 +1,2 @@
+onnxruntime cpuid_info warning: Unknown CPU vendor. cpuinfo_vendor value: 0
+08:13:20.884281 models loaded in 3.005s (clips=262)

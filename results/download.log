@@ -14,3 +14,5 @@ ok whisper-base/base-tokens.txt
 ok whisper-base/base-encoder.int8.onnx
 ok whisper-base/base-decoder.int8.onnx
 P2_DONE
+ok llm/Llama-3.2-1B-Instruct-Q4_K_M.gguf
+DONE

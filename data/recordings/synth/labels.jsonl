@@ -1,0 +1,149 @@
+{"mode":"ENGLISH","transcript_gold":"what time is it","intent_gold":"clock.time","slots_gold":null,"file":"000_en_en.wav","voice":"en","speed":1.0972751}
+{"mode":"ENGLISH","transcript_gold":"who are you","intent_gold":"smalltalk.identity","slots_gold":null,"file":"001_en_en.wav","voice":"en","speed":0.93191785}
+{"mode":"TANGLISH","transcript_gold":"eight into twelve evlo","intent_gold":"calc","slots_gold":{"expression":"8*12"},"file":"002_ta_ta.wav","voice":"ta","speed":1.1398877}
+{"mode":"TANGLISH","transcript_gold":"pannendu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"12m"},"file":"003_ta_en.wav","voice":"en","speed":1.1396858}
+{"mode":"TANGLISH","transcript_gold":"five into nine evlo","intent_gold":"calc","slots_gold":{"expression":"5*9"},"file":"004_ta_ta.wav","voice":"ta","speed":0.90808576}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai ezhu manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"07:00"},"file":"005_ta_ta.wav","voice":"ta","speed":0.9293214}
+{"mode":"TANGLISH","transcript_gold":"three into seven evlo","intent_gold":"calc","slots_gold":{"expression":"3*7"},"file":"006_ta_en.wav","voice":"en","speed":1.0665871}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai padhinonnu manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"11:00"},"file":"007_ta_ta.wav","voice":"ta","speed":1.1228105}
+{"mode":"ENGLISH","transcript_gold":"wake me up at six tomorrow morning","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"06:00"},"file":"008_en_en.wav","voice":"en","speed":1.0041217}
+{"mode":"ENGLISH","transcript_gold":"set a timer for three minutes","intent_gold":"timer.set","slots_gold":{"duration":"3m"},"file":"009_en_en.wav","voice":"en","speed":1.1001866}
+{"mode":"ENGLISH","transcript_gold":"set a timer for five minutes","intent_gold":"timer.set","slots_gold":{"duration":"5m"},"file":"010_en_en.wav","voice":"en","speed":1.0956783}
+{"mode":"ENGLISH","transcript_gold":"wake me up at ten tomorrow morning","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"10:00"},"file":"011_en_en.wav","voice":"en","speed":1.0582535}
+{"mode":"TANGLISH","transcript_gold":"time enna","intent_gold":"clock.time","slots_gold":null,"file":"012_ta_ta.wav","voice":"ta","speed":1.074418}
+{"mode":"TANGLISH","transcript_gold":"pathu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"10m"},"file":"013_ta_ta.wav","voice":"ta","speed":1.1416988}
+{"mode":"ENGLISH","transcript_gold":"what is six times ten","intent_gold":"calc","slots_gold":{"expression":"6*10"},"file":"014_en_en.wav","voice":"en","speed":1.0304111}
+{"mode":"TANGLISH","transcript_gold":"rendu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"2m"},"file":"015_ta_ta.wav","voice":"ta","speed":1.0712075}
+{"mode":"ENGLISH","transcript_gold":"what is four times eight","intent_gold":"calc","slots_gold":{"expression":"4*8"},"file":"016_en_en.wav","voice":"en","speed":1.1279566}
+{"mode":"TANGLISH","transcript_gold":"alarm ah niruthu","intent_gold":"alarm.cancel","slots_gold":null,"file":"017_ta_en.wav","voice":"en","speed":0.9943031}
+{"mode":"TANGLISH","transcript_gold":"raathiri onbadhu manikku alarm vechidu","intent_gold":"alarm.set","slots_gold":{"time":"21:00"},"file":"018_ta_ta.wav","voice":"ta","speed":1.0062524}
+{"mode":"TANGLISH","transcript_gold":"raathiri ettu manikku alarm vechidu","intent_gold":"alarm.set","slots_gold":{"time":"20:00"},"file":"019_ta_ta.wav","voice":"ta","speed":1.0789037}
+{"mode":"TANGLISH","transcript_gold":"padhinonnu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"11m"},"file":"020_ta_en.wav","voice":"en","speed":0.95445144}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning six ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"06:00"},"file":"021_ta_en.wav","voice":"en","speed":0.9060359}
+{"mode":"TANGLISH","transcript_gold":"onnu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"1m"},"file":"022_ta_ta.wav","voice":"ta","speed":0.95841587}
+{"mode":"ENGLISH","transcript_gold":"what's the weather tomorrow","intent_gold":"offline.unsupported","slots_gold":null,"file":"023_en_en.wav","voice":"en","speed":1.1100541}
+{"mode":"TANGLISH","transcript_gold":"eight into twelve evlo","intent_gold":"calc","slots_gold":{"expression":"8*12"},"file":"024_ta_en.wav","voice":"en","speed":1.0347123}
+{"mode":"TANGLISH","transcript_gold":"raathiri ezhu manikku alarm vechidu","intent_gold":"alarm.set","slots_gold":{"time":"19:00"},"file":"025_ta_ta.wav","voice":"ta","speed":0.9651768}
+{"mode":"ENGLISH","transcript_gold":"set an alarm for six a m tomorrow","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"06:00"},"file":"026_en_en.wav","voice":"en","speed":1.1022867}
+{"mode":"ENGLISH","transcript_gold":"set a timer for one minutes","intent_gold":"timer.set","slots_gold":{"duration":"1m"},"file":"027_en_en.wav","voice":"en","speed":0.96539164}
+{"mode":"ENGLISH","transcript_gold":"set an alarm for nine a m tomorrow","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"09:00"},"file":"028_en_en.wav","voice":"en","speed":1.065233}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai aaru manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"06:00"},"file":"029_ta_en.wav","voice":"en","speed":0.938367}
+{"mode":"ENGLISH","transcript_gold":"why is the sky blue","intent_gold":"llm","slots_gold":null,"file":"030_en_en.wav","voice":"en","speed":1.1020677}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning eleven ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"11:00"},"file":"031_ta_en.wav","voice":"en","speed":0.96756536}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning eleven ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"11:00"},"file":"032_ta_ta.wav","voice":"ta","speed":1.0600165}
+{"mode":"TANGLISH","transcript_gold":"aaru nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"6m"},"file":"033_ta_en.wav","voice":"en","speed":0.9240442}
+{"mode":"ENGLISH","transcript_gold":"tell me a fun fact about space","intent_gold":"llm","slots_gold":null,"file":"034_en_en.wav","voice":"en","speed":0.9770938}
+{"mode":"TANGLISH","transcript_gold":"raathiri onbadhu manikku alarm vechidu","intent_gold":"alarm.set","slots_gold":{"time":"21:00"},"file":"035_ta_en.wav","voice":"en","speed":1.0859903}
+{"mode":"TANGLISH","transcript_gold":"nine into one evlo","intent_gold":"calc","slots_gold":{"expression":"9*1"},"file":"036_ta_en.wav","voice":"en","speed":0.9989633}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning five ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"05:00"},"file":"037_ta_ta.wav","voice":"ta","speed":1.0790265}
+{"mode":"ENGLISH","transcript_gold":"what is nine times one","intent_gold":"calc","slots_gold":{"expression":"9*1"},"file":"038_en_en.wav","voice":"en","speed":0.99376357}
+{"mode":"TANGLISH","transcript_gold":"onbadhu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"9m"},"file":"039_ta_ta.wav","voice":"ta","speed":1.0285289}
+{"mode":"ENGLISH","transcript_gold":"stop","intent_gold":"system.stop","slots_gold":null,"file":"040_en_en.wav","voice":"en","speed":1.0647588}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai pathu manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"10:00"},"file":"041_ta_en.wav","voice":"en","speed":1.1425005}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai anju manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"05:00"},"file":"042_ta_ta.wav","voice":"ta","speed":1.0193858}
+{"mode":"ENGLISH","transcript_gold":"tell me a short joke","intent_gold":"llm","slots_gold":null,"file":"043_en_en.wav","voice":"en","speed":1.0567766}
+{"mode":"ENGLISH","transcript_gold":"set a timer for six minutes","intent_gold":"timer.set","slots_gold":{"duration":"6m"},"file":"044_en_en.wav","voice":"en","speed":1.0736119}
+{"mode":"TANGLISH","transcript_gold":"alarm cancel pannu","intent_gold":"alarm.cancel","slots_gold":null,"file":"045_ta_en.wav","voice":"en","speed":0.9166256}
+{"mode":"ENGLISH","transcript_gold":"what is seven times eleven","intent_gold":"calc","slots_gold":{"expression":"7*11"},"file":"046_en_en.wav","voice":"en","speed":0.9049023}
+{"mode":"ENGLISH","transcript_gold":"wake me up at eleven tomorrow morning","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"11:00"},"file":"047_en_en.wav","voice":"en","speed":1.085131}
+{"mode":"TANGLISH","transcript_gold":"onnu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"1m"},"file":"048_ta_en.wav","voice":"en","speed":1.0248058}
+{"mode":"TANGLISH","transcript_gold":"ezhu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"7m"},"file":"049_ta_en.wav","voice":"en","speed":1.0038059}
+{"mode":"TANGLISH","transcript_gold":"raathiri pathu manikku alarm vechidu","intent_gold":"alarm.set","slots_gold":{"time":"22:00"},"file":"050_ta_en.wav","voice":"en","speed":1.0224097}
+{"mode":"TANGLISH","transcript_gold":"niruthu","intent_gold":"system.stop","slots_gold":null,"file":"051_ta_ta.wav","voice":"ta","speed":1.0416884}
+{"mode":"ENGLISH","transcript_gold":"set a timer for ten minutes","intent_gold":"timer.set","slots_gold":{"duration":"10m"},"file":"052_en_en.wav","voice":"en","speed":1.1141285}
+{"mode":"ENGLISH","transcript_gold":"wake me up at eight tomorrow morning","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"08:00"},"file":"053_en_en.wav","voice":"en","speed":0.92303735}
+{"mode":"TANGLISH","transcript_gold":"nee yaaru","intent_gold":"smalltalk.identity","slots_gold":null,"file":"054_ta_en.wav","voice":"en","speed":1.0004987}
+{"mode":"TANGLISH","transcript_gold":"moonu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"3m"},"file":"055_ta_ta.wav","voice":"ta","speed":0.94824356}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning nine ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"09:00"},"file":"056_ta_en.wav","voice":"en","speed":1.0193869}
+{"mode":"TANGLISH","transcript_gold":"seven into eleven evlo","intent_gold":"calc","slots_gold":{"expression":"7*11"},"file":"057_ta_ta.wav","voice":"ta","speed":1.140381}
+{"mode":"ENGLISH","transcript_gold":"what's the time now","intent_gold":"clock.time","slots_gold":null,"file":"058_en_en.wav","voice":"en","speed":1.1223445}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai onbadhu manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"09:00"},"file":"059_ta_ta.wav","voice":"ta","speed":0.992281}
+{"mode":"TANGLISH","transcript_gold":"three into seven evlo","intent_gold":"calc","slots_gold":{"expression":"3*7"},"file":"060_ta_ta.wav","voice":"ta","speed":1.1028444}
+{"mode":"TANGLISH","transcript_gold":"chennai pathi oru fact sollu","intent_gold":"llm","slots_gold":null,"file":"061_ta_en.wav","voice":"en","speed":0.9991853}
+{"mode":"TANGLISH","transcript_gold":"raathiri ezhu manikku alarm vechidu","intent_gold":"alarm.set","slots_gold":{"time":"19:00"},"file":"062_ta_en.wav","voice":"en","speed":0.9828936}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai ezhu manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"07:00"},"file":"063_ta_en.wav","voice":"en","speed":0.9218072}
+{"mode":"ENGLISH","transcript_gold":"what's the date today","intent_gold":"clock.date","slots_gold":null,"file":"064_en_en.wav","voice":"en","speed":1.0017717}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning seven ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"07:00"},"file":"065_ta_ta.wav","voice":"ta","speed":0.9319124}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai padhinonnu manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"11:00"},"file":"066_ta_en.wav","voice":"en","speed":1.1461275}
+{"mode":"TANGLISH","transcript_gold":"raathiri ettu manikku alarm vechidu","intent_gold":"alarm.set","slots_gold":{"time":"20:00"},"file":"067_ta_en.wav","voice":"en","speed":0.91707665}
+{"mode":"ENGLISH","transcript_gold":"set an alarm for eight a m tomorrow","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"08:00"},"file":"068_en_en.wav","voice":"en","speed":1.0335174}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning eight ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"08:00"},"file":"069_ta_en.wav","voice":"en","speed":0.92970216}
+{"mode":"ENGLISH","transcript_gold":"set a timer for twelve minutes","intent_gold":"timer.set","slots_gold":{"duration":"12m"},"file":"070_en_en.wav","voice":"en","speed":1.000805}
+{"mode":"TANGLISH","transcript_gold":"two into six evlo","intent_gold":"calc","slots_gold":{"expression":"2*6"},"file":"071_ta_ta.wav","voice":"ta","speed":1.0882564}
+{"mode":"ENGLISH","transcript_gold":"what is five times nine","intent_gold":"calc","slots_gold":{"expression":"5*9"},"file":"072_en_en.wav","voice":"en","speed":0.9716866}
+{"mode":"TANGLISH","transcript_gold":"aaru nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"6m"},"file":"073_ta_ta.wav","voice":"ta","speed":0.9721449}
+{"mode":"TANGLISH","transcript_gold":"enakku bore adikkudhu enna pannalaam","intent_gold":"llm","slots_gold":null,"file":"074_ta_ta.wav","voice":"ta","speed":1.1007465}
+{"mode":"TANGLISH","transcript_gold":"ettu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"8m"},"file":"075_ta_en.wav","voice":"en","speed":1.0158226}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai aaru manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"06:00"},"file":"076_ta_ta.wav","voice":"ta","speed":1.1460457}
+{"mode":"TANGLISH","transcript_gold":"mani enna aachu","intent_gold":"clock.time","slots_gold":null,"file":"077_ta_ta.wav","voice":"ta","speed":1.0104476}
+{"mode":"TANGLISH","transcript_gold":"four into eight evlo","intent_gold":"calc","slots_gold":{"expression":"4*8"},"file":"078_ta_ta.wav","voice":"ta","speed":0.9640364}
+{"mode":"ENGLISH","transcript_gold":"set a timer for eight minutes","intent_gold":"timer.set","slots_gold":{"duration":"8m"},"file":"079_en_en.wav","voice":"en","speed":1.119632}
+{"mode":"ENGLISH","transcript_gold":"what is eight times twelve","intent_gold":"calc","slots_gold":{"expression":"8*12"},"file":"080_en_en.wav","voice":"en","speed":1.0885227}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning seven ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"07:00"},"file":"081_ta_en.wav","voice":"en","speed":1.0504042}
+{"mode":"ENGLISH","transcript_gold":"set a timer for nine minutes","intent_gold":"timer.set","slots_gold":{"duration":"9m"},"file":"082_en_en.wav","voice":"en","speed":1.0726773}
+{"mode":"TANGLISH","transcript_gold":"mani enna aachu","intent_gold":"clock.time","slots_gold":null,"file":"083_ta_en.wav","voice":"en","speed":1.1264548}
+{"mode":"TANGLISH","transcript_gold":"nee yaaru","intent_gold":"smalltalk.identity","slots_gold":null,"file":"084_ta_ta.wav","voice":"ta","speed":0.97701585}
+{"mode":"TANGLISH","transcript_gold":"naalaikku weather eppadi irukkum","intent_gold":"offline.unsupported","slots_gold":null,"file":"085_ta_ta.wav","voice":"ta","speed":1.0737507}
+{"mode":"ENGLISH","transcript_gold":"what is three times seven","intent_gold":"calc","slots_gold":{"expression":"3*7"},"file":"086_en_en.wav","voice":"en","speed":0.93962246}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai ettu manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"08:00"},"file":"087_ta_ta.wav","voice":"ta","speed":0.92249066}
+{"mode":"TANGLISH","transcript_gold":"padhinonnu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"11m"},"file":"088_ta_ta.wav","voice":"ta","speed":1.075977}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning five ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"05:00"},"file":"089_ta_en.wav","voice":"en","speed":1.1102779}
+{"mode":"TANGLISH","transcript_gold":"rendu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"2m"},"file":"090_ta_en.wav","voice":"en","speed":1.035553}
+{"mode":"ENGLISH","transcript_gold":"wake me up at five tomorrow morning","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"05:00"},"file":"091_en_en.wav","voice":"en","speed":0.98547566}
+{"mode":"TANGLISH","transcript_gold":"six into ten evlo","intent_gold":"calc","slots_gold":{"expression":"6*10"},"file":"092_ta_en.wav","voice":"en","speed":1.008455}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai anju manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"05:00"},"file":"093_ta_en.wav","voice":"en","speed":1.031728}
+{"mode":"ENGLISH","transcript_gold":"wake me up at seven tomorrow morning","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"07:00"},"file":"094_en_en.wav","voice":"en","speed":0.9845178}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning nine ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"09:00"},"file":"095_ta_ta.wav","voice":"ta","speed":0.9494759}
+{"mode":"ENGLISH","transcript_gold":"set an alarm for ten a m tomorrow","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"10:00"},"file":"096_en_en.wav","voice":"en","speed":1.0018011}
+{"mode":"ENGLISH","transcript_gold":"set a timer for four minutes","intent_gold":"timer.set","slots_gold":{"duration":"4m"},"file":"097_en_en.wav","voice":"en","speed":0.9622016}
+{"mode":"TANGLISH","transcript_gold":"four into eight evlo","intent_gold":"calc","slots_gold":{"expression":"4*8"},"file":"098_ta_en.wav","voice":"en","speed":0.9567707}
+{"mode":"ENGLISH","transcript_gold":"wake me up at nine tomorrow morning","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"09:00"},"file":"099_en_en.wav","voice":"en","speed":1.0226499}
+{"mode":"TANGLISH","transcript_gold":"seven into eleven evlo","intent_gold":"calc","slots_gold":{"expression":"7*11"},"file":"100_ta_en.wav","voice":"en","speed":0.9143817}
+{"mode":"TANGLISH","transcript_gold":"oru joke sollu","intent_gold":"llm","slots_gold":null,"file":"101_ta_en.wav","voice":"en","speed":1.065078}
+{"mode":"TANGLISH","transcript_gold":"time enna","intent_gold":"clock.time","slots_gold":null,"file":"102_ta_en.wav","voice":"en","speed":1.0993491}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai ettu manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"08:00"},"file":"103_ta_en.wav","voice":"en","speed":0.97250277}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai onbadhu manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"09:00"},"file":"104_ta_en.wav","voice":"en","speed":0.9381064}
+{"mode":"TANGLISH","transcript_gold":"oru joke sollu","intent_gold":"llm","slots_gold":null,"file":"105_ta_ta.wav","voice":"ta","speed":1.0378137}
+{"mode":"TANGLISH","transcript_gold":"anju nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"5m"},"file":"106_ta_en.wav","voice":"en","speed":1.0114394}
+{"mode":"ENGLISH","transcript_gold":"set a timer for eleven minutes","intent_gold":"timer.set","slots_gold":{"duration":"11m"},"file":"107_en_en.wav","voice":"en","speed":0.993361}
+{"mode":"TANGLISH","transcript_gold":"innaikku date enna","intent_gold":"clock.date","slots_gold":null,"file":"108_ta_ta.wav","voice":"ta","speed":1.0551127}
+{"mode":"TANGLISH","transcript_gold":"ettu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"8m"},"file":"109_ta_ta.wav","voice":"ta","speed":1.0220184}
+{"mode":"TANGLISH","transcript_gold":"niruthu","intent_gold":"system.stop","slots_gold":null,"file":"110_ta_en.wav","voice":"en","speed":1.008239}
+{"mode":"TANGLISH","transcript_gold":"pathu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"10m"},"file":"111_ta_en.wav","voice":"en","speed":1.0889789}
+{"mode":"TANGLISH","transcript_gold":"raathiri padhinonnu manikku alarm vechidu","intent_gold":"alarm.set","slots_gold":{"time":"23:00"},"file":"112_ta_ta.wav","voice":"ta","speed":1.1030188}
+{"mode":"TANGLISH","transcript_gold":"pannendu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"12m"},"file":"113_ta_ta.wav","voice":"ta","speed":1.0911176}
+{"mode":"ENGLISH","transcript_gold":"what is two times six","intent_gold":"calc","slots_gold":{"expression":"2*6"},"file":"114_en_en.wav","voice":"en","speed":0.9173046}
+{"mode":"TANGLISH","transcript_gold":"alarm ah niruthu","intent_gold":"alarm.cancel","slots_gold":null,"file":"115_ta_ta.wav","voice":"ta","speed":1.0293325}
+{"mode":"TANGLISH","transcript_gold":"raathiri padhinonnu manikku alarm vechidu","intent_gold":"alarm.set","slots_gold":{"time":"23:00"},"file":"116_ta_en.wav","voice":"en","speed":1.1390386}
+{"mode":"TANGLISH","transcript_gold":"nine into one evlo","intent_gold":"calc","slots_gold":{"expression":"9*1"},"file":"117_ta_ta.wav","voice":"ta","speed":0.9818153}
+{"mode":"TANGLISH","transcript_gold":"vanakkam","intent_gold":"smalltalk.greet","slots_gold":null,"file":"118_ta_ta.wav","voice":"ta","speed":1.1373129}
+{"mode":"ENGLISH","transcript_gold":"set an alarm for five a m tomorrow","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"05:00"},"file":"119_en_en.wav","voice":"en","speed":0.9574947}
+{"mode":"ENGLISH","transcript_gold":"give me one tip to sleep better","intent_gold":"llm","slots_gold":null,"file":"120_en_en.wav","voice":"en","speed":0.91608024}
+{"mode":"ENGLISH","transcript_gold":"hello","intent_gold":"smalltalk.greet","slots_gold":null,"file":"121_en_en.wav","voice":"en","speed":1.079115}
+{"mode":"TANGLISH","transcript_gold":"alarm cancel pannu","intent_gold":"alarm.cancel","slots_gold":null,"file":"122_ta_ta.wav","voice":"ta","speed":1.060574}
+{"mode":"ENGLISH","transcript_gold":"set a timer for two minutes","intent_gold":"timer.set","slots_gold":{"duration":"2m"},"file":"123_en_en.wav","voice":"en","speed":1.0769434}
+{"mode":"TANGLISH","transcript_gold":"onbadhu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"9m"},"file":"124_ta_en.wav","voice":"en","speed":1.1208229}
+{"mode":"TANGLISH","transcript_gold":"anju nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"5m"},"file":"125_ta_ta.wav","voice":"ta","speed":0.950349}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning six ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"06:00"},"file":"126_ta_ta.wav","voice":"ta","speed":0.9254931}
+{"mode":"TANGLISH","transcript_gold":"six into ten evlo","intent_gold":"calc","slots_gold":{"expression":"6*10"},"file":"127_ta_ta.wav","voice":"ta","speed":0.9031679}
+{"mode":"TANGLISH","transcript_gold":"naalu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"4m"},"file":"128_ta_en.wav","voice":"en","speed":0.98527694}
+{"mode":"TANGLISH","transcript_gold":"vanakkam","intent_gold":"smalltalk.greet","slots_gold":null,"file":"129_ta_en.wav","voice":"en","speed":1.1292462}
+{"mode":"TANGLISH","transcript_gold":"innaikku date enna","intent_gold":"clock.date","slots_gold":null,"file":"130_ta_en.wav","voice":"en","speed":0.96338516}
+{"mode":"TANGLISH","transcript_gold":"naalaikku weather eppadi irukkum","intent_gold":"offline.unsupported","slots_gold":null,"file":"131_ta_en.wav","voice":"en","speed":0.93570685}
+{"mode":"TANGLISH","transcript_gold":"raathiri pathu manikku alarm vechidu","intent_gold":"alarm.set","slots_gold":{"time":"22:00"},"file":"132_ta_ta.wav","voice":"ta","speed":0.9743632}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning eight ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"08:00"},"file":"133_ta_ta.wav","voice":"ta","speed":1.1049078}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning ten ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"10:00"},"file":"134_ta_en.wav","voice":"en","speed":1.1355473}
+{"mode":"TANGLISH","transcript_gold":"naalu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"4m"},"file":"135_ta_ta.wav","voice":"ta","speed":1.10412}
+{"mode":"ENGLISH","transcript_gold":"set an alarm for seven a m tomorrow","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"07:00"},"file":"136_en_en.wav","voice":"en","speed":1.0567182}
+{"mode":"TANGLISH","transcript_gold":"enakku bore adikkudhu enna pannalaam","intent_gold":"llm","slots_gold":null,"file":"137_ta_en.wav","voice":"en","speed":0.9431068}
+{"mode":"ENGLISH","transcript_gold":"set an alarm for eleven a m tomorrow","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"11:00"},"file":"138_en_en.wav","voice":"en","speed":0.9874939}
+{"mode":"TANGLISH","transcript_gold":"naalaikku morning ten ku alarm set pannu","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"10:00"},"file":"139_ta_ta.wav","voice":"ta","speed":0.95135045}
+{"mode":"ENGLISH","transcript_gold":"what is the capital of france","intent_gold":"llm","slots_gold":null,"file":"140_en_en.wav","voice":"en","speed":0.9311982}
+{"mode":"TANGLISH","transcript_gold":"ezhu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"7m"},"file":"141_ta_ta.wav","voice":"ta","speed":1.107316}
+{"mode":"ENGLISH","transcript_gold":"cancel my alarm","intent_gold":"alarm.cancel","slots_gold":null,"file":"142_en_en.wav","voice":"en","speed":0.9146703}
+{"mode":"TANGLISH","transcript_gold":"chennai pathi oru fact sollu","intent_gold":"llm","slots_gold":null,"file":"143_ta_ta.wav","voice":"ta","speed":1.0707777}
+{"mode":"TANGLISH","transcript_gold":"two into six evlo","intent_gold":"calc","slots_gold":{"expression":"2*6"},"file":"144_ta_en.wav","voice":"en","speed":1.0870662}
+{"mode":"TANGLISH","transcript_gold":"five into nine evlo","intent_gold":"calc","slots_gold":{"expression":"5*9"},"file":"145_ta_en.wav","voice":"en","speed":1.0913569}
+{"mode":"TANGLISH","transcript_gold":"naalaikku kaalai pathu manikku alarm vei","intent_gold":"alarm.set","slots_gold":{"day":"tomorrow","time":"10:00"},"file":"146_ta_ta.wav","voice":"ta","speed":1.0155168}
+{"mode":"TANGLISH","transcript_gold":"moonu nimisham timer vei","intent_gold":"timer.set","slots_gold":{"duration":"3m"},"file":"147_ta_en.wav","voice":"en","speed":1.1487399}
+{"mode":"ENGLISH","transcript_gold":"set a timer for seven minutes","intent_gold":"timer.set","slots_gold":{"duration":"7m"},"file":"148_en_en.wav","voice":"en","speed":1.0810256}

@@ -1,0 +1,3 @@
+extends: 10_full.yaml
+name: t2_fuzzy
+nlu: {fuzzy: true, merge: false}

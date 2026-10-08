@@ -1,0 +1,3 @@
+extends: 02_streaming_asr.yaml
+name: 03_endpoint400
+endpoint: {silence_ms: 400}

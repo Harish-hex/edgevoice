@@ -1,0 +1,3 @@
+extends: 07_fast_path.yaml
+name: 08_clips
+reply: {clips: true}

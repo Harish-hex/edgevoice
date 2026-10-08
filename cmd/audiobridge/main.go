@@ -44,7 +44,7 @@ func main() {
 		}
 		r, w = c, c
 	default:
-		cmd := exec.Command("docker/run.sh", "go", "run", "./cmd/edgevoice", "-config", *cfg, "-transport", "stdio")
+		cmd := exec.Command("docker/run.sh", "bin/edgevoice", "-config", *cfg, "-transport", "stdio")
 		cmd.Env = append(os.Environ(), "CPUS="+*cpus, "MEM="+*mem, "NAME=edgevoice")
 		cmd.Stderr = os.Stderr
 		in, _ := cmd.StdinPipe()

@@ -9,12 +9,16 @@ image:
 dev:
 	$(RUN) bash
 limits:
-	$(RUN) sh -c 'echo "cpu.max: $$(cat /sys/fs/cgroup/cpu.max)"; echo "memory.max: $$(cat /sys/fs/cgroup/memory.max)"; echo "net: $$(ls /sys/class/net)"'
-gate:
-	$(RUN) go run ./cmd/gate
+	$(RUN) sh -c 'echo "cpu.max: $$(cat /sys/fs/cgroup/cpu.max)"; echo "memory.max: $$(cat /sys/fs/cgroup/memory.max)"; echo "net: $$(cat /sys/class/net/*/operstate | paste -sd, -) (only lo is up)"'
+build:
+	CPUS=4 MEM=3g docker/run.sh go build -o bin/ ./cmd/edgevoice ./cmd/gate ./cmd/buildclips ./cmd/synthdata
+gate: build
+	$(RUN) bin/gate
 
-.PHONY: test image dev limits gate clips run
-clips:
-	$(RUN) go run ./cmd/buildclips
+.PHONY: test image dev limits build gate clips synth run
+clips: build
+	CPUS=4 MEM=3g docker/run.sh bin/buildclips
+synth: build
+	CPUS=4 MEM=3g docker/run.sh bin/synthdata
 run:
 	go run ./cmd/audiobridge -cpus $(CPUS) -mem $(MEM)

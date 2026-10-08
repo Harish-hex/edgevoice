@@ -1,0 +1,3 @@
+extends: 03_endpoint400.yaml
+name: 04_prompt_cache
+llm: {prompt_cache: true}

@@ -1,0 +1,3 @@
+extends: 08_clips.yaml
+name: 09_semantic_endpoint
+endpoint: {early_silence_ms: 200}

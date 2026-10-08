@@ -63,7 +63,7 @@ func Load(path string) (*Config, error) {
 }
 
 func load(path string, c *Config, depth int) error {
-	if depth > 5 {
+	if depth > 20 {
 		return fmt.Errorf("config: extends too deep at %s", path)
 	}
 	b, err := os.ReadFile(path)

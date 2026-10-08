@@ -1,0 +1,3 @@
+extends: 05_clause_tts.yaml
+name: 07_fast_path
+nlu: {fast_path: true}

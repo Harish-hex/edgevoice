@@ -1,0 +1,3 @@
+extends: 01_baseline.yaml
+name: 02_streaming_asr
+asr: {engine: zipformer}

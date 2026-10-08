@@ -1,0 +1,4 @@
+# Tanglish table: no fuzzy lexicon, no token merge
+extends: 10_full.yaml
+name: t1_raw_parser
+nlu: {fuzzy: false, merge: false}
