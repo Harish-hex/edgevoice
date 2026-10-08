@@ -65,6 +65,9 @@ reminder.ring:
 dont_know:
   ENGLISH:  {display: "Sorry, I'm not sure about that.", speech: ["Sorry, I'm not sure about that."]}
   TANGLISH: {display: "Mannikkavum, adhu enakku theriyala.", speech: ["மன்னிக்கவும், அது எனக்கு தெரியல"]}
+smalltalk.capabilities:
+  ENGLISH:  {display: "I can set alarms, timers and reminders, tell the time and date, do quick maths, open or close apps, and answer simple questions — all offline.", speech: ["I can set alarms, timers and reminders, tell the time and date, do quick maths, open or close apps, and answer simple questions, all offline."]}
+  TANGLISH: {display: "Naan alarm, timer, reminder vekkalaam, time date sollalaam, chinna kanakku pannalaam, apps open close pannalaam, simple kelvikku badhil sollalaam — ellaam offline la.", speech: ["நான் அலாரம், டைமர், ரிமைண்டர் வெக்கலாம், டைம் டேட் சொல்லலாம், சின்ன கணக்கு பண்ணலாம், ஆப்ஸ் ஓபன் க்ளோஸ் பண்ணலாம், சிம்பிள் கேள்விக்கு பதில் சொல்லலாம். எல்லாம் ஆஃப்லைன்ல."]}
 wake:
   ENGLISH:  {display: "Yes?", speech: ["Yes?"]}
   TANGLISH: {display: "Sollunga?", speech: ["சொல்லுங்க?"]}

@@ -30,7 +30,7 @@ func TestAlarmEnglish(t *testing.T) {
 }
 
 func TestEveryIntentHasBothModes(t *testing.T) {
-	for _, id := range []string{"alarm.set", "alarm.cancel", "timer.set", "reminder.set", "clock.time", "clock.date", "calc", "system.stop", "smalltalk.greet", "smalltalk.identity", "offline.unsupported", "error", "quick_only", "timer.cancel", "app.open", "app.close", "alarm.ring", "timer.done", "reminder.ring", "wake"} {
+	for _, id := range []string{"alarm.set", "alarm.cancel", "timer.set", "reminder.set", "clock.time", "clock.date", "calc", "system.stop", "smalltalk.greet", "smalltalk.identity", "offline.unsupported", "error", "quick_only", "timer.cancel", "app.open", "app.close", "alarm.ring", "timer.done", "reminder.ring", "wake", "smalltalk.capabilities", "dont_know"} {
 		for _, m := range []string{"ENGLISH", "TANGLISH"} {
 			if _, ok := templates[id][m]; !ok {
 				t.Errorf("missing template %s/%s", id, m)

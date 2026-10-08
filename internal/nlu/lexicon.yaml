@@ -1,8 +1,10 @@
 # Tanglish/English lexicon (PRD §7.4). Each entry: canonical form, role, optional value,
 # variants by language. Extend from recordings; keep variants lowercase, punctuation-free.
-stopwords: [a, an, the, for, me, my, to, is, it, of, please, can, you, i, in, on, and, um, uh, ok, okay, da, la, pa]
+stopwords: [a, an, the, for, me, my, to, is, it, of, please, can, you, i, in, on, and, um, uh, ok, okay, da, la, pa, from, after, later, just, some, up, all, there]
 # Multi-word phrases rewritten to one token before lookup (after transliteration/tokenizing).
 phrases:
+  from now: fromnow
+  right now: rightnow
   day after tomorrow: dayaftertomorrow
   day before yesterday: daybeforeyesterday
   naalu anaikku: naalanniki
@@ -19,7 +21,7 @@ phrases:
   munthaa naal: munthaanethu
 # Common colloquial Tamil words: no command role, but they count as "understood" for the confidence gate
 # (so genuine Tanglish chat isn't rejected as noise).
-vocab: [naan, nee, neenga, avan, aval, avanga, enakku, unakku, ungalukku, namakku, enna, ennadhu, epdi, eppadi, eppo,
+vocab: [fromnow, rightnow, naan, nee, neenga, avan, aval, avanga, enakku, unakku, ungalukku, namakku, enna, ennadhu, epdi, eppadi, eppo,
   enga, yen, yaaru, edhu, sollu, sollunga, solla, solradhu, pannu, pannalaam, pannunga, venum, venam, irukku, irukkum,
   illa, illai, aamaa, seri, romba, nalla, nallaa, konjam, oru, ithu, idhu, adhu, anga, inga, appo, ippo, ippa, theriyuma,
   theriyum, theriyadhu, pesu, pesalaam, paadu, paattu, padam, saapadu, saapidalaam, saappaadu, nandri, pathi, kathai,
@@ -74,6 +76,8 @@ entries:
   - {canon: open, role: OPEN, en: [open, launch], ta: [thora, thoranga, thorakku, thirakku, thira, thorangga, oopan]}
   - {canon: close, role: CLOSE, en: [close, quit, exit], ta: [moodu, moodunga, mooodu, kloos, kuloos, klos, kulos, kulossu]}
   - {canon: pathi, role: ABOUT, ta: [pathi, patti, paththi, patthi]}
+  - {canon: mudiyum, role: CAN, ta: [mudiyum, mudiyuma, mudiyumaa, mudiyumma, pannuva, pannuvia, pannuveenga, theriyum], en: [do, help, capable, capabilities, able]}
+  - {canon: ennalaam, role: WH, ta: [ennalaam, ennellaam, ennalam, ennellam, ennalaa, ennenna], en: [things]}
   # --- intent keywords ---
   - {canon: alarm, role: KW, value: alarm, ta: [alaaram, alarum, alaram], en: [alarm, alarms, wake]}
   - {canon: timer, role: KW, value: timer, ta: [taimer, taimar, tinner], en: [timer]}
@@ -81,7 +85,7 @@ entries:
   - {canon: vanakkam, role: GREET, ta: [vanakkam, vanakam, helloo], en: [hi, hello, hey, hay, hei]}
   - {canon: yaaru, role: WHO, ta: [yaaru, yaar, yaru], en: [who]}
   - {canon: nee_yaaru, role: WHO, value: self, ta: [neeyaaru, niaru, neyaru, niyaru]}
-  - {canon: nee, role: YOU, ta: [nee, neenga, ni, nii, niinga], en: [are, your]}
+  - {canon: nee, role: YOU, ta: [nee, neenga, ni, nii, niinga, unnaala, unnala, ungalaala, ungalala, unnaal], en: [are, your]}
   - {canon: weather, role: OFFLINE, ta: [vedhar, vedar, vethar, mazhai], en: [weather, news, score, cricket, stock, stocks]}
   # --- calculator operators ---
   - {canon: "*", role: OP, en: [times, into, x, multiplied, multiply], ta: [perukku, indu, intu, taims]}

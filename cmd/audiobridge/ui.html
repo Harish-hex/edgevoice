@@ -439,6 +439,7 @@ function connect() {
         if (e.now_ms) clockSkew = e.now_ms - Date.now();
         break;
       case "fired": toast(e.text, "ring", 9000); break;
+      case "tier": toast(`Limits changed → Tier ${e.tier} (${Number(e.cores || 0).toFixed(1)} CPU · ${e.mem_mb} MB)`, "", 7000); break;
       case "app_result": toast((e.ok ? "✓ " : "✗ ") + e.text, e.ok ? "" : "bad"); break;
       case "state": setState(e.state); break;
       case "turn": onTurn(e); break;

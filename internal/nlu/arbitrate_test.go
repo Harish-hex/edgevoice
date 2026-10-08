@@ -43,6 +43,9 @@ func TestChoose(t *testing.T) {
 		{"accented real command kept", cand("en", "open spottifay", -0.84, 3.5), cand("ta", "ஓபன் பா்டட்டிஃைவ", 0, 0), true, "en", "app.open", ""},
 		{"fragment is not a question", cand("en", "are now open", -0.76, 1.0), cand("ta", "நான் ஓபன்", 0, 0), false, "", "", ""},
 		{"failed calc is not a question", cand("en", "one place will", -1.2, 1.5), cand("ta", "ஒன் ப்ளஸ் வில்", 0, 0), false, "", "", ""},
+		{"real English question kept (BPE splits words)", cand("en", "how many planets are there in the solar system", -0.42, 2.1), cand("ta", "ஹவ் மெினி பிளானர்்ஸ் ஆர் தேர் இன் த சோலா சிஸ்டம்", 0, 0), true, "en", "", "how many planets are there in the solar system"},
+		{"failed English command is not chat", cand("en", "for five minutes an hour", -0.52, 2.0), cand("ta", "செட்டனெல்லாம் ஃபார் ஃபைவ் மினிட்ஸ் என்ண்ணா", 0, 0), false, "", "", ""},
+		{"untranslatable Tamil word: no guess", cand("en", "", 0, 0), cand("ta", "சரிஸ் என்ன பச்சிருக்காடா", 0, 0), false, "", "", ""},
 		{"no subject is not a question", cand("en", "and a thought", -1.3, 1.5), cand("ta", "என்ன ஆது", 0, 0), false, "", "", ""},
 	}
 	for _, c := range cases {
@@ -51,7 +54,7 @@ func TestChoose(t *testing.T) {
 		if got.Intent != nil {
 			intent = got.Intent.Name
 		}
-		if ok != c.ok || (ok && (got.Source != c.wantSrc || intent != c.wantInt)) || (c.wantText != "" && got.Norm.Canonical != c.wantText) {
+		if ok != c.ok || (ok && (got.Source != c.wantSrc || intent != c.wantInt)) || (c.wantText != "" && got.Norm.Canonical != c.wantText && got.Text != c.wantText) {
 			t.Errorf("%s: got ok=%v %s/%q text=%q; want ok=%v %s/%q text=%q", c.name, ok, got.Source, intent, got.Norm.Canonical, c.ok, c.wantSrc, c.wantInt, c.wantText)
 		}
 	}

@@ -28,10 +28,10 @@ type Controller struct {
 func New(srv *llm.Server, p *pipeline.Pipeline) *Controller {
 	small := p.Cfg.P("llm/Qwen3-0.6B-Q4_K_M.gguf")
 	c := &Controller{srv: srv, p: p, cur: "T0", tiers: map[string]Tier{
-		"T0": {"T0", srv.Model, p.Cfg.LLM.Ctx},
-		"T1": {"T1", small, 512},
-		"T2": {"T2", small, 256},
-		"T3": {"T3", "", 0},
+		"T0": {Name: "T0", Model: srv.Model, Ctx: p.Cfg.LLM.Ctx},
+		"T1": {Name: "T1", Model: small, Ctx: 512},
+		"T2": {Name: "T2", Model: small, Ctx: 256},
+		"T3": {Name: "T3"},
 	}}
 	p.Tier = c.Current
 	prev := p.Bus.OnTurn
@@ -75,7 +75,13 @@ func (c *Controller) Run(ctx context.Context) {
 		c.mu.Lock()
 		c.cur, c.e2es = want, nil
 		c.mu.Unlock()
-		c.apply(ctx, c.tiers[want])
+		t := c.tiers[want]
+		t.Threads = 2
+		if cores > 0 && cores < 1.5 {
+			t.Threads = 1 // never run more LLM threads than cores: spinning threads get throttled
+		}
+		c.p.Out.Event("tier", map[string]any{"tier": want, "cores": cores, "mem_mb": mem / MB})
+		c.apply(ctx, t)
 	}
 }
 
@@ -86,7 +92,7 @@ func (c *Controller) apply(ctx context.Context, t Tier) {
 		c.p.Out.Status("Tier " + t.Name + ": commands only")
 		return
 	}
-	c.srv.Model, c.srv.Ctx = t.Model, t.Ctx
+	c.srv.Model, c.srv.Ctx, c.srv.Threads = t.Model, t.Ctx, t.Threads
 	if err := c.srv.Start(ctx); err != nil {
 		log.Printf("degrade: llm restart failed: %v", err)
 		return

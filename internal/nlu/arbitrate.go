@@ -30,7 +30,7 @@ type Gate struct {
 
 // Calibrated on 48 real-voice turns (results/runs/real_*.jsonl): real accented commands score −0.36…−1.02,
 // noise −1.09…−2.5; real speech splits names into many BPE pieces, so fragmentation only gates chat.
-var DefaultGate = Gate{EnChatMinLP: -0.6, EnCmdMinLP: -1.05, EnMaxTPW: 1.8, ChatMinCov: 0.6, ChatMinWords: 2}
+var DefaultGate = Gate{EnChatMinLP: -0.6, EnCmdMinLP: -1.05, EnMaxTPW: 99, ChatMinCov: 0.6, ChatMinWords: 2} // BPE fragmentation dropped: this model's 500-piece vocab splits real words ("planets", "solar") into ~2 pieces
 
 // Coverage is the fraction of content tokens (non-stopword) the lexicon recognised.
 func (lx *Lexicon) Coverage(n iface.NormalizedText) float64 {
@@ -84,6 +84,13 @@ func (lx *Lexicon) chatOK(g Gate, c Candidate) (iface.NormalizedText, bool) {
 	if strings.TrimSpace(c.Text) == "" || lx.contentWords(c.Norm) < g.ChatMinWords {
 		return c.Norm, false
 	}
+	// A failed command is not a question ("for five minutes an hour", "one plus vil"): never chat about it.
+	for _, t := range c.Norm.Tags {
+		switch t.Role {
+		case "OPEN", "CLOSE", "KW", "APP", "OP", "UNIT", "NUMMOD":
+			return c.Norm, false
+		}
+	}
 	if c.Source == "ta" {
 		// A Tanglish question needs a question cue (or 3+ words) and enough understood words; a fragment
 		// like "naan open" is not a question.
@@ -105,6 +112,13 @@ func (lx *Lexicon) chatOK(g Gate, c Candidate) (iface.NormalizedText, bool) {
 		}
 		if !subject {
 			return n, false
+		}
+		// an untranslatable Tamil word means we'd send the LLM half a question: only allow it when nearly
+		// everything else was understood
+		for _, t := range n.Tags {
+			if t.Role == "" && cov < 0.75 {
+				return n, false
+			}
 		}
 		return n, cov >= g.ChatMinCov || (cue && cov >= 0.4)
 	}

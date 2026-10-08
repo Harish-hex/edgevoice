@@ -95,8 +95,16 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 	has := func(r string) bool { return f.roles[r] > 0 }
 	mk := func(name string, slots map[string]string, unkFree bool) *iface.Intent {
 		score := float32(1.0)
-		if !unkFree {
-			score -= 0.15 * float32(f.unk)
+		if !unkFree && f.unk > 0 {
+			// penalty grows with the SHARE of unknown words, so a long command with a few misheard
+			// fillers ("…stood out alarm five minutes from now") still parses
+			content := f.unk
+			for r, k := range f.roles {
+				if r != "VOCAB" && r != "EN" {
+					content += k
+				}
+			}
+			score -= 0.1*float32(min(f.unk, 2)) + 0.5*float32(f.unk)/float32(content)
 		}
 		if score < p.Threshold {
 			return nil
@@ -155,8 +163,10 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 		return mk("offline.unsupported", nil, true)
 	case has("DATE") && (has("WH") || has("DAY")):
 		return mk("clock.date", map[string]string{"day": dayOf(n)}, false)
-	case (has("TIME") || has("AT")) && has("WH") && f.nums == 0:
+	case (has("TIME") || has("AT")) && has("WH") && f.nums == 0 && f.unk <= 1:
 		return mk("clock.time", nil, false)
+	case has("CAN") && (has("YOU") || has("WH")) && !has("NUM"):
+		return mk("smalltalk.capabilities", nil, true)
 	case has("WHO") && (has("YOU") || f.vals["WHO:self"]):
 		return mk("smalltalk.identity", nil, false)
 	case has("GREET") && len(n.Tokens) <= 3:

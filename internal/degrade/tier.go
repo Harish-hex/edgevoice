@@ -9,9 +9,10 @@ import (
 const MB = 1 << 20
 
 type Tier struct {
-	Name  string
-	Model string // "" => no LLM (commands only)
-	Ctx   int
+	Name    string
+	Model   string // "" => no LLM (commands only)
+	Ctx     int
+	Threads int
 }
 
 // Select implements the tier table. cores/mem of 0 mean "unlimited".
