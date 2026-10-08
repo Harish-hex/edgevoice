@@ -75,7 +75,7 @@ func TestJoinCrossfade(t *testing.T) {
 }
 
 func TestTrimSilence(t *testing.T) {
-	p := make([]int16, 16000)  // 1 s silence
+	p := make([]int16, 16000)       // 1 s silence
 	for i := 8000; i < 12000; i++ { // 250 ms tone in the middle
 		p[i] = int16(5000 * ((i % 40) - 20) / 20)
 	}

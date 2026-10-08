@@ -10,6 +10,7 @@ package main
 import (
 	"bufio"
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -54,7 +55,24 @@ func (o *frameOut) Status(s string) {
 	o.w.Flush()
 }
 
+func (o *frameOut) Event(kind string, data map[string]any) {
+	if data == nil {
+		data = map[string]any{}
+	}
+	data["kind"] = kind
+	b, err := json.Marshal(data)
+	if err != nil {
+		return
+	}
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	audio.WriteFrame(o.w, audio.FrameEvent, b)
+	o.w.Flush()
+}
+
 type nullOut struct{}
+
+func (nullOut) Event(string, map[string]any) {}
 
 func (nullOut) PCM([]int16)     {}
 func (nullOut) Status(s string) { log.Print(s) }
@@ -126,6 +144,7 @@ func main() {
 		p.DumpDir = "results/turns"
 	}
 	if cfg.Wake.Enabled {
+		go liveSamples(ctx, p, srv, cfg)
 		out.Status("EdgeVoice ready — say \"Hey Computer\", then your command (or both in one go).")
 	} else {
 		out.Status("EdgeVoice ready — speak.")
@@ -146,6 +165,37 @@ func main() {
 		}
 	}()
 	p.Run(ctx, in)
+}
+
+// liveSamples streams resource usage to the dashboard every 500 ms (cgroup v2 + /proc).
+func liveSamples(ctx context.Context, p *pipeline.Pipeline, srv *llm.Server, cfg *config.Config) {
+	const cg = "/sys/fs/cgroup"
+	prevCPU, _ := metrics.CPUUsec(cg)
+	prevT := time.Now()
+	for range time.Tick(500 * time.Millisecond) {
+		cpu, _ := metrics.CPUUsec(cg)
+		now := time.Now()
+		cores := float64(cpu-prevCPU) / 1e6 / now.Sub(prevT).Seconds()
+		prevCPU, prevT = cpu, now
+		limCores, limMem := metrics.Limits(cg)
+		memCur, _ := metrics.ReadInt(cg + "/memory.current")
+		peak, _ := metrics.ReadInt(cg + "/memory.peak")
+		ev := map[string]any{
+			"cpu_cores": cores, "limit_cores": limCores, "limit_mem_mb": limMem >> 20,
+			"mem_mb": memCur >> 20, "anon_mb": metrics.StatField(cg+"/memory.stat", "anon") >> 20, "peak_mb": peak >> 20,
+			"rss_edgevoice_mb": metrics.ProcRSS(os.Getpid()) >> 20, "state": p.State(),
+			"llm_ready": p.LLMReadyNow(), "llm_model": filepath.Base(cfg.Models.LLM), "net": "none",
+			"wake": cfg.Wake.Enabled,
+		}
+		if srv != nil {
+			ev["rss_llm_mb"] = metrics.ProcRSS(srv.PID()) >> 20
+			ev["llm_model"] = filepath.Base(srv.Model)
+		}
+		if p.Tier != nil {
+			ev["tier"] = p.Tier()
+		}
+		p.Out.Event("sample", ev)
+	}
 }
 
 func build(cfg *config.Config) (*pipeline.Pipeline, *llm.Server) {
@@ -190,6 +240,7 @@ func build(cfg *config.Config) (*pipeline.Pipeline, *llm.Server) {
 	}
 	p.Bus, err = metrics.NewBus(cfg.Results, cfg.Name)
 	must(err, "metrics")
+	p.Bus.OnTurn = func(rec map[string]any) { p.Out.Event("turn", rec) } // p.Out is read at call time
 
 	if !cfg.LLM.Enabled {
 		return p, nil

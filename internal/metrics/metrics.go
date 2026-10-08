@@ -49,7 +49,7 @@ func NewBus(resultsDir, runName string) (*Bus, error) {
 func (b *Bus) sample() {
 	for range time.Tick(50 * time.Millisecond) {
 		v, err := ReadInt(b.cg + "/memory.current")
-		a := statField(b.cg+"/memory.stat", "anon")
+		a := StatField(b.cg+"/memory.stat", "anon")
 		if err == nil {
 			b.mu.Lock()
 			b.peak = max(b.peak, v)
@@ -116,8 +116,8 @@ func ReadInt(path string) (int64, error) {
 	return strconv.ParseInt(strings.TrimSpace(string(s)), 10, 64)
 }
 
-// statField reads one "key value" line from a cgroup stat file (0 if absent).
-func statField(path, key string) int64 {
+// StatField reads one "key value" line from a cgroup stat file (0 if absent).
+func StatField(path, key string) int64 {
 	s, err := os.ReadFile(path)
 	if err != nil {
 		return 0
@@ -126,6 +126,24 @@ func statField(path, key string) int64 {
 		if v, ok := strings.CutPrefix(l, key+" "); ok {
 			n, _ := strconv.ParseInt(strings.TrimSpace(v), 10, 64)
 			return n
+		}
+	}
+	return 0
+}
+
+// ProcRSS returns VmRSS in bytes for pid (0 if unavailable).
+func ProcRSS(pid int) int64 {
+	if pid <= 0 {
+		return 0
+	}
+	s, err := os.ReadFile("/proc/" + strconv.Itoa(pid) + "/status")
+	if err != nil {
+		return 0
+	}
+	for _, l := range strings.Split(string(s), "\n") {
+		if v, ok := strings.CutPrefix(l, "VmRSS:"); ok {
+			n, _ := strconv.ParseInt(strings.TrimSpace(strings.TrimSuffix(strings.TrimSpace(v), "kB")), 10, 64)
+			return n << 10
 		}
 	}
 	return 0

@@ -52,7 +52,7 @@ type Config struct {
 		Port        int  `yaml:"port"`
 	} `yaml:"llm"`
 	Wake struct {
-		Enabled bool `yaml:"enabled"`   // require the wake phrase ("Hey Computer") when asleep
+		Enabled bool `yaml:"enabled"`  // require the wake phrase ("Hey Computer") when asleep
 		WindowS int  `yaml:"window_s"` // stay awake this long after each reply for follow-ups
 	} `yaml:"wake"`
 	Degrade bool   `yaml:"degrade"`

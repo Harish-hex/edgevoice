@@ -12,6 +12,7 @@ const (
 	FrameControl byte = 2 // e.g. "ptt_down", "ptt_up"
 	FrameStatus  byte = 3 // UTF-8 status line, container -> host
 	FrameFlush   byte = 4 // container -> host: drop queued playback (barge-in)
+	FrameEvent   byte = 5 // container -> host: JSON event for the dashboard ({"kind": ...})
 )
 
 func WriteFrame(w io.Writer, typ byte, payload []byte) error {

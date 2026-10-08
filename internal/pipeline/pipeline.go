@@ -28,6 +28,32 @@ import (
 type Output interface {
 	PCM(p []int16)
 	Status(s string)
+	Event(kind string, data map[string]any) // dashboard events (state changes, live samples, turns)
+}
+
+// State reports the assistant's visible state for the dashboard.
+func (p *Pipeline) State() string {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	now := metrics.Now()
+	switch {
+	case now < p.busyUntil:
+		return "speaking"
+	case p.thinking:
+		return "thinking"
+	case p.listening:
+		return "listening"
+	case !p.Cfg.Wake.Enabled || now < p.awakeUntil:
+		return "awake"
+	}
+	return "asleep"
+}
+
+func (p *Pipeline) setFlags(listening, thinking bool) {
+	p.mu.Lock()
+	p.listening, p.thinking = listening, thinking
+	p.mu.Unlock()
+	p.Out.Event("state", map[string]any{"state": p.State()})
 }
 
 type Pipeline struct {
@@ -59,8 +85,10 @@ type Pipeline struct {
 	DumpDir string
 
 	awakeUntil time.Duration
-	prev   *iface.Intent // last command, for short follow-ups ("innaikku illa, naalaikku")
-	prevAt time.Duration
+	listening  bool
+	thinking   bool
+	prev       *iface.Intent // last command, for short follow-ups ("innaikku illa, naalaikku")
+	prevAt     time.Duration
 }
 
 func (p *Pipeline) SetLLMReady(v bool) { p.mu.Lock(); p.llmReady = v; p.mu.Unlock() }
@@ -113,6 +141,7 @@ func (p *Pipeline) Run(ctx context.Context, in <-chan []int16) {
 					continue
 				}
 				turn = p.Bus.Start()
+				p.setFlags(true, false)
 				turn.MarkAt("t_speech_start", now)
 				ep.Reset()
 				partial, n, utter = "", 0, nil
@@ -134,7 +163,9 @@ func (p *Pipeline) Run(ctx context.Context, in <-chan []int16) {
 			if ep.Update(speech, partial, t) {
 				turn.MarkAt("t_last_voiced", ep.LastVoiced())
 				turn.Mark("t_endpoint")
+				p.setFlags(false, true)
 				p.handle(ctx, turn, utter)
+				p.setFlags(false, false)
 				turn = nil
 				p.VAD.Reset()
 			}
@@ -312,6 +343,7 @@ func (p *Pipeline) play(turn *metrics.Turn, pcm []int16) {
 		return
 	}
 	turn.Mark("t_first_audio_out") // first reply PCM leaves the container (DESIGN #10)
+	defer func() { p.Out.Event("state", map[string]any{"state": "speaking"}) }()
 	p.Out.PCM(pcm)
 	d := time.Duration(len(pcm)) * time.Second / audio.SampleRate
 	p.mu.Lock()

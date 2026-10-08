@@ -8,6 +8,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -32,6 +33,8 @@ func main() {
 	micIdx := flag.Int("mic", -1, "microphone index from -list (default: system default)")
 	gain := flag.Float64("gain", 1.0, "mic gain multiplier (try 2-4 for quiet headset mics)")
 	loopback := flag.Bool("loopback", false, "mic->speaker test without container")
+	uiAddr := flag.String("ui", "127.0.0.1:8080", "dashboard address (\"\" to disable)")
+	openUI := flag.Bool("open", true, "open the dashboard in the browser")
 	flag.Parse()
 
 	ctx, err := malgo.InitContext(nil, malgo.ContextConfig{}, nil)
@@ -49,6 +52,16 @@ func main() {
 			fmt.Printf("%d: %s%s\n", i, d.Name(), def)
 		}
 		return
+	}
+
+	hub := newHub()
+	if *uiAddr != "" && !*loopback {
+		go serveUI(*uiAddr, hub)
+		url := "http://" + *uiAddr
+		fmt.Printf("dashboard: %s\n", url)
+		if *openUI {
+			exec.Command("open", url).Start()
+		}
 	}
 
 	// ---- container stream ----
@@ -156,6 +169,7 @@ func main() {
 			l := level
 			lmu.Unlock()
 			db := 20 * math.Log10(math.Max(l, 1)/32768)
+			hub.publish(map[string]any{"kind": "mic", "db": db, "mic": micName})
 			bars := int(math.Max(0, (db+60)/2))
 			fmt.Printf("\rmic %5.0f dB |%-30s|", db, strings.Repeat("#", min(bars, 30)))
 		}
@@ -179,6 +193,12 @@ func main() {
 			mu.Unlock()
 		case audio.FrameStatus:
 			fmt.Printf("\r%-60s\r[%s] %s\n", "", time.Now().Format("15:04:05"), strings.TrimSpace(string(payload)))
+			hub.publish(map[string]any{"kind": "status", "text": strings.TrimSpace(string(payload))})
+		case audio.FrameEvent:
+			var ev map[string]any
+			if json.Unmarshal(payload, &ev) == nil {
+				hub.publish(ev)
+			}
 		case audio.FrameFlush:
 			mu.Lock()
 			play = nil
