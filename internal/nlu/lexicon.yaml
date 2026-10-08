@@ -21,7 +21,7 @@ phrases:
   munthaa naal: munthaanethu
 # Common colloquial Tamil words: no command role, but they count as "understood" for the confidence gate
 # (so genuine Tanglish chat isn't rejected as noise).
-vocab: [fromnow, rightnow, naan, nee, neenga, avan, aval, avanga, enakku, unakku, ungalukku, namakku, enna, ennadhu, epdi, eppadi, eppo,
+vocab: [fromnow, rightnow, play, playing, song, songs, plee, pilee, pleey, saang, saangu, saangs, video, please, some, something, anything, naan, nee, neenga, avan, aval, avanga, enakku, unakku, ungalukku, namakku, enna, ennadhu, epdi, eppadi, eppo,
   enga, yen, yaaru, edhu, sollu, sollunga, solla, solradhu, pannu, pannalaam, pannunga, venum, venam, irukku, irukkum,
   illa, illai, aamaa, seri, romba, nalla, nallaa, konjam, oru, ithu, idhu, adhu, anga, inga, appo, ippo, ippa, theriyuma,
   theriyum, theriyadhu, pesu, pesalaam, paadu, paattu, padam, saapadu, saapidalaam, saappaadu, nandri, pathi, kathai,

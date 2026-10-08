@@ -96,16 +96,17 @@ func (lx *Lexicon) chatOK(g Gate, c Candidate) (iface.NormalizedText, bool) {
 		// like "naan open" is not a question.
 		n := lx.BackTransliterate(c.Norm)
 		cue, cov := questionCue(n), lx.Coverage(n)
-		if !cue && lx.contentWords(n) < 3 {
+		if lx.contentWords(n) < 3 { // two Tamil words are a fragment, not a question ("itala ennavaa")
 			return n, false
 		}
 		// A real Tanglish question has a subject (a restored English word: "prime minister", "chennai")
 		// and no command words; "one plus vil" or "pannu medium" are failed commands, not questions.
-		subject := false
+		subject, subjects := false, 0
 		for _, t := range n.Tags {
 			switch t.Role {
 			case "EN":
 				subject = true
+				subjects++
 			case "DO", "OPEN", "CLOSE", "KW", "APP", "OP", "UNIT", "NEG", "NUMMOD":
 				return n, false
 			}
@@ -116,7 +117,7 @@ func (lx *Lexicon) chatOK(g Gate, c Candidate) (iface.NormalizedText, bool) {
 		// an untranslatable Tamil word means we'd send the LLM half a question: only allow it when nearly
 		// everything else was understood
 		for _, t := range n.Tags {
-			if t.Role == "" && cov < 0.75 {
+			if t.Role == "" && cov < 0.75 && subjects < 2 {
 				return n, false
 			}
 		}

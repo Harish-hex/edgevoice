@@ -46,6 +46,9 @@ func TestChoose(t *testing.T) {
 		{"real English question kept (BPE splits words)", cand("en", "how many planets are there in the solar system", -0.42, 2.1), cand("ta", "ஹவ் மெினி பிளானர்்ஸ் ஆர் தேர் இன் த சோலா சிஸ்டம்", 0, 0), true, "en", "", "how many planets are there in the solar system"},
 		{"failed English command is not chat", cand("en", "for five minutes an hour", -0.52, 2.0), cand("ta", "செட்டனெல்லாம் ஃபார் ஃபைவ் மினிட்ஸ் என்ண்ணா", 0, 0), false, "", "", ""},
 		{"untranslatable Tamil word: no guess", cand("en", "", 0, 0), cand("ta", "சரிஸ் என்ன பச்சிருக்காடா", 0, 0), false, "", "", ""},
+		{"india prime minister (EN, india must not be 'into')", cand("en", "india prime ministeriari", -0.48, 2.0), cand("ta", "ண்டியா பிரைம் மினிஸ்டர்", 0, 0), true, "en", "", ""},
+		{"two-subject Tamil question with one unknown", cand("en", "united states or the presidentiality", -0.65, 2.0), cand("ta", "யுனைடெட் ஸ்டேட்டோட பிரெசிடென்ட் யாரு", 0, 0), true, "ta", "", ""},
+		{"two-word Tamil fragment is not a question", cand("en", "", 0, 0), cand("ta", "இதல என்னவா", 0, 0), false, "", "", ""},
 		{"no subject is not a question", cand("en", "and a thought", -1.3, 1.5), cand("ta", "என்ன ஆது", 0, 0), false, "", "", ""},
 	}
 	for _, c := range cases {

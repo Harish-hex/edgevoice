@@ -128,7 +128,7 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 	switch {
 	case !simple && (has("APP") || has("DATE") || has("TIME") || has("AT") || has("GREET") || has("WHO") || has("CAN") || (has("NEG") && len(f.kw) == 0)):
 		return nil
-	case has("APP") && (has("CLOSE") || (has("NEG") && !f.kw["alarm"] && !f.kw["timer"])):
+	case has("APP") && (has("CLOSE") || (has("NEG") && !has("OPEN") && !f.kw["alarm"] && !f.kw["timer"])):
 		return mk("app.close", appSlots(n), false)
 	case has("APP") && (has("OPEN") || has("DO")):
 		return mk("app.open", appSlots(n), false)

@@ -114,11 +114,11 @@ func (lx *Lexicon) lookup(tok string) (iface.Tag, int, bool) {
 	key := phoneticKey(tok)
 	best, bestD, bestPK := iface.Tag{}, limit+1, false
 	for _, v := range lx.variants {
-		if len([]rune(v.form)) < 3 || v.tag.Role == "ABOUT" || (v.tag.Role == "APP" && len(tok) < 5) {
+		if len([]rune(v.form)) < 3 || v.tag.Role == "ABOUT" || v.tag.Role == "OP" || (v.tag.Role == "APP" && len(tok) < 5) {
 			continue // never fuzzy-match onto tiny forms like "ku", or onto "pathi" (about)
 		}
 		d := levenshtein(tok, v.form)
-		if d > limit {
+		if d > limit || (v.tag.Role == "NEG" && d > 1) { // "daniel" must not become "cancel"
 			continue
 		}
 		pk := phoneticKey(v.form) == key
@@ -138,7 +138,7 @@ func (lx *Lexicon) lookup(tok string) (iface.Tag, int, bool) {
 		// Phonetic fallback: same consonant skeleton (≥3 consonants) counts as a near match.
 		if len([]rune(tok)) >= 4 && len(key) >= 3 {
 			for _, v := range lx.variants {
-				if len([]rune(v.form)) >= 4 && phoneticKey(v.form) == key {
+				if len([]rune(v.form)) >= 4 && phoneticKey(v.form) == key && !exactOnly[v.tag.Role] {
 					return v.tag, limit, true
 				}
 			}
@@ -147,6 +147,9 @@ func (lx *Lexicon) lookup(tok string) (iface.Tag, int, bool) {
 	}
 	return best, bestD, true
 }
+
+// exactOnly roles never match by sound alone: operators ("india" ≈ "indu" = into), cancel/stop, "about".
+var exactOnly = map[string]bool{"OP": true, "NEG": true, "ABOUT": true}
 
 // d1 is edit distance (app names must be near-exact: "long" must not become "song" = Music).
 func d1(a, b string) int { return levenshtein(a, b) }
