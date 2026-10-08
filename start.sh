@@ -5,6 +5,7 @@
 #   ./start.sh --mic 1 --gain 3     # choose mic (see --list) and boost a quiet one
 #   ./start.sh --cpus 1 --mem 1g    # smaller enforced limits (degradation demo)
 #   ./start.sh --feed a.wav,b.wav   # backup demo: play WAV files instead of the mic
+#   ./start.sh --duplex             # full-duplex: interrupt it mid-answer (use earphones)
 #   ./start.sh --list               # list microphones
 #
 # Checks (and fixes) everything first: Docker running, container image, models, binaries, reply clips.
@@ -12,7 +13,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-MIC="" GAIN=1 CPUS=2 MEM=2g FEED="" LIST=0 OPEN=true
+MIC="" GAIN=1 CPUS=2 MEM=2g FEED="" LIST=0 OPEN=true DUPLEX=false FEEDGAP=4s
 while [ $# -gt 0 ]; do
   case "$1" in
     --mic) MIC="$2"; shift 2 ;;
@@ -22,6 +23,8 @@ while [ $# -gt 0 ]; do
     --feed) FEED="$2"; shift 2 ;;
     --list) LIST=1; shift ;;
     --no-open) OPEN=false; shift ;;
+    --duplex) DUPLEX=true; shift ;;
+    --feedgap) FEEDGAP="$2"; shift 2 ;;
     -h|--help) sed -n '2,12p' "$0"; exit 0 ;;
     *) echo "unknown option: $1 (try --help)"; exit 1 ;;
   esac
@@ -95,6 +98,7 @@ else
 fi
 say "Dashboard: http://localhost:8080  ·  say \"Hey Computer\" then your command  ·  Ctrl-C to stop"
 echo
-args=(-cpus "$CPUS" -mem "$MEM" -mic "$MIC" -gain "$GAIN" -open="$OPEN")
+args=(-cpus "$CPUS" -mem "$MEM" -mic "$MIC" -gain "$GAIN" -open="$OPEN" -duplex="$DUPLEX" -feedgap "$FEEDGAP")
+[ "$DUPLEX" = true ] && say "Full-duplex ON: talk over it to interrupt (use earphones; laptop speakers can self-interrupt)"
 [ -n "$FEED" ] && args+=(-feed "$FEED")
 exec bin/audiobridge-host "${args[@]}"

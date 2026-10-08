@@ -114,7 +114,7 @@ func (lx *Lexicon) lookup(tok string) (iface.Tag, int, bool) {
 	key := phoneticKey(tok)
 	best, bestD, bestPK := iface.Tag{}, limit+1, false
 	for _, v := range lx.variants {
-		if len([]rune(v.form)) < 3 || v.tag.Role == "ABOUT" || (v.tag.Role == "APP" && (len(tok) < 6 || d1(tok, v.form) > 1)) {
+		if len([]rune(v.form)) < 3 || v.tag.Role == "ABOUT" || (v.tag.Role == "APP" && len(tok) < 5) {
 			continue // never fuzzy-match onto tiny forms like "ku", or onto "pathi" (about)
 		}
 		d := levenshtein(tok, v.form)

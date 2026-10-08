@@ -55,8 +55,8 @@ entries:
   # --- apps (host opens them via `open -a`; whitelist = this list) ---
   - {canon: chrome, role: APP, value: "Google Chrome", en: [chrome, browser], ta: [kuroom, kurom, kroom, pirausar]}
   - {canon: safari, role: APP, value: "Safari", en: [safari], ta: [saphaari, sapaari, saphari]}
-  - {canon: spotify, role: APP, value: "Spotify", en: [spotify], ta: [spaattiphai, spaatiphai, spottiphai, spaatipai, saadipai, saatipai, spaadipai, saadiphai, sbaadipai, spaattipai, spaattipaiva, spaattipaiv, spaadphai, spaatphai]}
-  - {canon: music, role: APP, value: "Music", en: [music, songs, song], ta: [miyuusik, myuusik, paattu, paatu]}
+  - {canon: spotify, role: APP, value: "Spotify", en: [spotify, sportify, spartify, spotifi, sportife, spartife, spottify, spottifay, spartably], ta: [spaattiphai, spaatiphai, spottiphai, spaatipai, saadipai, saatipai, spaadipai, saadiphai, sbaadipai, spaattipai, spaattipaiva, spaattipaiv, spaadphai, spaatphai]}
+  - {canon: music, role: APP, value: "Music", en: [music], ta: [miyuusik, myuusik, paattu, paatu]}
   - {canon: calculator, role: APP, value: "Calculator", en: [calculator], ta: [kaalkuleettar, kalkuleettar, kaalkuleetar, kalkuleetar]}
   - {canon: notes, role: APP, value: "Notes", en: [notes, notepad], ta: [noots, noottu]}
   - {canon: calendar, role: APP, value: "Calendar", en: [calendar], ta: [kaalandar, kaalendar, kalandar]}

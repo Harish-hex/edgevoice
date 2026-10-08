@@ -37,6 +37,7 @@ func main() {
 	openUI := flag.Bool("open", true, "open the dashboard in the browser")
 	feed := flag.String("feed", "", "comma-separated WAV files to play INTO the assistant instead of the mic (testing / backup demo)")
 	feedGap := flag.Duration("feedgap", 4*time.Second, "silence between -feed files")
+	duplexMode := flag.Bool("duplex", false, "full-duplex barge-in (use earphones)")
 	flag.Parse()
 
 	ctx, err := malgo.InitContext(nil, malgo.ContextConfig{}, nil)
@@ -74,7 +75,11 @@ func main() {
 		r, w = pr, pw
 		go io.Copy(io.Discard, pr)
 	} else {
-		cmd := exec.Command("docker/run.sh", "bin/edgevoice", "-config", *cfg, "-transport", "stdio", "-dump")
+		args := []string{"bin/edgevoice", "-config", *cfg, "-transport", "stdio", "-dump"}
+		if *duplexMode {
+			args = append(args, "-duplex")
+		}
+		cmd := exec.Command("docker/run.sh", args...)
 		cmd.Env = append(os.Environ(), "CPUS="+*cpus, "MEM="+*mem, "NAME=edgevoice")
 		cmd.Stderr = os.Stderr
 		in, _ := cmd.StdinPipe()

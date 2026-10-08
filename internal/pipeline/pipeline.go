@@ -16,6 +16,7 @@ import (
 	"edgevoice/internal/actions"
 	"edgevoice/internal/audio"
 	"edgevoice/internal/config"
+	"edgevoice/internal/duplex"
 	"edgevoice/internal/iface"
 	"edgevoice/internal/llm"
 	"edgevoice/internal/metrics"
@@ -29,6 +30,7 @@ type Output interface {
 	PCM(p []int16)
 	Status(s string)
 	Event(kind string, data map[string]any) // dashboard events (state changes, live samples, turns)
+	Flush()                                 // drop reply audio still queued on the host (barge-in)
 }
 
 // UIState reports the assistant's visible state for the dashboard.
@@ -89,6 +91,45 @@ type Pipeline struct {
 	thinking   bool
 	prev       *iface.Intent // last command, for short follow-ups ("innaikku illa, naalaikku")
 	prevAt     time.Duration
+
+	// Full-duplex (barge-in). The reply runs in the background while the loop keeps listening.
+	active       *metrics.Turn      // turn whose reply is being produced/spoken
+	activeCancel context.CancelFunc // cancels its LLM stream / TTS
+	speaking     string             // text being spoken now (to tell the user's voice from our own echo)
+}
+
+// assistantBusy reports whether a reply is being produced or is still playing.
+func (p *Pipeline) assistantBusy(now time.Duration) bool {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	return p.active != nil || now < p.busyUntil
+}
+
+func (p *Pipeline) isActive(t *metrics.Turn) bool {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	return !p.Cfg.Duplex.Enabled || p.active == t
+}
+
+// interrupt stops the current reply: cancel the LLM/TTS, drop queued audio on the host, unmute.
+func (p *Pipeline) interrupt(by *metrics.Turn, speechStart time.Duration, reason string) {
+	p.mu.Lock()
+	cancel, victim := p.activeCancel, p.active
+	p.active, p.activeCancel, p.speaking = nil, nil, ""
+	now := metrics.Now()
+	p.busyUntil = now
+	p.mu.Unlock()
+	if cancel != nil {
+		cancel()
+	}
+	p.Out.Flush()
+	ms := float64((now - speechStart).Microseconds()) / 1000
+	by.Set("barged_in", true)
+	by.Set("bargein_ms", ms)
+	if victim != nil {
+		victim.Set("interrupted", true)
+	}
+	p.Out.Event("bargein", map[string]any{"ms": ms, "reason": reason})
 }
 
 func (p *Pipeline) SetLLMReady(v bool) { p.mu.Lock(); p.llmReady = v; p.mu.Unlock() }
@@ -136,6 +177,7 @@ func (p *Pipeline) Run(ctx context.Context, in <-chan []int16) {
 	var buf, utter []int16
 	var preroll [][]float32
 	var turn *metrics.Turn
+	var overlapping, barged bool
 	partial, n := "", 0
 	for chunk := range in {
 		if ctx.Err() != nil {
@@ -147,7 +189,7 @@ func (p *Pipeline) Run(ctx context.Context, in <-chan []int16) {
 			buf = buf[sherpa.VADWindow:]
 			now := metrics.Now()
 			p.mu.Lock()
-			busy := p.HalfDuplex && now < p.busyUntil
+			busy := p.HalfDuplex && !p.Cfg.Duplex.Enabled && now < p.busyUntil
 			p.mu.Unlock()
 			if busy {
 				continue
@@ -165,6 +207,7 @@ func (p *Pipeline) Run(ctx context.Context, in <-chan []int16) {
 				turn = p.Bus.Start()
 				p.setFlags(true, false)
 				turn.MarkAt("t_speech_start", now)
+				overlapping, barged = p.Cfg.Duplex.Enabled && p.assistantBusy(now), false
 				ep.Reset()
 				partial, n, utter = "", 0, nil
 				for _, pf := range preroll {
@@ -178,6 +221,18 @@ func (p *Pipeline) Run(ctx context.Context, in <-chan []int16) {
 			if p.ASR != nil && n%3 == 0 {
 				partial = p.ASR.Partial()
 			}
+			// Barge-in: the user started talking while we were answering.
+			if overlapping && !barged && p.assistantBusy(now) {
+				p.mu.Lock()
+				saying := p.speaking
+				p.mu.Unlock()
+				speechMs := int((now - turn.Marks["t_speech_start"]) / time.Millisecond)
+				if d := duplex.ShouldInterrupt(partial, saying, speechMs, p.Cfg.Duplex.MinSpeechMs); d.Interrupt {
+					turn.Set("bargein_partial", partial)
+					p.interrupt(turn, turn.Marks["t_speech_start"], d.Reason)
+					barged = true
+				}
+			}
 			t := now
 			if speech {
 				t = now - sherpa.Hangover
@@ -186,8 +241,36 @@ func (p *Pipeline) Run(ctx context.Context, in <-chan []int16) {
 				turn.MarkAt("t_last_voiced", ep.LastVoiced())
 				turn.Mark("t_endpoint")
 				p.setFlags(false, true)
-				p.handle(ctx, turn, utter)
-				p.setFlags(false, false)
+				switch {
+				case !p.Cfg.Duplex.Enabled:
+					p.handle(ctx, turn, utter)
+					p.setFlags(false, false)
+				case overlapping && !barged && p.assistantBusy(metrics.Now()):
+					// heard something during our reply that wasn't an interruption (backchannel / echo): ignore
+					if p.ASR != nil {
+						p.ASR.Finalize()
+					}
+					turn.Set("route", "backchannel")
+					turn.Set("transcript", partial)
+					p.Bus.End(turn)
+					p.setFlags(false, false)
+				default:
+					text, taText, lps := p.recognize(turn, utter)
+					tctx, cancel := context.WithCancel(ctx)
+					p.mu.Lock()
+					p.active, p.activeCancel = turn, cancel
+					p.mu.Unlock()
+					go func(turn *metrics.Turn) {
+						p.respond(tctx, turn, text, taText, lps)
+						p.mu.Lock()
+						if p.active == turn {
+							p.active, p.activeCancel = nil, nil
+						}
+						p.mu.Unlock()
+						cancel()
+						p.setFlags(false, false)
+					}(turn)
+				}
 				turn = nil
 				p.VAD.Reset()
 			}
@@ -202,17 +285,15 @@ func (p *Pipeline) feed(f []float32, utter *[]int16) {
 	*utter = append(*utter, audio.ToInt16(f)...)
 }
 
-// handle runs one turn end to end and writes its metrics record.
+// handle runs one turn end to end (half-duplex) and writes its metrics record.
 func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16) {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Printf("turn %d panic: %v", turn.ID, r)
-			p.say(turn, reply.Fragments("error", nlu.ModeEnglish, nil), true)
-		}
-		p.Bus.End(turn)
-	}()
+	text, taText, lps := p.recognize(turn, utter)
+	p.respond(ctx, turn, text, taText, lps)
+}
+
+// recognize finalizes both recognizers for this utterance (must run in the audio loop: it owns the ASR).
+func (p *Pipeline) recognize(turn *metrics.Turn, utter []int16) (text, taText string, lps []float64) {
 	// Dual ASR: the Tamil model decodes the whole utterance while the English stream finalizes.
-	var taText string
 	var wg sync.WaitGroup
 	if p.Tamil != nil {
 		wg.Add(1)
@@ -221,9 +302,9 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 			taText = p.Tamil.Transcribe(audio.ToFloat(audio.TrimSilence(utter, 50)))
 		}()
 	}
-	var text string
 	if p.ASR != nil {
 		text = p.ASR.Finalize()
+		lps = append([]float64(nil), p.ASR.LastLogProbs...)
 	} else {
 		text = p.Whisper.Transcribe(audio.ToFloat(utter))
 	}
@@ -233,14 +314,26 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		os.MkdirAll(p.DumpDir, 0o755)
 		audio.WriteWAV(filepath.Join(p.DumpDir, fmt.Sprintf("turn_%03d.wav", turn.ID)), utter)
 	}
+	return text, taText, lps
+}
+
+// respond understands the transcripts and answers (runs in the background in duplex mode).
+func (p *Pipeline) respond(ctx context.Context, turn *metrics.Turn, text, taText string, lps []float64) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("turn %d panic: %v", turn.ID, r)
+			p.say(turn, reply.Fragments("error", nlu.ModeEnglish, nil), true)
+		}
+		p.Bus.End(turn)
+	}()
 	turn.Set("file", p.File)
 	if p.Tier != nil {
 		turn.Set("tier", p.Tier())
 	}
 	cands := []nlu.Candidate{p.candidate("en", text)}
 	if p.ASR != nil {
-		lp, tpw := nlu.ConfFromTokens(text, p.ASR.LastLogProbs)
-		cands[0].HasConf, cands[0].AvgLogProb, cands[0].TokensPerWord = len(p.ASR.LastLogProbs) > 0, lp, tpw
+		lp, tpw := nlu.ConfFromTokens(text, lps)
+		cands[0].HasConf, cands[0].AvgLogProb, cands[0].TokensPerWord = len(lps) > 0, lp, tpw
 		turn.Set("en_logprob", lp)
 		turn.Set("en_tok_per_word", tpw)
 	}
@@ -399,6 +492,13 @@ func (p *Pipeline) say(turn *metrics.Turn, frags []reply.Fragment, useClips bool
 		pcm = audio.Join(parts, 40)
 	}
 	turn.Mark("t_tts_first_chunk")
+	var said []string
+	for _, f := range frags {
+		said = append(said, f.Text)
+	}
+	p.mu.Lock()
+	p.speaking = strings.Join(said, " ")
+	p.mu.Unlock()
 	p.play(turn, pcm)
 }
 
@@ -411,6 +511,9 @@ func (p *Pipeline) tts(voice string) *sherpa.TTS {
 
 func (p *Pipeline) play(turn *metrics.Turn, pcm []int16) {
 	if len(pcm) == 0 {
+		return
+	}
+	if !p.isActive(turn) { // interrupted while we were synthesizing: stay quiet
 		return
 	}
 	turn.Mark("t_first_audio_out") // first reply PCM leaves the container (DESIGN #10)
@@ -472,7 +575,14 @@ func (p *Pipeline) chat(ctx context.Context, turn *metrics.Turn, text, query, mo
 			turn.Mark("t_first_clause")
 			p.Out.Status(fmt.Sprintf("you: %s\nedgevoice [%s/llm]: ...", text, mode))
 		}
+		if ctx.Err() != nil { // barge-in: stop speaking
+			turn.Set("interrupted", true)
+			break
+		}
 		full = append(full, cl)
+		p.mu.Lock()
+		p.speaking = strings.Join(full, " ")
+		p.mu.Unlock()
 		pcm := p.TTSEn.Synth(cl)
 		turn.Mark("t_tts_first_chunk")
 		p.play(turn, pcm)

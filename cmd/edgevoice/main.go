@@ -70,9 +70,17 @@ func (o *frameOut) Event(kind string, data map[string]any) {
 	o.w.Flush()
 }
 
+func (o *frameOut) Flush() {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	audio.WriteFrame(o.w, audio.FrameFlush, nil)
+	o.w.Flush()
+}
+
 type nullOut struct{}
 
 func (nullOut) Event(string, map[string]any) {}
+func (nullOut) Flush()                       {}
 
 func (nullOut) PCM([]int16)     {}
 func (nullOut) Status(s string) { log.Print(s) }
@@ -83,6 +91,7 @@ func main() {
 	replay := flag.String("replay", "", "directory of .wav files to replay (harness mode)")
 	limit := flag.Int("n", 0, "replay at most n files")
 	dump := flag.Bool("dump", false, "save each turn's input audio to results/turns/")
+	duplexFlag := flag.Bool("duplex", false, "full-duplex: barge-in while answering (overrides config)")
 	flag.Parse()
 	log.SetOutput(os.Stderr)
 	log.SetFlags(log.Ltime | log.Lmicroseconds)
@@ -90,6 +99,12 @@ func main() {
 	cfg, err := config.Load(*cfgPath)
 	if err != nil {
 		log.Fatal(err)
+	}
+	if *duplexFlag {
+		cfg.Duplex.Enabled = true
+	}
+	if cfg.Duplex.MinSpeechMs == 0 {
+		cfg.Duplex.MinSpeechMs = 350
 	}
 	t0 := time.Now()
 	p, srv := build(cfg)
@@ -144,7 +159,11 @@ func main() {
 		p.DumpDir = "results/turns/" + time.Now().Format("2006-01-02_150405") // one folder per session
 	}
 	if cfg.Wake.Enabled {
-		go liveSamples(ctx, p, srv, cfg)
+		// don't announce "ready" before the LLM can answer (else the first question gets "quick commands only")
+	for i := 0; srv != nil && i < 300 && !p.LLMReadyNow(); i++ {
+		time.Sleep(100 * time.Millisecond)
+	}
+	go liveSamples(ctx, p, srv, cfg)
 		go p.RunScheduler(ctx)
 		out.Status("EdgeVoice ready — say \"Hey Computer\", then your command (or both in one go).")
 	} else {
@@ -186,7 +205,7 @@ func liveSamples(ctx context.Context, p *pipeline.Pipeline, srv *llm.Server, cfg
 			"mem_mb": memCur >> 20, "anon_mb": metrics.StatField(cg+"/memory.stat", "anon") >> 20, "peak_mb": peak >> 20,
 			"rss_edgevoice_mb": metrics.ProcRSS(os.Getpid()) >> 20, "state": p.UIState(),
 			"llm_ready": p.LLMReadyNow(), "llm_model": filepath.Base(cfg.Models.LLM), "net": "none",
-			"wake": cfg.Wake.Enabled,
+			"wake": cfg.Wake.Enabled, "duplex": cfg.Duplex.Enabled,
 		}
 		if srv != nil {
 			ev["rss_llm_mb"] = metrics.ProcRSS(srv.PID()) >> 20

@@ -15,6 +15,13 @@ func TestAppIntents(t *testing.T) {
 		{"close spotify", "app.close", "Spotify"},
 		{"spotify moodu", "app.close", "Spotify"},
 		{"music podu", "app.open", "Music"},
+		// live session 2026-10-08 22:12 (regression: these were all rejected)
+		{"open sportife", "app.open", "Spotify"},
+		{"open spartife", "app.open", "Spotify"},
+		{"get open spartably", "app.open", "Spotify"},
+		{"open spartify", "app.open", "Spotify"},
+		{"ஓபன் ஸ்பாட்டிஃபை", "app.open", "Spotify"},
+		{"set out a long five minutes", "LLM", ""},
 		{"timer cancel pannu", "timer.cancel", ""},
 		{"stop the timer", "timer.cancel", ""},
 		{"alarm cancel pannu", "alarm.cancel", ""},

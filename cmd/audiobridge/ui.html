@@ -148,6 +148,7 @@ tr.ignored td { color: var(--faint); }
       <span class="badge ok">Compute <b>CPU only</b></span>
       <span class="badge">Limit <b id="b-limit">–</b></span>
       <span class="badge ok">Network <b id="b-net">none</b></span>
+      <span class="badge">Mode <b id="b-duplex">–</b></span>
       <span class="badge">Tier <b id="b-tier">–</b></span>
       <span class="badge">LLM <b id="b-llm">–</b></span>
     </div>
@@ -277,6 +278,7 @@ function onSample(e) {
   $("b-limit").textContent = `${fmt(limits.cores, limits.cores % 1 ? 1 : 0)} CPU · ${fmt(limits.mem)} MB`;
   $("b-net").textContent = e.net || "none";
   $("b-tier").textContent = e.tier || "–";
+  $("b-duplex").textContent = e.duplex ? "full-duplex" : "half-duplex";
   $("b-llm").textContent = e.tier === "T3" ? "off (commands only)" :
     (e.llm_ready ? (e.llm_model || "").replace(/\.gguf$/, "") : "loading…");
   if (e.state) setState(e.state);
@@ -335,6 +337,7 @@ function routeInfo(t) {
     case "llm": return ["llm", `<b>Chat</b> · local LLM on CPU, streamed sentence by sentence`];
     case "wake": return ["other", `<b>Wake phrase</b> · now listening`];
     case "asleep": return ["other", `<b>Ignored</b> · no wake phrase`];
+    case "backchannel": return ["other", `<b>Backchannel</b> · heard while answering, not an interruption`];
     case "empty": return ["other", `<b>Nothing recognized</b>`];
     case "unclear": return ["other", `<b>Not confident</b> · said it didn't understand instead of guessing`];
   }
@@ -439,6 +442,7 @@ function connect() {
         if (e.now_ms) clockSkew = e.now_ms - Date.now();
         break;
       case "fired": toast(e.text, "ring", 9000); break;
+      case "bargein": toast(`⏹ Interrupted — stopped talking ${Math.round(e.ms)} ms after you started`, "", 5000); break;
       case "tier": toast(`Limits changed → Tier ${e.tier} (${Number(e.cores || 0).toFixed(1)} CPU · ${e.mem_mb} MB)`, "", 7000); break;
       case "app_result": toast((e.ok ? "✓ " : "✗ ") + e.text, e.ok ? "" : "bad"); break;
       case "state": setState(e.state); break;

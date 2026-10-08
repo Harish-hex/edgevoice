@@ -57,6 +57,10 @@ type Config struct {
 		WindowS int  `yaml:"window_s"` // stay awake this long after each reply for follow-ups
 		GraceMs int  `yaml:"grace_ms"` // after a bare wake phrase, wait this long for the command
 	} `yaml:"wake"`
+	Duplex struct {
+		Enabled     bool `yaml:"enabled"`       // barge-in: keep listening while answering; user speech interrupts
+		MinSpeechMs int  `yaml:"min_speech_ms"` // speech needed before an interruption counts
+	} `yaml:"duplex"`
 	Degrade bool   `yaml:"degrade"`
 	Results string `yaml:"results_dir"`
 }
