@@ -1,0 +1,49 @@
+# Reply templates per template ID × mode (PRD §7.5).
+# display: shown on screen (romanized for TANGLISH). speech: fragments; "{table}" = slot fragment.
+# TANGLISH speech is Tamil script (loanwords transliterated) so one Tamil voice speaks it (D14).
+# voice: optional override (calc uses the English voice in both modes: Tamil TTS can't read arbitrary numbers).
+alarm.set:
+  ENGLISH:  {display: "Done, alarm set for {hour}:{mm} {period_en} {day_en}.", speech: ["Done, alarm set for", "{hour_en}", "{min_en}", "{period_en}", "{day_en}"]}
+  TANGLISH: {display: "Seri, {day_rom} {period_rom} {hour}:{mm} ku alarm vechiten.", speech: ["சரி,", "{day_ta}", "{period_ta}", "{hour_ta}", "{min_ta}", "மணிக்கு அலாரம் வெச்சிட்டேன்"]}
+reminder.set:
+  ENGLISH:  {display: "Okay, I'll remind you to {text} at {hour}:{mm} {period_en} {day_en}.", speech: ["Okay, I'll remind you at", "{hour_en}", "{min_en}", "{period_en}", "{day_en}"]}
+  TANGLISH: {display: "Seri, {day_rom} {hour}:{mm} ku nyabagapaduthuren.", speech: ["சரி,", "{day_ta}", "{period_ta}", "{hour_ta}", "{min_ta}", "மணிக்கு ஞாபகப்படுத்தறேன்"]}
+alarm.cancel:
+  ENGLISH:  {display: "Alarm cancelled.", speech: ["Alarm cancelled."]}
+  TANGLISH: {display: "Seri, alarm cancel pannitten.", speech: ["சரி, அலாரம் கேன்சல் பண்ணிட்டேன்"]}
+alarm.cancel.none:
+  ENGLISH:  {display: "You don't have any alarms.", speech: ["You don't have any alarms."]}
+  TANGLISH: {display: "Alarm edhuvum illa.", speech: ["அலாரம் எதுவும் இல்ல"]}
+timer.set:
+  ENGLISH:  {display: "Timer set for {amount} {unit_en}.", speech: ["Timer set for", "{amount_en}", "{unit_en}"]}
+  TANGLISH: {display: "Seri, {amount} {unit_rom} timer vechiten.", speech: ["சரி,", "{amount_ta}", "{unit_ta}", "டைமர் வெச்சிட்டேன்"]}
+clock.time:
+  ENGLISH:  {display: "It's {hour}:{mm} {period_en}.", speech: ["It's", "{hour_en}", "{minute_en}", "{period_en}"]}
+  TANGLISH: {display: "Ippo {period_rom} {hour}:{mm}.", speech: ["இப்போ", "{period_ta}", "{hour_ta}", "மணி", "{minute_ta}"]}
+clock.date:
+  ENGLISH:  {display: "Today is {weekday}, {month} {dom}.", speech: ["Today is", "{weekday_en}", "{month_en}", "{dom_en}"]}
+  TANGLISH: {display: "Innaikku {weekday}, {month} {dom}.", speech: ["இன்னைக்கு", "{weekday_ta}", "{month_ta}", "{dom_ta}"]}
+calc:
+  ENGLISH:  {display: "{a} {op} {b} = {result}", speech: ["{a} {op_en} {b} is {result}"]}
+  TANGLISH: {display: "{a} {op} {b} = {result}", speech: ["{a} {op_en} {b} is {result}"], voice: en}
+calc.error:
+  ENGLISH:  {display: "I can't calculate that.", speech: ["I can't calculate that."]}
+  TANGLISH: {display: "Adhu calculate panna mudiyala.", speech: ["அது கணக்கு பண்ண முடியல"]}
+system.stop:
+  ENGLISH:  {display: "Okay.", speech: ["Okay."]}
+  TANGLISH: {display: "Seri.", speech: ["சரி."]}
+smalltalk.greet:
+  ENGLISH:  {display: "Hi! How can I help?", speech: ["Hi! How can I help?"]}
+  TANGLISH: {display: "Vanakkam! Enna pannanum?", speech: ["வணக்கம்! என்ன பண்ணணும்?"]}
+smalltalk.identity:
+  ENGLISH:  {display: "I'm EdgeVoice, an offline voice assistant.", speech: ["I'm EdgeVoice, an offline voice assistant."]}
+  TANGLISH: {display: "Naan EdgeVoice, offline voice assistant.", speech: ["நான் எட்ஜ்வாய்ஸ், ஆஃப்லைன் வாய்ஸ் அசிஸ்டன்ட்"]}
+offline.unsupported:
+  ENGLISH:  {display: "Sorry, I'm offline, so I can't check that.", speech: ["Sorry, I'm offline, so I can't check that."]}
+  TANGLISH: {display: "Mannikkavum, naan offline la irukken, adhu paakka mudiyadhu.", speech: ["மன்னிக்கவும், நான் ஆஃப்லைன்ல இருக்கேன், அது பாக்க முடியாது"]}
+error:
+  ENGLISH:  {display: "Sorry, I didn't catch that.", speech: ["Sorry, I didn't catch that."]}
+  TANGLISH: {display: "Mannikkavum, puriyala.", speech: ["மன்னிக்கவும், புரியல"]}
+quick_only:
+  ENGLISH:  {display: "I can only do quick commands right now.", speech: ["I can only do quick commands right now."]}
+  TANGLISH: {display: "Ippo quick commands mattum thaan panna mudiyum.", speech: ["இப்போ சின்ன கமாண்ட்ஸ் மட்டும் தான் பண்ண முடியும்"]}

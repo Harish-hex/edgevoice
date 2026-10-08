@@ -1,0 +1,9 @@
+models/
+clips/*.pcm
+data/recordings/**/*.wav
+results/*.jsonl
+results/*.wav
+sock/
+third_party/
+/bin/
+.DS_Store
