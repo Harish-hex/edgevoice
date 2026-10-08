@@ -125,7 +125,11 @@ func main() {
 	if *dump {
 		p.DumpDir = "results/turns"
 	}
-	out.Status("EdgeVoice ready — speak.")
+	if cfg.Wake.Enabled {
+		out.Status("EdgeVoice ready — say \"Hey Computer\", then your command (or both in one go).")
+	} else {
+		out.Status("EdgeVoice ready — speak.")
+	}
 	in := make(chan []int16, 64)
 	go func() {
 		defer close(in)

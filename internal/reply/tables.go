@@ -11,7 +11,7 @@ var tables = map[string]map[string]string{}
 var tableSlot = map[string]string{
 	"hour_en": "hour", "hour_ta": "hour", "min_en": "minute", "min_ta": "minute", "minute_en": "minute", "minute_ta": "minute",
 	"period_en": "period", "period_ta": "period", "period_rom": "period",
-	"day_en": "day", "day_ta": "day", "day_rom": "day",
+	"day_en": "day", "day_ta": "day", "day_rom": "day", "dayis_en": "day", "dayc_rom": "day",
 	"amount_en": "amount", "amount_ta": "amount", "unit_en": "unit", "unit_ta": "unit", "unit_rom": "unit",
 	"weekday_en": "weekday", "weekday_ta": "weekday", "month_en": "month", "month_ta": "month", "dom_en": "dom", "dom_ta": "dom",
 	"op_en": "op", "a_num": "a", "b_num": "b", "result_num": "result",
@@ -81,7 +81,11 @@ func init() {
 		set("period_ta", k, v[1])
 		set("period_rom", k, v[2])
 	}
-	for k, v := range map[string][3]string{"today": {"today", "இன்னைக்கு", "innaikku"}, "tomorrow": {"tomorrow", "நாளைக்கு", "naalaikku"}, "": {"", "", ""}} {
+	for k, v := range map[string]string{"today": "Today is", "tomorrow": "Tomorrow is", "yesterday": "Yesterday was"} {
+		set("dayis_en", k, v)
+		set("dayc_rom", k, map[string]string{"today": "Innaikku", "tomorrow": "Naalaikku", "yesterday": "Nethu"}[k])
+	}
+	for k, v := range map[string][3]string{"today": {"today", "இன்னைக்கு", "innaikku"}, "tomorrow": {"tomorrow", "நாளைக்கு", "naalaikku"}, "yesterday": {"yesterday", "நேத்து", "nethu"}, "": {"", "", ""}} {
 		set("day_en", k, v[0])
 		set("day_ta", k, v[1])
 		set("day_rom", k, v[2])

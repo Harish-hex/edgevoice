@@ -7,3 +7,4 @@ nlu: {fast_path: false}
 reply: {clips: false}
 llm: {prompt_cache: false, clause_tts: false}
 degrade: false
+wake: {enabled: false}

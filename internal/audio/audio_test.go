@@ -73,3 +73,14 @@ func TestJoinCrossfade(t *testing.T) {
 		t.Fatalf("len %d", got)
 	}
 }
+
+func TestTrimSilence(t *testing.T) {
+	p := make([]int16, 16000)  // 1 s silence
+	for i := 8000; i < 12000; i++ { // 250 ms tone in the middle
+		p[i] = int16(5000 * ((i % 40) - 20) / 20)
+	}
+	out := TrimSilence(p, 50)
+	if len(out) < 4000 || len(out) > 4000+2*800+640 {
+		t.Fatalf("trimmed len %d", len(out))
+	}
+}

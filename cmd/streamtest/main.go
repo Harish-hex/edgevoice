@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	cmd := exec.Command("docker/run.sh", "bin/edgevoice", "-transport", "stdio")
+	cmd := exec.Command("docker/run.sh", "bin/edgevoice", "-transport", "stdio", "-dump")
 	cmd.Env = append(os.Environ(), "CPUS=2", "MEM=2g")
 	in, _ := cmd.StdinPipe()
 	out, _ := cmd.StdoutPipe()

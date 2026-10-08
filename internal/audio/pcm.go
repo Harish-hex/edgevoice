@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io"
+	"math"
 	"os"
 )
 
@@ -140,4 +141,42 @@ func writeWAV(w io.Writer, p []int16) error {
 	}
 	_, err := w.Write(data)
 	return err
+}
+
+// TrimSilence cuts leading/trailing low-energy audio, keeping padMs around the speech. The threshold
+// is relative to the loudest 20 ms frame (10%, floor 200), so it adapts to mic noise. IndicConformer drops
+// the first word when an utterance starts with ≥300 ms of silence (measured), so Tamil decode uses this.
+func TrimSilence(p []int16, padMs int) []int16 {
+	const fr = SampleRate / 50 // 20 ms
+	n := len(p) / fr
+	if n == 0 {
+		return p
+	}
+	rms := make([]float64, n)
+	maxR := 0.0
+	for i := 0; i < n; i++ {
+		var s float64
+		for _, v := range p[i*fr : (i+1)*fr] {
+			s += float64(v) * float64(v)
+		}
+		rms[i] = math.Sqrt(s / fr)
+		maxR = math.Max(maxR, rms[i])
+	}
+	th := math.Max(200, 0.1*maxR)
+	first, last := -1, -1
+	for i, r := range rms {
+		if r >= th {
+			if first < 0 {
+				first = i
+			}
+			last = i
+		}
+	}
+	if first < 0 {
+		return p
+	}
+	pad := SampleRate * padMs / 1000
+	s := max(0, first*fr-pad)
+	e := min(len(p), (last+1)*fr+pad)
+	return p[s:e]
 }

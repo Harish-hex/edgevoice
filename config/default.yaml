@@ -13,5 +13,6 @@ endpoint: {silence_ms: 400, early_silence_ms: 200, max_utterance_ms: 10000}
 nlu: {fast_path: true, fuzzy: true, merge: true}
 reply: {clips: true, clips_dir: clips}
 llm: {enabled: true, threads: 2, ctx: 1024, max_tokens: 80, prompt_cache: true, clause_tts: true, timeout_ms: 3000, port: 8081}
+wake: {enabled: true, window_s: 8}
 degrade: true
 results_dir: results

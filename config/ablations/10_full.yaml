@@ -1,3 +1,4 @@
 extends: ../default.yaml
 name: 10_full
 degrade: false
+wake: {enabled: false}   # replay data has no wake phrase

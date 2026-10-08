@@ -82,7 +82,16 @@ func (st *State) Execute(in *iface.Intent, now time.Time) Result {
 	case "clock.time":
 		return Result{"clock.time", clockSlots(now)}
 	case "clock.date":
-		return Result{"clock.date", map[string]string{"weekday": now.Weekday().String(), "month": now.Month().String(), "dom": strconv.Itoa(now.Day())}}
+		d, day := now, in.Slots["day"]
+		switch day {
+		case "tomorrow":
+			d = now.AddDate(0, 0, 1)
+		case "yesterday":
+			d = now.AddDate(0, 0, -1)
+		default:
+			day = "today"
+		}
+		return Result{"clock.date", map[string]string{"day": day, "weekday": d.Weekday().String(), "month": d.Month().String(), "dom": strconv.Itoa(d.Day())}}
 	case "calc":
 		return calc(in.Slots["expression"])
 	case "system.stop", "smalltalk.greet", "smalltalk.identity", "offline.unsupported":

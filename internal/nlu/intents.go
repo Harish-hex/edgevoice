@@ -45,6 +45,39 @@ func featsOf(n iface.NormalizedText, lx *Lexicon) feats {
 	return f
 }
 
+// dayOf returns the first DAY value (today/tomorrow/yesterday), default "today".
+func dayOf(n iface.NormalizedText) string {
+	for _, t := range n.Tags {
+		if t.Role == "DAY" {
+			return t.Value
+		}
+	}
+	return "today"
+}
+
+// FollowUp resolves short corrections against the previous command, e.g. after "naalaikku enna date",
+// "innaikku illa, naalaikku" (not today — tomorrow) re-asks the date for the new day. Returns nil if the
+// utterance isn't a day-only follow-up to a day-bearing command.
+func FollowUp(prev *iface.Intent, n iface.NormalizedText) *iface.Intent {
+	if prev == nil || prev.Name != "clock.date" {
+		return nil
+	}
+	var days []string
+	for i, t := range n.Tags {
+		switch {
+		case t.Role == "DAY":
+			days = append(days, t.Value)
+		case t.Role == "" && n.Tokens[i] != "illa" && n.Tokens[i] != "not" && n.Tokens[i] != "no":
+			// tolerate a couple of filler words, nothing else unknown
+		}
+	}
+	if len(days) == 0 {
+		return nil
+	}
+	slots := map[string]string{"day": days[len(days)-1]} // "innaikku illa naalaikku" -> last day wins
+	return &iface.Intent{Name: "clock.date", Slots: slots, Score: 0.9}
+}
+
 // Parse returns nil when no rule fires, required slots are missing, or the score is below threshold.
 func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 	f := featsOf(n, p.Lex)
@@ -99,7 +132,7 @@ func (p *Parser) Parse(n iface.NormalizedText) *iface.Intent {
 	case has("OFFLINE"):
 		return mk("offline.unsupported", nil, true)
 	case has("DATE") && (has("WH") || has("DAY")):
-		return mk("clock.date", nil, false)
+		return mk("clock.date", map[string]string{"day": dayOf(n)}, false)
 	case (has("TIME") || has("AT")) && has("WH") && f.nums == 0:
 		return mk("clock.time", nil, false)
 	case has("WHO") && (has("YOU") || f.vals["WHO:self"]):

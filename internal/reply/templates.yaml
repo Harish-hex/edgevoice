@@ -21,8 +21,8 @@ clock.time:
   ENGLISH:  {display: "It's {hour}:{mm} {period_en}.", speech: ["It's", "{hour_en}", "{minute_en}", "{period_en}"]}
   TANGLISH: {display: "Ippo {period_rom} {hour}:{mm}.", speech: ["இப்போ", "{period_ta}", "{hour_ta}", "மணி", "{minute_ta}"]}
 clock.date:
-  ENGLISH:  {display: "Today is {weekday}, {month} {dom}.", speech: ["Today is", "{weekday_en}", "{month_en}", "{dom_en}"]}
-  TANGLISH: {display: "Innaikku {weekday}, {month} {dom}.", speech: ["இன்னைக்கு", "{weekday_ta}", "{month_ta}", "{dom_ta}"]}
+  ENGLISH:  {display: "{dayis_en} {weekday}, {month} {dom}.", speech: ["{dayis_en}", "{weekday_en}", "{month_en}", "{dom_en}"]}
+  TANGLISH: {display: "{dayc_rom} {weekday}, {month} {dom}.", speech: ["{day_ta}", "{weekday_ta}", "{month_ta}", "{dom_ta}"]}
 calc:
   ENGLISH:  {display: "{a} {op} {b} = {result}", speech: ["{a_num}", "{op_en}", "{b_num}", "is", "{result_num}"]}
   TANGLISH: {display: "{a} {op} {b} = {result}", speech: ["{a_num}", "{op_en}", "{b_num}", "is", "{result_num}"], voice: en}
@@ -41,6 +41,9 @@ smalltalk.identity:
 offline.unsupported:
   ENGLISH:  {display: "Sorry, I'm offline, so I can't check that.", speech: ["Sorry, I'm offline, so I can't check that."]}
   TANGLISH: {display: "Mannikkavum, naan offline la irukken, adhu paakka mudiyadhu.", speech: ["மன்னிக்கவும், நான் ஆஃப்லைன்ல இருக்கேன், அது பாக்க முடியாது"]}
+wake:
+  ENGLISH:  {display: "Yes?", speech: ["Yes?"]}
+  TANGLISH: {display: "Sollunga?", speech: ["சொல்லுங்க?"]}
 error:
   ENGLISH:  {display: "Sorry, I didn't catch that.", speech: ["Sorry, I didn't catch that."]}
   TANGLISH: {display: "Mannikkavum, puriyala.", speech: ["மன்னிக்கவும், புரியல"]}

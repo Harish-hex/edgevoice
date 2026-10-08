@@ -57,6 +57,10 @@ type Pipeline struct {
 	HalfDuplex bool
 	// DumpDir, if set, receives each turn's input audio as turn_<id>.wav (debugging: what did it hear?).
 	DumpDir string
+
+	awakeUntil time.Duration
+	prev   *iface.Intent // last command, for short follow-ups ("innaikku illa, naalaikku")
+	prevAt time.Duration
 }
 
 func (p *Pipeline) SetLLMReady(v bool) { p.mu.Lock(); p.llmReady = v; p.mu.Unlock() }
@@ -161,7 +165,7 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			taText = p.Tamil.Transcribe(audio.ToFloat(utter))
+			taText = p.Tamil.Transcribe(audio.ToFloat(audio.TrimSilence(utter, 50)))
 		}()
 	}
 	var text string
@@ -186,7 +190,52 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		turn.Set("transcript_en", text)
 		turn.Set("transcript_ta", taText)
 	}
+	if p.Cfg.Wake.Enabled {
+		p.mu.Lock()
+		awake := metrics.Now() < p.awakeUntil
+		p.mu.Unlock()
+		woke, wakeOnly := false, true
+		for i := range cands {
+			if rest, ok := nlu.StripWake(cands[i].Norm); ok {
+				woke = true
+				cands[i].Norm, cands[i].Text = rest, rest.Canonical
+				cands[i].Intent = nil
+				if p.Cfg.NLU.FastPath && len(rest.Tokens) > 0 {
+					cands[i].Intent = p.Parser.Parse(rest)
+				}
+				if len(rest.Tokens) > 0 {
+					wakeOnly = false
+				}
+			}
+		}
+		turn.Set("woke", woke)
+		if !woke && !awake {
+			turn.Set("route", "asleep")
+			p.Out.Status(fmt.Sprintf("(asleep — say \"Hey Computer\") heard: %s", text))
+			return
+		}
+		if woke && wakeOnly {
+			turn.Set("route", "wake")
+			mode := nlu.ModeEnglish
+			if cands[len(cands)-1].Source == "ta" && nlu.LangMode(cands[len(cands)-1].Norm) == nlu.ModeTanglish {
+				mode = nlu.ModeTanglish
+			}
+			p.Out.Status("edgevoice: " + reply.Display("wake", mode, nil) + "  (listening…)")
+			p.say(turn, reply.Fragments("wake", mode, nil), p.Cfg.Reply.Clips)
+			return
+		}
+	}
 	best := p.Norm.Lex.Choose(cands)
+	if best.Intent == nil && p.prev != nil && metrics.Now()-p.prevAt < 30*time.Second {
+		for i := len(cands) - 1; i >= 0; i-- { // Tamil first: follow-ups are usually Tanglish
+			if f := nlu.FollowUp(p.prev, cands[i].Norm); f != nil {
+				best = cands[i]
+				best.Intent = f
+				turn.Set("followup", true)
+				break
+			}
+		}
+	}
 	text, norm, in := best.Text, best.Norm, best.Intent
 	turn.Set("transcript", text)
 	turn.Set("asr_pick", best.Source)
@@ -206,6 +255,7 @@ func (p *Pipeline) handle(ctx context.Context, turn *metrics.Turn, utter []int16
 		turn.Set("route", "cmd")
 		turn.Set("intent", in.Name)
 		turn.Set("slots", in.Slots)
+		p.prev, p.prevAt = in, metrics.Now()
 		res := p.State.Execute(in, time.Now())
 		disp := reply.Display(res.TemplateID, mode, res.Slots)
 		p.Out.Status(fmt.Sprintf("you: %s\nedgevoice [%s/%s]: %s", text, mode, in.Name, disp))
@@ -269,6 +319,7 @@ func (p *Pipeline) play(turn *metrics.Turn, pcm []int16) {
 		p.busyUntil = now
 	}
 	p.busyUntil += d + 300*time.Millisecond
+	p.awakeUntil = p.busyUntil + time.Duration(p.Cfg.Wake.WindowS)*time.Second
 	p.mu.Unlock()
 }
 

@@ -4,6 +4,7 @@ stopwords: [a, an, the, for, me, my, to, is, it, of, please, can, you, i, in, on
 entries:
   # --- DAY ---
   - {canon: naalaikku, role: DAY, value: tomorrow, ta: [naalaikku, naalaiku, nowlay, nally, nalay, naliki, nalaiku, naalaiki, naalaikki, nalaikku, naalaiku], en: [tomorrow]}
+  - {canon: nethu, role: DAY, value: yesterday, ta: [nethu, nethiku, nethikku, neththu, nettu], en: [yesterday]}
   - {canon: innaikku, role: DAY, value: today, ta: [innaikku, innaiku, indru, inniki, innikku], en: [today]}
   # --- PERIOD ---
   - {canon: kaalai, role: PERIOD, value: am, ta: [kaalai, kaalaila, kalaila, kaalaiyil, caulay, coula, koly, khali], en: [morning, am]}
@@ -19,11 +20,13 @@ entries:
   - {canon: enna, role: WH, ta: [enna, yenna, evlo, evvalavu, eppadi, epdi, avel, aval, avla, avlo, evalo, ann, anna], en: [what, whats, how]}
   - {canon: time, role: TIME, ta: [taim, daim, taaim], en: [time]}
   - {canon: date, role: DATE, ta: [thethi, theydhi, thedhi, theedhi, teet, teed, deet, deed], en: [date, day]}
+  # --- wake phrase ("Hey Computer"); near-misses and Tamil-script spellings of the loanword ---
+  - {canon: computer, role: WAKE, en: [computer, computers, commuter, compute, computa, kompyuter], ta: [kampyuurar, kampyuurer, kampyuuttar, kampyuutar, kampyuttar, kompyuuttar, kampuuttar, kambyuuttar, kampyuudar]}
   # --- intent keywords ---
   - {canon: alarm, role: KW, value: alarm, ta: [alaaram, alarum, alaram], en: [alarm, alarms, wake]}
   - {canon: timer, role: KW, value: timer, ta: [taimer, taimar, tinner], en: [timer]}
   - {canon: remind, role: KW, value: remind, ta: [nyabagapadutthu, nyabagapaduthu, nyabagam, gnabagam], en: [remind, reminder]}
-  - {canon: vanakkam, role: GREET, ta: [vanakkam, vanakam], en: [hi, hello, hey]}
+  - {canon: vanakkam, role: GREET, ta: [vanakkam, vanakam, hee, hae, hei, haai, helloo], en: [hi, hello, hey]}
   - {canon: yaaru, role: WHO, ta: [yaaru, yaar, yaru], en: [who]}
   - {canon: nee_yaaru, role: WHO, value: self, ta: [neeyaaru, niaru, neyaru, niyaru]}
   - {canon: nee, role: YOU, ta: [nee, neenga, ni, nii, niinga], en: [are, your]}
